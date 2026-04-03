@@ -18,6 +18,8 @@ export class VisitDetailComponent implements OnInit {
     });
   }
 
+  //test
+
   previousState(): void {
     window.history.back();
   }
