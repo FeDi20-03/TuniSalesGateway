@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { IClient } from '../client.model';
+import { ClientStatus } from '../../../enumerations/client-status.model';
 
 @Component({
   selector: 'jhi-client-detail',
@@ -21,4 +22,6 @@ export class ClientDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+
+  protected readonly ClientStatus = ClientStatus;
 }

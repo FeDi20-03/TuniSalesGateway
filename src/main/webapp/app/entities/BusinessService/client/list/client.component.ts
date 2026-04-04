@@ -5,6 +5,7 @@ import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IClient } from '../client.model';
+import { ClientStatus } from 'app/entities/enumerations/client-status.model';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
@@ -18,6 +19,7 @@ import { ClientDeleteDialogComponent } from '../delete/client-delete-dialog.comp
 export class ClientComponent implements OnInit {
   clients?: IClient[];
   isLoading = false;
+  protected readonly ClientStatus = ClientStatus;
 
   predicate = 'id';
   ascending = true;
@@ -25,6 +27,7 @@ export class ClientComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
+  searchCodeClient = '';
 
   constructor(
     protected clientService: ClientService,
@@ -37,6 +40,42 @@ export class ClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  searchClientByCode(): void {
+    if (!this.searchCodeClient || this.searchCodeClient.trim() === '') {
+      this.load();
+      return;
+    }
+
+    this.isLoading = true;
+    this.clientService.searchByCodeClient(this.searchCodeClient.trim()).subscribe({
+      next: (res: EntityArrayResponseType) => {
+        this.onResponseSuccess(res);
+      },
+      error: () => {
+        this.isLoading = false;
+        console.error('Erreur lors de la recherche du client par code');
+      },
+    });
+  }
+
+  viewClientByCode(codeClient?: string | null): void {
+    if (!codeClient) {
+      console.error('Code client non disponible');
+      return;
+    }
+
+    this.clientService.findByCodeClient(codeClient).subscribe({
+      next: res => {
+        if (res.body?.id) {
+          this.router.navigate(['/client', res.body.id, 'view']);
+        }
+      },
+      error: () => {
+        console.error('Client non trouvé avec le code:', codeClient);
+      },
+    });
   }
 
   delete(client: IClient): void {

@@ -1,9 +1,12 @@
-<nav data-cy="navbar" class="navbar navbar-dark navbar-expand-md bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-      <span class="logo-img"></span>
-      <span jhiTranslate="global.title" class="navbar-title">TuniSalesGateway</span>
-      <span class="navbar-version">{{ version }}</span>
+<nav data-cy="navbar" class="navbar navbar-expand-md bg-white border-bottom">
+  <div class="container-fluid position-relative">
+    <a class="navbar-brand logo d-flex align-items-center text-dark text-decoration-none" routerLink="/" (click)="collapseNavbar()">
+      <span
+        class="logo-text d-inline-flex align-items-center justify-content-center bg-primary text-white"
+        style="width: 32px; height: 32px; font-weight: bold; border-radius: 5px; margin-right: 8px"
+        >T.S</span
+      >
+      <span class="navbar-title text-primary" style="font-weight: 700; font-size: 1.25rem">TuniSales</span>
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -17,18 +20,66 @@
     >
       <fa-icon icon="bars"></fa-icon>
     </a>
+
+    <div *ngIf="router.url !== '/login'" class="d-none d-md-flex mx-auto position-absolute start-50 translate-middle-x" style="z-index: 10">
+      <button
+        class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
+        routerLink="client"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="collapseNavbar()"
+      >
+        <span jhiTranslate="global.menu.entities.businessServiceClient">Client</span>
+      </button>
+      <button
+        class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
+        routerLink="invoice"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="collapseNavbar()"
+      >
+        <span>Factures</span>
+      </button>
+      <button
+        class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
+        routerLink="order"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="collapseNavbar()"
+      >
+        <span>Commandes</span>
+      </button>
+      <button
+        class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
+        routerLink="client-contact"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="collapseNavbar()"
+      >
+        <span jhiTranslate="global.menu.entities.businessServiceClientContact">Client Contact</span>
+      </button>
+      <button
+        class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
+        routerLink="client-score"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="collapseNavbar()"
+      >
+        <span jhiTranslate="global.menu.entities.platformServiceClientScore">Client Score</span>
+      </button>
+    </div>
+
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
             <span>
               <fa-icon icon="home"></fa-icon>
-              <span jhiTranslate="global.menu.home">Accueil</span>
             </span>
           </a>
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-        <li
+        <!--<li
           *ngSwitchCase="true"
           ngbDropdown
           class="nav-item dropdown pointer"
@@ -331,9 +382,9 @@
                 <span jhiTranslate="global.menu.entities.inventoryServiceWarehouse">Warehouse</span>
               </a>
             </li>
-            <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+           ** jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here **
           </ul>
-        </li>
+        </li>-->
         <li
           *jhiHasAnyAuthority="'ROLE_ADMIN'"
           ngbDropdown
@@ -345,7 +396,6 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
             <span>
               <fa-icon icon="users-cog"></fa-icon>
-              <span jhiTranslate="global.menu.admin.main">Administration</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
@@ -398,7 +448,6 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
             <span>
               <fa-icon icon="flag"></fa-icon>
-              <span jhiTranslate="global.menu.language">Langue</span>
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
@@ -423,7 +472,7 @@
           <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
             <span *ngIf="!account?.imageUrl">
               <fa-icon icon="user"></fa-icon>
-              <span jhiTranslate="global.menu.account.main">Compte</span>
+              <span *ngIf="account">{{ account.login }}</span>
             </span>
             <span *ngIf="account?.imageUrl">
               <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
@@ -464,18 +513,6 @@
               <a class="dropdown-item" (click)="login()" id="login" data-cy="login">
                 <fa-icon icon="sign-in-alt" [fixedWidth]="true"></fa-icon>
                 <span jhiTranslate="global.menu.account.login">S'authentifier</span>
-              </a>
-            </li>
-            <li *ngSwitchCase="false">
-              <a
-                class="dropdown-item"
-                routerLink="account/register"
-                routerLinkActive="active"
-                (click)="collapseNavbar()"
-                data-cy="register"
-              >
-                <fa-icon icon="user-plus" [fixedWidth]="true"></fa-icon>
-                <span jhiTranslate="global.menu.account.register">Créer un compte</span>
               </a>
             </li>
           </ul>

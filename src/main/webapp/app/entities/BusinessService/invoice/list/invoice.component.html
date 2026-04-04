@@ -1,205 +1,242 @@
 <div>
-  <h2 id="page-heading" data-cy="InvoiceHeading">
-    <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.title">Invoices</span>
+  <div class="card jh-card border-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 id="page-heading" data-cy="InvoiceHeading" class="mb-0">
+        <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.title">Invoices</span>
+      </h2>
 
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.refreshListLabel">Actualiser la liste</span>
-      </button>
+      <div class="d-flex gap-2">
+        <button class="btn btn-info" (click)="load()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.refreshListLabel">Actualiser la liste</span>
+        </button>
 
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-invoice"
-        [routerLink]="['/invoice/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.createLabel"> Créer un nouveau Invoice </span>
-      </button>
-    </div>
-  </h2>
-
-  <jhi-alert-error></jhi-alert-error>
-
-  <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="invoices?.length === 0">
-    <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.notFound">Aucun Invoice trouvé</span>
-  </div>
-
-  <div class="table-responsive table-entities" id="entities" *ngIf="invoices && invoices.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-          <th scope="col" jhiSortBy="id">
-            <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="tenantId">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.tenantId">Tenant Id</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="invoiceNumber">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.invoiceNumber">Invoice Number</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="amountHt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.amountHt">Amount Ht</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="taxAmount">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.taxAmount">Tax Amount</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="amountTtc">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.amountTtc">Amount Ttc</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="status">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.status">Status</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="issueDate">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.issueDate">Issue Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="dueDate">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.dueDate">Due Date</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="paidAt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.paidAt">Paid At</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="isDeleted">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.isDeleted">Is Deleted</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="createdAt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.createdAt">Created At</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="updatedAt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.updatedAt">Updated At</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="client.name">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.client">Client</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="order.orderNumber">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.order">Order</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let invoice of invoices; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/invoice', invoice.id, 'view']">{{ invoice.id }}</a>
-          </td>
-          <td>{{ invoice.tenantId }}</td>
-          <td>{{ invoice.invoiceNumber }}</td>
-          <td>{{ invoice.amountHt }}</td>
-          <td>{{ invoice.taxAmount }}</td>
-          <td>{{ invoice.amountTtc }}</td>
-          <td jhiTranslate="{{ 'tuniSalesGatewayApp.InvoiceStatus.' + invoice.status }}">{{ invoice.status }}</td>
-          <td>{{ invoice.issueDate | formatMediumDatetime }}</td>
-          <td>{{ invoice.dueDate | formatMediumDatetime }}</td>
-          <td>{{ invoice.paidAt | formatMediumDatetime }}</td>
-          <td>{{ invoice.isDeleted }}</td>
-          <td>{{ invoice.createdAt | formatMediumDatetime }}</td>
-          <td>{{ invoice.updatedAt | formatMediumDatetime }}</td>
-          <td>
-            <div *ngIf="invoice.client">
-              <a [routerLink]="['/client', invoice.client.id, 'view']">{{ invoice.client.name }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="invoice.order">
-              <a [routerLink]="['/order', invoice.order.id, 'view']">{{ invoice.order.orderNumber }}</a>
-            </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/invoice', invoice.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/invoice', invoice.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
-
-              <button type="submit" (click)="delete(invoice)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="invoices && invoices.length > 0">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        <button
+          id="jh-create-entity"
+          data-cy="entityCreateButton"
+          class="btn btn-primary jh-create-entity create-invoice"
+          [routerLink]="['/invoice/new']"
+        >
+          <fa-icon icon="plus"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.createLabel"> Créer un nouveau Invoice </span>
+        </button>
+      </div>
     </div>
 
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [page]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="navigateToPage($event)"
-      ></ngb-pagination>
+    <!-- Search placeholder area -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0 text-muted"><fa-icon icon="search"></fa-icon></span>
+          <input type="text" class="form-control border-start-0 ps-0" placeholder="Rechercher des factures..." />
+        </div>
+      </div>
+    </div>
+
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="invoices?.length === 0">
+      <div class="text-center py-5">
+        <fa-icon icon="file-invoice-dollar" size="3x" class="text-muted mb-3"></fa-icon>
+        <h4 jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.home.notFound">Aucun Invoice trouvé</h4>
+        <p class="text-muted">Commencez par ajouter une nouvelle facture.</p>
+      </div>
+    </div>
+
+    <div class="table-responsive table-entities" id="entities" *ngIf="invoices && invoices.length > 0">
+      <table class="table table-hover align-middle" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tenantId">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.tenantId">Tenant Id</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="invoiceNumber">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.invoiceNumber">Invoice Number</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="amountHt">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.amountHt">Amount Ht</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="taxAmount">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.taxAmount">Tax Amount</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="amountTtc">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.amountTtc">Amount Ttc</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.status">Status</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="issueDate">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.issueDate">Issue Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="dueDate">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.dueDate">Due Date</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="paidAt">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.paidAt">Paid At</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="isDeleted">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.isDeleted">Is Deleted</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="createdAt">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.createdAt">Created At</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="updatedAt">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.updatedAt">Updated At</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="client.name">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.client">Client</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="order.orderNumber">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.order">Order</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices; trackBy: trackId" data-cy="entityTable">
+            <td>
+              <a [routerLink]="['/invoice', invoice.id, 'view']" class="fw-bold text-decoration-none">{{ invoice.id }}</a>
+            </td>
+            <td>{{ invoice.tenantId }}</td>
+            <td>
+              <span class="badge bg-light text-dark border">{{ invoice.invoiceNumber }}</span>
+            </td>
+            <td>{{ invoice.amountHt | currency }}</td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-success': invoice.status === InvoiceStatus.PAID,
+                  'bg-warning': invoice.status === InvoiceStatus.DRAFT,
+                  'bg-danger': invoice.status === InvoiceStatus.OVERDUE
+                }"
+              >
+                {{ invoice.status }}
+              </span>
+            </td>
+            <td>{{ invoice.issueDate | formatMediumDatetime }}</td>
+            <td>{{ invoice.dueDate | formatMediumDatetime }}</td>
+            <td>{{ invoice.paidAt | formatMediumDatetime }}</td>
+            <td>
+              <span class="badge" [ngClass]="invoice.isDeleted ? 'bg-danger' : 'bg-success'">
+                {{ invoice.isDeleted ? 'Yes' : 'No' }}
+              </span>
+            </td>
+            <td>{{ invoice.createdAt | formatMediumDatetime }}</td>
+            <td>{{ invoice.updatedAt | formatMediumDatetime }}</td>
+            <td>
+              <div *ngIf="invoice.order">
+                <a [routerLink]="['/order', invoice.order.id, 'view']" class="text-decoration-none fw-bold text-primary">{{
+                  invoice.order.orderNumber
+                }}</a>
+              </div>
+            </td>
+            <td class="text-end">
+              <div class="btn-group gap-1">
+                <button
+                  type="submit"
+                  [routerLink]="['/invoice', invoice.id, 'view']"
+                  class="btn btn-info btn-sm"
+                  data-cy="entityDetailsButton"
+                  title="Voir"
+                >
+                  <fa-icon icon="eye"></fa-icon>
+                </button>
+
+                <button
+                  type="submit"
+                  [routerLink]="['/invoice', invoice.id, 'edit']"
+                  class="btn btn-warning btn-sm"
+                  data-cy="entityEditButton"
+                  title="Editer"
+                >
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                </button>
+
+                <button
+                  type="submit"
+                  (click)="delete(invoice)"
+                  class="btn btn-danger btn-sm"
+                  data-cy="entityDeleteButton"
+                  title="Supprimer"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="invoices && invoices.length > 0" class="mt-4 border-top pt-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+        </div>
+
+        <div>
+          <ngb-pagination
+            [collectionSize]="totalItems"
+            [page]="page"
+            [pageSize]="itemsPerPage"
+            [maxSize]="5"
+            [rotate]="true"
+            [boundaryLinks]="true"
+            (pageChange)="navigateToPage($event)"
+          ></ngb-pagination>
+        </div>
+      </div>
     </div>
   </div>
 </div>

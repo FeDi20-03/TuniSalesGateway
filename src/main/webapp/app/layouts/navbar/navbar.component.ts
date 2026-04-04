@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
     private injector: Injector,
     private accountService: AccountService,
     private profileService: ProfileService,
-    private router: Router
+    protected router: Router
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -68,7 +68,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.collapseNavbar();
     this.loginService.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
   }
 
   toggleNavbar(): void {

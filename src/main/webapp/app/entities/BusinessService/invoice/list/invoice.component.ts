@@ -10,6 +10,7 @@ import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/co
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, InvoiceService } from '../service/invoice.service';
 import { InvoiceDeleteDialogComponent } from '../delete/invoice-delete-dialog.component';
+import { InvoiceStatus } from '../../../enumerations/invoice-status.model';
 
 @Component({
   selector: 'jhi-invoice',
@@ -133,4 +134,6 @@ export class InvoiceComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected readonly InvoiceStatus = InvoiceStatus;
 }

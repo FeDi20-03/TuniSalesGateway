@@ -70,6 +70,18 @@ export class ClientService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findByCodeClient(codeClient: string): Observable<EntityResponseType> {
+    return this.http
+      .get<RestClient>(`${this.resourceUrl}/code/${codeClient}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  searchByCodeClient(codeClient: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestClient[]>(`${this.resourceUrl}/search?codeClient=${codeClient}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   getClientIdentifier(client: Pick<IClient, 'id'>): number {
     return client.id;
   }
