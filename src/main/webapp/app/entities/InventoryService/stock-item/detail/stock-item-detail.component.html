@@ -1,68 +1,82 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="stockItem">
-      <h2 data-cy="stockItemDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.detail.title">Stock Item</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="stockItem" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="stockItemDetailsHeading">
+          <fa-icon icon="box" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.detail.title">Stock Item</span>
+          <small class="text-muted ms-2">#{{ stockItem.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- BADGE STATUS -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': stockItem.status === 'AVAILABLE',
+            'bg-warning': stockItem.status === 'RESERVED',
+            'bg-danger': stockItem.status === 'MISSING'
+          }"
+        >
+          {{ stockItem.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ stockItem.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ stockItem.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.productId">Product Id</span></dt>
-        <dd>
-          <span>{{ stockItem.productId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.productName">Product Name</span></dt>
-        <dd>
-          <span>{{ stockItem.productName }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.imei">Imei</span></dt>
-        <dd>
-          <span>{{ stockItem.imei }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.StockItemStatus.' + stockItem.status }}">{{ stockItem.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.isDeleted">Is Deleted</span></dt>
-        <dd>
-          <span>{{ stockItem.isDeleted }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.acquiredAt">Acquired At</span></dt>
-        <dd>
-          <span>{{ stockItem.acquiredAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ stockItem.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.warehouse">Warehouse</span></dt>
-        <dd>
-          <div *ngIf="stockItem.warehouse">
-            <a [routerLink]="['/warehouse', stockItem.warehouse.id, 'view']">{{ stockItem.warehouse.name }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ stockItem.tenantId }}</dd>
+                <dt>Product Id</dt>
+                <dd>{{ stockItem.productId }}</dd>
+                <dt>Product Name</dt>
+                <dd class="fw-bold">{{ stockItem.productName }}</dd>
+                <dt>Imei</dt>
+                <dd>{{ stockItem.imei }}</dd>
+                <dt>Is Deleted</dt>
+                <dd>{{ stockItem.isDeleted }}</dd>
+                <dt>Acquired At</dt>
+                <dd>{{ stockItem.acquiredAt | formatMediumDatetime }}</dd>
+                <dt>Updated At</dt>
+                <dd>{{ stockItem.updatedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : RÉFÉRENCE WAREHOUSE -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="warehouse" class="me-2"></fa-icon> Warehouse</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Warehouse</dt>
+                <dd *ngIf="stockItem.warehouse">
+                  <a [routerLink]="['/warehouse', stockItem.warehouse.id, 'view']">{{ stockItem.warehouse.name }}</a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button type="button" [routerLink]="['/stock-item', stockItem.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/stock-item', stockItem.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

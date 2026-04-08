@@ -1,72 +1,106 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="stockAudit">
-      <h2 data-cy="stockAuditDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.detail.title">Stock Audit</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="stockAudit" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="stockAuditDetailsHeading">
+          <fa-icon icon="clipboard-list" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.detail.title">Stock Audit</span>
+          <small class="text-muted ms-2">#{{ stockAudit.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- BADGE STATUS -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': stockAudit.status === 'CLOSED',
+            'bg-warning': stockAudit.status === 'IN_PROGRESS',
+            'bg-danger': stockAudit.status === 'CANCELLED'
+          }"
+        >
+          {{ stockAudit.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ stockAudit.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ stockAudit.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.AuditStatus.' + stockAudit.status }}">{{ stockAudit.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.theoreticalCount">Theoretical Count</span></dt>
-        <dd>
-          <span>{{ stockAudit.theoreticalCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.physicalCount">Physical Count</span></dt>
-        <dd>
-          <span>{{ stockAudit.physicalCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.discrepancyCount">Discrepancy Count</span></dt>
-        <dd>
-          <span>{{ stockAudit.discrepancyCount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.notes">Notes</span></dt>
-        <dd>
-          <span>{{ stockAudit.notes }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.auditorLogin">Auditor Login</span></dt>
-        <dd>
-          <span>{{ stockAudit.auditorLogin }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.startedAt">Started At</span></dt>
-        <dd>
-          <span>{{ stockAudit.startedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.closedAt">Closed At</span></dt>
-        <dd>
-          <span>{{ stockAudit.closedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.warehouse">Warehouse</span></dt>
-        <dd>
-          <div *ngIf="stockAudit.warehouse">
-            <a [routerLink]="['/warehouse', stockAudit.warehouse.id, 'view']">{{ stockAudit.warehouse.name }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ stockAudit.tenantId }}</dd>
+                <dt>Auditor Login</dt>
+                <dd>{{ stockAudit.auditorLogin }}</dd>
+                <dt>Notes</dt>
+                <dd>{{ stockAudit.notes }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : COMPTAGE -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="calculator" class="me-2"></fa-icon> Comptage</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Theoretical Count</dt>
+                <dd>{{ stockAudit.theoreticalCount }}</dd>
+                <dt>Physical Count</dt>
+                <dd>{{ stockAudit.physicalCount }}</dd>
+                <dt>Discrepancy Count</dt>
+                <dd>{{ stockAudit.discrepancyCount }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-      <button type="button" [routerLink]="['/stock-audit', stockAudit.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+        <!-- SECTION 3 : AUDIT -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="clock" class="me-2"></fa-icon> Audit</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Started At</dt>
+                <dd>{{ stockAudit.startedAt | formatMediumDatetime }}</dd>
+                <dt>Closed At</dt>
+                <dd>{{ stockAudit.closedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4 : RÉFÉRENCES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="warehouse" class="me-2"></fa-icon> Références</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Warehouse</dt>
+                <dd *ngIf="stockAudit.warehouse">
+                  <a [routerLink]="['/warehouse', stockAudit.warehouse.id, 'view']">{{ stockAudit.warehouse.name }}</a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/stock-audit', stockAudit.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,74 +1,76 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="document">
-      <h2 data-cy="documentDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.detail.title">Document</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="document" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="documentDetailsHeading">
+          <fa-icon icon="file-alt" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.detail.title">Document</span>
+          <small class="text-muted ms-2">#{{ document.id }}</small>
+        </h2>
+      </div>
 
-      <hr />
-
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ document.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ document.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.entityType">Entity Type</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.DocumentEntityType.' + document.entityType }}">{{ document.entityType }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.entityId">Entity Id</span></dt>
-        <dd>
-          <span>{{ document.entityId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.docType">Doc Type</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.DocumentType.' + document.docType }}">{{ document.docType }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.filename">Filename</span></dt>
-        <dd>
-          <span>{{ document.filename }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.storageUrl">Storage Url</span></dt>
-        <dd>
-          <span>{{ document.storageUrl }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.mimeType">Mime Type</span></dt>
-        <dd>
-          <span>{{ document.mimeType }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.sizeBytes">Size Bytes</span></dt>
-        <dd>
-          <span>{{ document.sizeBytes }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.uploadedByLogin">Uploaded By Login</span></dt>
-        <dd>
-          <span>{{ document.uploadedByLogin }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ document.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ document.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ document.tenantId }}</dd>
+                <dt>Entity Type</dt>
+                <dd>{{ 'tuniSalesGatewayApp.DocumentEntityType.' + document.entityType | translate }}</dd>
+                <dt>Entity Id</dt>
+                <dd>{{ document.entityId }}</dd>
+                <dt>Doc Type</dt>
+                <dd>{{ 'tuniSalesGatewayApp.DocumentType.' + document.docType | translate }}</dd>
+                <dt>Filename</dt>
+                <dd>{{ document.filename }}</dd>
+                <dt>Storage Url</dt>
+                <dd>
+                  <a [href]="document.storageUrl" target="_blank">{{ document.storageUrl }}</a>
+                </dd>
+                <dt>Mime Type</dt>
+                <dd>{{ document.mimeType }}</dd>
+                <dt>Size (Bytes)</dt>
+                <dd>{{ document.sizeBytes }}</dd>
+                <dt>Uploaded By</dt>
+                <dd>{{ document.uploadedByLogin }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : DATES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="calendar-alt" class="me-2"></fa-icon> Dates</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Created At</dt>
+                <dd>{{ document.createdAt | formatMediumDatetime }}</dd>
+                <dt>Updated At</dt>
+                <dd>{{ document.updatedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button type="button" [routerLink]="['/document', document.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/document', document.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,60 +1,118 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="mission">
-      <h2 data-cy="missionDetailsHeading"><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.detail.title">Mission</span></h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="mission" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="missionDetailsHeading">
+          <fa-icon icon="tasks" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.detail.title"> Mission </span>
+          <small class="text-muted ms-2">#{{ mission.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- STATUS BADGE -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': mission.status === MissionStatus.COMPLETED,
+            'bg-warning': mission.status === MissionStatus.IN_PROGRESS,
+            'bg-secondary': mission.status === MissionStatus.PLANNED,
+            'bg-danger': mission.status === MissionStatus.CANCELLED
+          }"
+        >
+          {{ mission.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ mission.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ mission.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.assignedToLogin">Assigned To Login</span></dt>
-        <dd>
-          <span>{{ mission.assignedToLogin }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.title">Title</span></dt>
-        <dd>
-          <span>{{ mission.title }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.description">Description</span></dt>
-        <dd>
-          <span>{{ mission.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.missionDate">Mission Date</span></dt>
-        <dd>
-          <span>{{ mission.missionDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.MissionStatus.' + mission.status }}">{{ mission.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ mission.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ mission.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFORMATIONS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="info-circle" class="me-2"></fa-icon>
+                Informations
+              </h5>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+              <dl class="jh-entity-details mb-0">
+                <dt>Title</dt>
+                <dd class="fw-bold">{{ mission.title }}</dd>
 
-      <button type="button" [routerLink]="['/mission', mission.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+                <dt>Tenant ID</dt>
+                <dd>{{ mission.tenantId }}</dd>
+
+                <dt>Mission Date</dt>
+                <dd>{{ mission.missionDate | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2 : ASSIGNMENT & DESCRIPTION -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="user-check" class="me-2"></fa-icon>
+                Affectation & Détails
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Assigned To</dt>
+                <dd>
+                  <span class="badge bg-info">
+                    {{ mission.assignedToLogin || 'N/A' }}
+                  </span>
+                </dd>
+
+                <dt>Description</dt>
+                <dd>{{ mission.description || '-' }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3 : AUDIT -->
+        <div class="col-md-12 mb-4">
+          <div class="card bg-light border-0 shadow-none">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="clock" class="me-2"></fa-icon>
+                Audit
+              </h5>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <dt>Created At</dt>
+                  <dd>{{ mission.createdAt | formatMediumDatetime }}</dd>
+                </div>
+
+                <div class="col-md-6">
+                  <dt>Updated At</dt>
+                  <dd>{{ mission.updatedAt | formatMediumDatetime }}</dd>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/mission', mission.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

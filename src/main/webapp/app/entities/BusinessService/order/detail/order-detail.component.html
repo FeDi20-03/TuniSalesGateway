@@ -1,94 +1,158 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="order">
-      <h2 data-cy="orderDetailsHeading"><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.detail.title">Order</span></h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="order" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="orderDetailsHeading">
+          <fa-icon icon="shopping-cart" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.detail.title"> Order </span>
+          <small class="text-muted ms-2">#{{ order.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- STATUS BADGE -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': order.status === OrderStatus.APPROVED,
+            'bg-warning': order.status === OrderStatus.SUBMITTED,
+            'bg-danger': order.status === OrderStatus.REJECTED,
+            'bg-secondary': order.status === OrderStatus.DRAFT
+          }"
+        >
+          {{ order.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ order.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ order.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.orderNumber">Order Number</span></dt>
-        <dd>
-          <span>{{ order.orderNumber }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.OrderStatus.' + order.status }}">{{ order.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.subtotal">Subtotal</span></dt>
-        <dd>
-          <span>{{ order.subtotal }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.discountAmount">Discount Amount</span></dt>
-        <dd>
-          <span>{{ order.discountAmount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.taxAmount">Tax Amount</span></dt>
-        <dd>
-          <span>{{ order.taxAmount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.totalAmount">Total Amount</span></dt>
-        <dd>
-          <span>{{ order.totalAmount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.paymentTermsDays">Payment Terms Days</span></dt>
-        <dd>
-          <span>{{ order.paymentTermsDays }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.dueDate">Due Date</span></dt>
-        <dd>
-          <span>{{ order.dueDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.rejectionReason">Rejection Reason</span></dt>
-        <dd>
-          <span>{{ order.rejectionReason }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.submittedAt">Submitted At</span></dt>
-        <dd>
-          <span>{{ order.submittedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.validatedAt">Validated At</span></dt>
-        <dd>
-          <span>{{ order.validatedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.isDeleted">Is Deleted</span></dt>
-        <dd>
-          <span>{{ order.isDeleted }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ order.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ order.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.client">Client</span></dt>
-        <dd>
-          <div *ngIf="order.client">
-            <a [routerLink]="['/client', order.client.id, 'view']">{{ order.client.name }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="info-circle" class="me-2"></fa-icon>
+                Informations Commande
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Order Number</dt>
+                <dd class="fw-bold">{{ order.orderNumber }}</dd>
+
+                <dt>Tenant ID</dt>
+                <dd>{{ order.tenantId }}</dd>
+
+                <dt>Payment Terms</dt>
+                <dd>{{ order.paymentTermsDays }} jours</dd>
+
+                <dt>Deleted</dt>
+                <dd>
+                  <span class="badge" [ngClass]="order.isDeleted ? 'bg-danger' : 'bg-success'">
+                    {{ order.isDeleted ? 'Yes' : 'No' }}
+                  </span>
+                </dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : MONTANTS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="money-bill" class="me-2"></fa-icon>
+                Montants
+              </h5>
 
-      <button type="button" [routerLink]="['/order', order.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+              <dl class="jh-entity-details mb-0">
+                <dt>Subtotal</dt>
+                <dd>{{ order.subtotal }} TND</dd>
+
+                <dt>Discount</dt>
+                <dd>{{ order.discountAmount }} TND</dd>
+
+                <dt>Tax</dt>
+                <dd>{{ order.taxAmount }} TND</dd>
+
+                <dt>Total</dt>
+                <dd class="fw-bold text-success">{{ order.totalAmount }} TND</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3 : DATES & STATUS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="clock" class="me-2"></fa-icon>
+                Dates & Statut
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Due Date</dt>
+                <dd>{{ order.dueDate | formatMediumDatetime }}</dd>
+
+                <dt>Submitted At</dt>
+                <dd>{{ order.submittedAt | formatMediumDatetime }}</dd>
+
+                <dt>Validated At</dt>
+                <dd>{{ order.validatedAt | formatMediumDatetime }}</dd>
+
+                <dt *ngIf="order.status === OrderStatus.REJECTED">Rejection Reason</dt>
+                <dd *ngIf="order.status === OrderStatus.REJECTED">
+                  <span class="text-danger">{{ order.rejectionReason }}</span>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4 : CLIENT & AUDIT -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="user" class="me-2"></fa-icon>
+                Client & Audit
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Client</dt>
+                <dd *ngIf="order.client">
+                  <a [routerLink]="['/client', order.client.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ order.client.name }}
+                  </a>
+                </dd>
+
+                <dt>Created At</dt>
+                <dd>{{ order.createdAt | formatMediumDatetime }}</dd>
+
+                <dt>Updated At</dt>
+                <dd>{{ order.updatedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/order', order.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

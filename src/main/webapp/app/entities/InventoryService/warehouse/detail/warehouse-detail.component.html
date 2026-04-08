@@ -1,66 +1,71 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="warehouse">
-      <h2 data-cy="warehouseDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.detail.title">Warehouse</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="warehouse" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="warehouseDetailsHeading">
+          <fa-icon icon="warehouse" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.detail.title">Warehouse</span>
+          <small class="text-muted ms-2">#{{ warehouse.id }}</small>
+        </h2>
+        <span class="badge fs-6" [ngClass]="{ 'bg-success': warehouse.isActive, 'bg-secondary': !warehouse.isActive }">
+          {{ warehouse.isActive ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
 
-      <hr />
-
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ warehouse.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ warehouse.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.name">Name</span></dt>
-        <dd>
-          <span>{{ warehouse.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.type">Type</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.WarehouseType.' + warehouse.type }}">{{ warehouse.type }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.address">Address</span></dt>
-        <dd>
-          <span>{{ warehouse.address }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.city">City</span></dt>
-        <dd>
-          <span>{{ warehouse.city }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.minThreshold">Min Threshold</span></dt>
-        <dd>
-          <span>{{ warehouse.minThreshold }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.isActive">Is Active</span></dt>
-        <dd>
-          <span>{{ warehouse.isActive }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ warehouse.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ warehouse.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ warehouse.tenantId }}</dd>
+                <dt>Name</dt>
+                <dd>{{ warehouse.name }}</dd>
+                <dt>Type</dt>
+                <dd>{{ 'tuniSalesGatewayApp.WarehouseType.' + warehouse.type | translate }}</dd>
+                <dt>Address</dt>
+                <dd>{{ warehouse.address }}</dd>
+                <dt>City</dt>
+                <dd>{{ warehouse.city }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : SEUILS & DATES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="calendar-alt" class="me-2"></fa-icon> Seuils & Dates</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Min Threshold</dt>
+                <dd>{{ warehouse.minThreshold }}</dd>
+                <dt>Created At</dt>
+                <dd>{{ warehouse.createdAt | formatMediumDatetime }}</dd>
+                <dt>Updated At</dt>
+                <dd>{{ warehouse.updatedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button type="button" [routerLink]="['/warehouse', warehouse.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/warehouse', warehouse.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

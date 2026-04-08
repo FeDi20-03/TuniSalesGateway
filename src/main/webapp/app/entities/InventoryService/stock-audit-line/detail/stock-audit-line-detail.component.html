@@ -1,60 +1,80 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="stockAuditLine">
-      <h2 data-cy="stockAuditLineDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.detail.title">Stock Audit Line</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="stockAuditLine" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="stockAuditLineDetailsHeading">
+          <fa-icon icon="clipboard-check" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.detail.title">Stock Audit Line</span>
+          <small class="text-muted ms-2">#{{ stockAuditLine.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- BADGE RESOLUTION -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': stockAuditLine.resolution === 'FOUND',
+            'bg-warning': stockAuditLine.resolution === 'IN_PROGRESS',
+            'bg-danger': stockAuditLine.resolution === 'LOST_STOLEN',
+            'bg-secondary': stockAuditLine.resolution === 'SYSTEM_ERROR'
+          }"
+        >
+          {{ stockAuditLine.resolution }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ stockAuditLine.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.foundPhysically">Found Physically</span></dt>
-        <dd>
-          <span>{{ stockAuditLine.foundPhysically }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.resolution">Resolution</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.AuditResolution.' + stockAuditLine.resolution }}">{{
-            stockAuditLine.resolution
-          }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.resolutionNote">Resolution Note</span></dt>
-        <dd>
-          <span>{{ stockAuditLine.resolutionNote }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ stockAuditLine.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.stockItem">Stock Item</span></dt>
-        <dd>
-          <div *ngIf="stockAuditLine.stockItem">
-            <a [routerLink]="['/stock-item', stockAuditLine.stockItem.id, 'view']">{{ stockAuditLine.stockItem.imei }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Found Physically</dt>
+                <dd>{{ stockAuditLine.foundPhysically }}</dd>
+                <dt>Resolution Note</dt>
+                <dd>{{ stockAuditLine.resolutionNote }}</dd>
+                <dt>Created At</dt>
+                <dd>{{ stockAuditLine.createdAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.audit">Audit</span></dt>
-        <dd>
-          <div *ngIf="stockAuditLine.audit">
-            <a [routerLink]="['/stock-audit', stockAuditLine.audit.id, 'view']">{{ stockAuditLine.audit.id }}</a>
+        </div>
+
+        <!-- SECTION 2 : RÉFÉRENCES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="layer-group" class="me-2"></fa-icon> Références</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Stock Item</dt>
+                <dd *ngIf="stockAuditLine.stockItem">
+                  <a [routerLink]="['/stock-item', stockAuditLine.stockItem.id, 'view']">{{ stockAuditLine.stockItem.imei }}</a>
+                </dd>
+
+                <dt>Audit</dt>
+                <dd *ngIf="stockAuditLine.audit">
+                  <a [routerLink]="['/stock-audit', stockAuditLine.audit.id, 'view']">{{ stockAuditLine.audit.id }}</a>
+                </dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
+      </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
 
-      <button type="button" [routerLink]="['/stock-audit-line', stockAuditLine.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+        <button type="button" [routerLink]="['/stock-audit-line', stockAuditLine.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

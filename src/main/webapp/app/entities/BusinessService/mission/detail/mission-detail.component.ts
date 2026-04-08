@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { IMission } from '../mission.model';
+import { MissionStatus } from '../../../enumerations/mission-status.model';
 
 @Component({
   selector: 'jhi-mission-detail',
@@ -21,4 +22,6 @@ export class MissionDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+
+  protected readonly MissionStatus = MissionStatus;
 }

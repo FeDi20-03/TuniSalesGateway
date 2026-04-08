@@ -1,66 +1,72 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="notification">
-      <h2 data-cy="notificationDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.detail.title">Notification</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="notification" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="notificationDetailsHeading">
+          <fa-icon icon="bell" class="text-warning me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.detail.title">Notification</span>
+          <small class="text-muted ms-2">#{{ notification.id }}</small>
+        </h2>
+      </div>
 
-      <hr />
-
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ notification.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ notification.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.recipientLogin">Recipient Login</span></dt>
-        <dd>
-          <span>{{ notification.recipientLogin }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.type">Type</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.NotificationType.' + notification.type }}">{{ notification.type }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.title">Title</span></dt>
-        <dd>
-          <span>{{ notification.title }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.body">Body</span></dt>
-        <dd>
-          <span>{{ notification.body }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.payloadJson">Payload Json</span></dt>
-        <dd>
-          <span>{{ notification.payloadJson }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.isRead">Is Read</span></dt>
-        <dd>
-          <span>{{ notification.isRead }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.readAt">Read At</span></dt>
-        <dd>
-          <span>{{ notification.readAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceNotification.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ notification.createdAt | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS PRINCIPALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Infos Principales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ notification.tenantId }}</dd>
+                <dt>Recipient Login</dt>
+                <dd>{{ notification.recipientLogin }}</dd>
+                <dt>Type</dt>
+                <dd>{{ 'tuniSalesGatewayApp.NotificationType.' + notification.type | translate }}</dd>
+                <dt>Title</dt>
+                <dd>{{ notification.title }}</dd>
+                <dt>Body</dt>
+                <dd>{{ notification.body }}</dd>
+                <dt>Payload JSON</dt>
+                <dd>
+                  <pre>{{ notification.payloadJson }}</pre>
+                </dd>
+                <dt>Is Read</dt>
+                <dd>{{ notification.isRead }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : DATES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="calendar-alt" class="me-2"></fa-icon> Dates</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Read At</dt>
+                <dd>{{ notification.readAt | formatMediumDatetime }}</dd>
+                <dt>Created At</dt>
+                <dd>{{ notification.createdAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button type="button" [routerLink]="['/notification', notification.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/notification', notification.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,48 +1,76 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="orderLineItem">
-      <h2 data-cy="orderLineItemDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.detail.title">Order Line Item</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="orderLineItem" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="orderLineItemDetailsHeading">
+          <fa-icon icon="boxes" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.detail.title"> Order Line Item </span>
+          <small class="text-muted ms-2">#{{ orderLineItem.id }}</small>
+        </h2>
+      </div>
 
-      <hr />
-
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ orderLineItem.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.stockItemId">Stock Item Id</span></dt>
-        <dd>
-          <span>{{ orderLineItem.stockItemId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.stockItemImei">Stock Item Imei</span></dt>
-        <dd>
-          <span>{{ orderLineItem.stockItemImei }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.assignedAt">Assigned At</span></dt>
-        <dd>
-          <span>{{ orderLineItem.assignedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.orderLine">Order Line</span></dt>
-        <dd>
-          <div *ngIf="orderLineItem.orderLine">
-            <a [routerLink]="['/order-line', orderLineItem.orderLine.id, 'view']">{{ orderLineItem.orderLine.id }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="info-circle" class="me-2"></fa-icon>
+                Infos de l'article
+              </h5>
+              <dl class="jh-entity-details mb-0">
+                <dt>Stock Item ID</dt>
+                <dd class="fw-bold">{{ orderLineItem.stockItemId }}</dd>
+
+                <dt>Stock Item IMEI</dt>
+                <dd>{{ orderLineItem.stockItemImei || '-' }}</dd>
+
+                <dt>Assigned At</dt>
+                <dd>{{ orderLineItem.assignedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : RELATIONS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="link" class="me-2"></fa-icon>
+                Relations
+              </h5>
+              <dl class="jh-entity-details mb-0">
+                <dt>Order Line</dt>
+                <dd *ngIf="orderLineItem.orderLine">
+                  <a [routerLink]="['/order-line', orderLineItem.orderLine.id, 'view']" class="fw-bold text-decoration-none">
+                    #{{ orderLineItem.orderLine.id }}
+                  </a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <button type="button" [routerLink]="['/order-line-item', orderLineItem.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/order-line-item', orderLineItem.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

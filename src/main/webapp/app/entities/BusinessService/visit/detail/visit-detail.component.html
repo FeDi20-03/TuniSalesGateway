@@ -1,76 +1,123 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="visit">
-      <h2 data-cy="visitDetailsHeading"><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.detail.title">Visit</span></h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="visit" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="visitDetailsHeading">
+          <fa-icon icon="calendar-check" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.detail.title">Visit</span>
+          <small class="text-muted ms-2">#{{ visit.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- BADGE STATUT -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': visit.status === 'COMPLETED',
+            'bg-warning': visit.status === 'IN_PROGRESS',
+            'bg-danger': visit.status === 'CANCELLED'
+          }"
+        >
+          {{ visit.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ visit.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.visitOrder">Visit Order</span></dt>
-        <dd>
-          <span>{{ visit.visitOrder }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.objective">Objective</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.VisitObjective.' + visit.objective }}">{{ visit.objective }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.VisitStatus.' + visit.status }}">{{ visit.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.latitude">Latitude</span></dt>
-        <dd>
-          <span>{{ visit.latitude }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.longitude">Longitude</span></dt>
-        <dd>
-          <span>{{ visit.longitude }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.checkinAt">Checkin At</span></dt>
-        <dd>
-          <span>{{ visit.checkinAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.checkoutAt">Checkout At</span></dt>
-        <dd>
-          <span>{{ visit.checkoutAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.notes">Notes</span></dt>
-        <dd>
-          <span>{{ visit.notes }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ visit.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.client">Client</span></dt>
-        <dd>
-          <div *ngIf="visit.client">
-            <a [routerLink]="['/client', visit.client.id, 'view']">{{ visit.client.name }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Visit Order</dt>
+                <dd>{{ visit.visitOrder }}</dd>
+                <dt>Objective</dt>
+                <dd>{{ visit.objective }}</dd>
+                <dt>Status</dt>
+                <dd>{{ visit.status }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.mission">Mission</span></dt>
-        <dd>
-          <div *ngIf="visit.mission">
-            <a [routerLink]="['/mission', visit.mission.id, 'view']">{{ visit.mission.title }}</a>
+        </div>
+
+        <!-- SECTION 2 : GÉOLOCALISATION -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="map-marker-alt" class="me-2"></fa-icon> Géolocalisation</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Latitude</dt>
+                <dd>{{ visit.latitude }}</dd>
+                <dt>Longitude</dt>
+                <dd>{{ visit.longitude }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 3 : CHECKIN / CHECKOUT & NOTES -->
+        <div class="col-md-12 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="clock" class="me-2"></fa-icon> Activité</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Checkin At</dt>
+                <dd>{{ visit.checkinAt | formatMediumDatetime }}</dd>
+                <dt>Checkout At</dt>
+                <dd>{{ visit.checkoutAt | formatMediumDatetime }}</dd>
+                <dt>Notes</dt>
+                <dd>{{ visit.notes }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-      <button type="button" [routerLink]="['/visit', visit.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+        <!-- SECTION 4 : AUDIT -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="history" class="me-2"></fa-icon> Audit</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Created At</dt>
+                <dd>{{ visit.createdAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5 : RÉFÉRENCES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="link" class="me-2"></fa-icon> Références</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Client</dt>
+                <dd *ngIf="visit.client">
+                  <a [routerLink]="['/client', visit.client.id, 'view']">{{ visit.client.name }}</a>
+                </dd>
+                <dt>Mission</dt>
+                <dd *ngIf="visit.mission">
+                  <a [routerLink]="['/mission', visit.mission.id, 'view']">{{ visit.mission.title }}</a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/visit', visit.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

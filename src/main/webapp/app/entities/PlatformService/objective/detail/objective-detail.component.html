@@ -1,62 +1,99 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="objective">
-      <h2 data-cy="objectiveDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.detail.title">Objective</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="objective" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="objectiveDetailsHeading">
+          <fa-icon icon="bullseye" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.detail.title">Objective</span>
+          <small class="text-muted ms-2">#{{ objective.id }}</small>
+        </h2>
+      </div>
 
-      <hr />
-
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ objective.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ objective.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.assignedToLogin">Assigned To Login</span></dt>
-        <dd>
-          <span>{{ objective.assignedToLogin }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.period">Period</span></dt>
-        <dd>
-          <span>{{ objective.period }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.metricType">Metric Type</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.MetricType.' + objective.metricType }}">{{ objective.metricType }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.targetValue">Target Value</span></dt>
-        <dd>
-          <span>{{ objective.targetValue }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.achievedValue">Achieved Value</span></dt>
-        <dd>
-          <span>{{ objective.achievedValue }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ objective.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ objective.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ objective.tenantId }}</dd>
+                <dt>Assigned To</dt>
+                <dd>{{ objective.assignedToLogin }}</dd>
+                <dt>Period</dt>
+                <dd>{{ objective.period }}</dd>
+                <dt>Metric Type</dt>
+                <dd>{{ 'tuniSalesGatewayApp.MetricType.' + objective.metricType | translate }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : PERFORMANCE -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="chart-bar" class="me-2"></fa-icon> Performance</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Target Value</dt>
+                <dd>{{ objective.targetValue }}</dd>
+                <dt>Achieved Value</dt>
+                <dd>{{ objective.achievedValue }}</dd>
 
-      <button type="button" [routerLink]="['/objective', objective.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+                <!-- Progress -->
+                <dd class="mt-2">
+                  <div class="progress" style="height: 6px">
+                    <div
+                      *ngIf="objective && objective.targetValue && objective.achievedValue"
+                      class="progress-bar"
+                      [ngClass]="{
+                        'bg-success': objective.achievedValue >= objective.targetValue,
+                        'bg-warning': objective.achievedValue < objective.targetValue
+                      }"
+                      role="progressbar"
+                      [style.width]="(objective.achievedValue / objective.targetValue) * 100 + '%'"
+                    ></div>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3 : DATES -->
+        <div class="col-md-12 mb-4">
+          <div class="card bg-light border-0 shadow-none">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="calendar-alt" class="me-2"></fa-icon> Dates</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <dt>Created At</dt>
+                  <dd>{{ objective.createdAt | formatMediumDatetime }}</dd>
+                </div>
+                <div class="col-md-6">
+                  <dt>Updated At</dt>
+                  <dd>{{ objective.updatedAt | formatMediumDatetime }}</dd>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/objective', objective.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

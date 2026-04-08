@@ -1,72 +1,120 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="delivery">
-      <h2 data-cy="deliveryDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.detail.title">Delivery</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="delivery" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="deliveryDetailsHeading">
+          <fa-icon icon="truck" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.detail.title"> Delivery </span>
+          <small class="text-muted ms-2">#{{ delivery.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- STATUS BADGE -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': delivery.status === DeliveryStatus.DELIVERED,
+            'bg-warning': delivery.status === DeliveryStatus.SHIPPED,
+            'bg-info': delivery.status === DeliveryStatus.PENDING,
+            'bg-danger': delivery.status === DeliveryStatus.FAILED
+          }"
+        >
+          {{ delivery.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ delivery.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ delivery.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.deliveryNumber">Delivery Number</span></dt>
-        <dd>
-          <span>{{ delivery.deliveryNumber }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.DeliveryStatus.' + delivery.status }}">{{ delivery.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.trackingNumber">Tracking Number</span></dt>
-        <dd>
-          <span>{{ delivery.trackingNumber }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.shippedAt">Shipped At</span></dt>
-        <dd>
-          <span>{{ delivery.shippedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.deliveredAt">Delivered At</span></dt>
-        <dd>
-          <span>{{ delivery.deliveredAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.confirmedAt">Confirmed At</span></dt>
-        <dd>
-          <span>{{ delivery.confirmedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.notes">Notes</span></dt>
-        <dd>
-          <span>{{ delivery.notes }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ delivery.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.order">Order</span></dt>
-        <dd>
-          <div *ngIf="delivery.order">
-            <a [routerLink]="['/order', delivery.order.id, 'view']">{{ delivery.order.orderNumber }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : GENERAL INFO -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="info-circle" class="me-2"></fa-icon>
+                Informations Livraison
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Delivery Number</dt>
+                <dd class="fw-bold">{{ delivery.deliveryNumber }}</dd>
+
+                <dt>Tenant ID</dt>
+                <dd>{{ delivery.tenantId }}</dd>
+
+                <dt>Tracking Number</dt>
+                <dd>{{ delivery.trackingNumber || '-' }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : DATES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="clock" class="me-2"></fa-icon>
+                Dates & Statut
+              </h5>
 
-      <button type="button" [routerLink]="['/delivery', delivery.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+              <dl class="jh-entity-details mb-0">
+                <dt>Shipped At</dt>
+                <dd>{{ delivery.shippedAt | formatMediumDatetime }}</dd>
+
+                <dt>Delivered At</dt>
+                <dd>{{ delivery.deliveredAt | formatMediumDatetime }}</dd>
+
+                <dt>Confirmed At</dt>
+                <dd>{{ delivery.confirmedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3 : NOTES & RELATION -->
+        <div class="col-md-12 mb-4">
+          <div class="card bg-light border-0 shadow-none">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="file-alt" class="me-2"></fa-icon>
+                Notes & Relation
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Notes</dt>
+                <dd>{{ delivery.notes || '-' }}</dd>
+
+                <dt>Order</dt>
+                <dd *ngIf="delivery.order">
+                  <a [routerLink]="['/order', delivery.order.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ delivery.order.orderNumber }}
+                  </a>
+                </dd>
+
+                <dt>Created At</dt>
+                <dd>{{ delivery.createdAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/delivery', delivery.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

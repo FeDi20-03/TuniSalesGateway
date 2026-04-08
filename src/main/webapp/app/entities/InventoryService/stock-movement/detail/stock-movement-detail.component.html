@@ -1,74 +1,88 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="stockMovement">
-      <h2 data-cy="stockMovementDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.detail.title">Stock Movement</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="stockMovement" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="stockMovementDetailsHeading">
+          <fa-icon icon="exchange-alt" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.detail.title">Stock Movement</span>
+          <small class="text-muted ms-2">#{{ stockMovement.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- BADGE TYPE -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': stockMovement.movementType === 'INBOUND',
+            'bg-warning': stockMovement.movementType === 'TRANSFER',
+            'bg-danger': stockMovement.movementType === 'OUTBOUND'
+          }"
+        >
+          {{ stockMovement.movementType }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ stockMovement.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.movementType">Movement Type</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.MovementType.' + stockMovement.movementType }}">{{
-            stockMovement.movementType
-          }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.reason">Reason</span></dt>
-        <dd>
-          <span>{{ stockMovement.reason }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.reference">Reference</span></dt>
-        <dd>
-          <span>{{ stockMovement.reference }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.quantity">Quantity</span></dt>
-        <dd>
-          <span>{{ stockMovement.quantity }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.performedByLogin">Performed By Login</span></dt>
-        <dd>
-          <span>{{ stockMovement.performedByLogin }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ stockMovement.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.fromWarehouse">From Warehouse</span></dt>
-        <dd>
-          <div *ngIf="stockMovement.fromWarehouse">
-            <a [routerLink]="['/warehouse', stockMovement.fromWarehouse.id, 'view']">{{ stockMovement.fromWarehouse.name }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Reason</dt>
+                <dd>{{ stockMovement.reason }}</dd>
+                <dt>Reference</dt>
+                <dd>{{ stockMovement.reference }}</dd>
+                <dt>Quantity</dt>
+                <dd>{{ stockMovement.quantity }}</dd>
+                <dt>Performed By</dt>
+                <dd>{{ stockMovement.performedByLogin }}</dd>
+                <dt>Created At</dt>
+                <dd>{{ stockMovement.createdAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.toWarehouse">To Warehouse</span></dt>
-        <dd>
-          <div *ngIf="stockMovement.toWarehouse">
-            <a [routerLink]="['/warehouse', stockMovement.toWarehouse.id, 'view']">{{ stockMovement.toWarehouse.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.stockItem">Stock Item</span></dt>
-        <dd>
-          <div *ngIf="stockMovement.stockItem">
-            <a [routerLink]="['/stock-item', stockMovement.stockItem.id, 'view']">{{ stockMovement.stockItem.imei }}</a>
-          </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : RÉFÉRENCES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="warehouse" class="me-2"></fa-icon> Références</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>From Warehouse</dt>
+                <dd *ngIf="stockMovement.fromWarehouse">
+                  <a [routerLink]="['/warehouse', stockMovement.fromWarehouse.id, 'view']">{{ stockMovement.fromWarehouse.name }}</a>
+                </dd>
 
-      <button type="button" [routerLink]="['/stock-movement', stockMovement.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+                <dt>To Warehouse</dt>
+                <dd *ngIf="stockMovement.toWarehouse">
+                  <a [routerLink]="['/warehouse', stockMovement.toWarehouse.id, 'view']">{{ stockMovement.toWarehouse.name }}</a>
+                </dd>
+
+                <dt>Stock Item</dt>
+                <dd *ngIf="stockMovement.stockItem">
+                  <a [routerLink]="['/stock-item', stockMovement.stockItem.id, 'view']">{{ stockMovement.stockItem.imei }}</a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+
+        <button type="button" [routerLink]="['/stock-movement', stockMovement.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

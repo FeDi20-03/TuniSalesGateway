@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { IOrder } from '../order.model';
+import { OrderStatus } from '../../../enumerations/order-status.model';
 
 @Component({
   selector: 'jhi-order-detail',
@@ -21,4 +22,6 @@ export class OrderDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+
+  protected readonly OrderStatus = OrderStatus;
 }

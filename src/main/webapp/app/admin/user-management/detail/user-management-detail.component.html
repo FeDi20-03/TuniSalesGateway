@@ -1,56 +1,90 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="user">
-      <h2>
-        <span jhiTranslate="userManagement.detail.title">Utilisateur</span> [<strong>{{ user.login }}</strong
-        >]
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="user" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0">
+          <fa-icon icon="user" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="userManagement.detail.title">Utilisateur</span>
+          <small class="text-muted ms-2">[{{ user.login }}]</small>
+        </h2>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="userManagement.login">Login</span></dt>
-        <dd>
-          <span>{{ user.login }}</span>
-          <span *ngIf="user.activated" class="badge bg-success" jhiTranslate="userManagement.activated">Activé</span>
-          <span *ngIf="!user.activated" class="badge bg-danger" jhiTranslate="userManagement.deactivated">Désactivé</span>
-        </dd>
+        <!-- STATUS -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': user.activated,
+            'bg-danger': !user.activated
+          }"
+        >
+          {{ user.activated ? 'Activé' : 'Désactivé' }}
+        </span>
+      </div>
 
-        <dt><span jhiTranslate="userManagement.firstName">Prénom</span></dt>
-        <dd>{{ user.firstName }}</dd>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS UTILISATEUR -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations</h5>
 
-        <dt><span jhiTranslate="userManagement.lastName">Nom</span></dt>
-        <dd>{{ user.lastName }}</dd>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Login</dt>
+                <dd>{{ user.login }}</dd>
+                <dt>Prénom</dt>
+                <dd>{{ user.firstName }}</dd>
+                <dt>Nom</dt>
+                <dd>{{ user.lastName }}</dd>
+                <dt>Email</dt>
+                <dd>{{ user.email }}</dd>
+                <dt>Langue</dt>
+                <dd>{{ user.langKey }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-        <dt><span jhiTranslate="userManagement.email">Email</span></dt>
-        <dd>{{ user.email }}</dd>
+        <!-- SECTION 2 : AUDIT -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="history" class="me-2"></fa-icon> Audit</h5>
 
-        <dt><span jhiTranslate="userManagement.langKey">Langue</span></dt>
-        <dd>{{ user.langKey }}</dd>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Créé par</dt>
+                <dd>{{ user.createdBy }}</dd>
+                <dt>Créé le</dt>
+                <dd>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
+                <dt>Modifié par</dt>
+                <dd>{{ user.lastModifiedBy }}</dd>
+                <dt>Modifié le</dt>
+                <dd>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
 
-        <dt><span jhiTranslate="userManagement.createdBy">Créé par</span></dt>
-        <dd>{{ user.createdBy }}</dd>
+        <!-- SECTION 3 : ROLES -->
+        <div class="col-md-12 mb-4">
+          <div class="card bg-light border-0 shadow-none">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="shield-alt" class="me-2"></fa-icon> Droits / Rôles</h5>
 
-        <dt><span jhiTranslate="userManagement.createdDate">Créé le</span></dt>
-        <dd>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
+              <div class="d-flex flex-wrap gap-2">
+                <span *ngFor="let authority of user.authorities" class="badge bg-info">
+                  {{ authority }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <dt><span jhiTranslate="userManagement.lastModifiedBy">Modifié par</span></dt>
-        <dd>{{ user.lastModifiedBy }}</dd>
-
-        <dt><span jhiTranslate="userManagement.lastModifiedDate">Modifié le</span></dt>
-        <dd>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
-
-        <dt><span jhiTranslate="userManagement.profiles">Droits</span></dt>
-        <dd>
-          <ul class="list-unstyled">
-            <li *ngFor="let authority of user.authorities">
-              <span class="badge bg-info">{{ authority }}</span>
-            </li>
-          </ul>
-        </dd>
-      </dl>
-
-      <button type="submit" routerLink="../../" class="btn btn-info">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" routerLink="../../" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
+      </div>
     </div>
   </div>
 </div>

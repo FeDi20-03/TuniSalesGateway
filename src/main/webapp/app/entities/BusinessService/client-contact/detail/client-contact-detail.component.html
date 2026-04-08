@@ -1,60 +1,117 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="clientContact">
-      <h2 data-cy="clientContactDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.detail.title">Client Contact</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="clientContact" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="clientContactDetailsHeading">
+          <fa-icon icon="address-book" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.detail.title"> Client Contact </span>
+          <small class="text-muted ms-2">#{{ clientContact.id }}</small>
+        </h2>
 
-      <hr />
+        <span class="badge bg-info fs-6">
+          {{ clientContact.role }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ clientContact.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.fullName">Full Name</span></dt>
-        <dd>
-          <span>{{ clientContact.fullName }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.email">Email</span></dt>
-        <dd>
-          <span>{{ clientContact.email }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.phone">Phone</span></dt>
-        <dd>
-          <span>{{ clientContact.phone }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.role">Role</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.ContactRole.' + clientContact.role }}">{{ clientContact.role }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.isPrimary">Is Primary</span></dt>
-        <dd>
-          <span>{{ clientContact.isPrimary }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ clientContact.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.client">Client</span></dt>
-        <dd>
-          <div *ngIf="clientContact.client">
-            <a [routerLink]="['/client', clientContact.client.id, 'view']">{{ clientContact.client.name }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : GENERAL INFO -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="user" class="me-2"></fa-icon>
+                Informations Générales
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Full Name</dt>
+                <dd>
+                  <span class="fw-bold">{{ clientContact.fullName }}</span>
+                </dd>
+
+                <dt>Email</dt>
+                <dd>{{ clientContact.email }}</dd>
+
+                <dt>Phone</dt>
+                <dd>{{ clientContact.phone }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+        <!-- SECTION 2 : ROLE & CLIENT -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="briefcase" class="me-2"></fa-icon>
+                Rôle & Client
+              </h5>
 
-      <button type="button" [routerLink]="['/client-contact', clientContact.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+              <dl class="jh-entity-details mb-0">
+                <dt>Role</dt>
+                <dd>
+                  <span class="badge bg-secondary">
+                    {{ clientContact.role }}
+                  </span>
+                </dd>
+
+                <dt>Primary Contact</dt>
+                <dd>
+                  <span class="badge" [ngClass]="clientContact.isPrimary ? 'bg-success' : 'bg-secondary'">
+                    {{ clientContact.isPrimary ? 'Yes' : 'No' }}
+                  </span>
+                </dd>
+
+                <dt>Client</dt>
+                <dd *ngIf="clientContact.client">
+                  <a [routerLink]="['/client', clientContact.client.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ clientContact.client.name }}
+                  </a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3 : AUDIT -->
+        <div class="col-md-12 mb-4">
+          <div class="card bg-light border-0 shadow-none">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="clock" class="me-2"></fa-icon>
+                Audit
+              </h5>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <dt>Created At</dt>
+                  <dd>{{ clientContact.createdAt | formatMediumDatetime }}</dd>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/client-contact', clientContact.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

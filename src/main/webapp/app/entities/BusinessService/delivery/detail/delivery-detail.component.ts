@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { IDelivery } from '../delivery.model';
+import { DeliveryStatus } from '../../../enumerations/delivery-status.model';
 
 @Component({
   selector: 'jhi-delivery-detail',
@@ -21,4 +22,6 @@ export class DeliveryDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+
+  protected readonly DeliveryStatus = DeliveryStatus;
 }

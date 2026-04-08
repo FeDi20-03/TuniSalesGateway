@@ -1,88 +1,154 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="invoice">
-      <h2 data-cy="invoiceDetailsHeading"><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.detail.title">Invoice</span></h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="invoice" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="invoiceDetailsHeading">
+          <fa-icon icon="file-invoice" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.detail.title"> Invoice </span>
+          <small class="text-muted ms-2">#{{ invoice.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- STATUS BADGE -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': invoice.status === InvoiceStatus.PAID,
+            'bg-warning': invoice.status === InvoiceStatus.ISSUED,
+            'bg-danger': invoice.status === InvoiceStatus.CANCELLED,
+            'bg-secondary': invoice.status === InvoiceStatus.DRAFT
+          }"
+        >
+          {{ invoice.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ invoice.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ invoice.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.invoiceNumber">Invoice Number</span></dt>
-        <dd>
-          <span>{{ invoice.invoiceNumber }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.amountHt">Amount Ht</span></dt>
-        <dd>
-          <span>{{ invoice.amountHt }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.taxAmount">Tax Amount</span></dt>
-        <dd>
-          <span>{{ invoice.taxAmount }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.amountTtc">Amount Ttc</span></dt>
-        <dd>
-          <span>{{ invoice.amountTtc }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.InvoiceStatus.' + invoice.status }}">{{ invoice.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.issueDate">Issue Date</span></dt>
-        <dd>
-          <span>{{ invoice.issueDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.dueDate">Due Date</span></dt>
-        <dd>
-          <span>{{ invoice.dueDate | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.paidAt">Paid At</span></dt>
-        <dd>
-          <span>{{ invoice.paidAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.isDeleted">Is Deleted</span></dt>
-        <dd>
-          <span>{{ invoice.isDeleted }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ invoice.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ invoice.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.client">Client</span></dt>
-        <dd>
-          <div *ngIf="invoice.client">
-            <a [routerLink]="['/client', invoice.client.id, 'view']">{{ invoice.client.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.order">Order</span></dt>
-        <dd>
-          <div *ngIf="invoice.order">
-            <a [routerLink]="['/order', invoice.order.id, 'view']">{{ invoice.order.orderNumber }}</a>
-          </div>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="info-circle" class="me-2"></fa-icon>
+                Informations Facture
+              </h5>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+              <dl class="jh-entity-details mb-0">
+                <dt>Invoice Number</dt>
+                <dd class="fw-bold">{{ invoice.invoiceNumber }}</dd>
 
-      <button type="button" [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+                <dt>Tenant ID</dt>
+                <dd>{{ invoice.tenantId }}</dd>
+
+                <dt>Deleted</dt>
+                <dd>
+                  <span class="badge" [ngClass]="invoice.isDeleted ? 'bg-danger' : 'bg-success'">
+                    {{ invoice.isDeleted ? 'Yes' : 'No' }}
+                  </span>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2 : MONTANTS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="money-bill" class="me-2"></fa-icon>
+                Montants
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>HT</dt>
+                <dd>{{ invoice.amountHt }} TND</dd>
+
+                <dt>Tax</dt>
+                <dd>{{ invoice.taxAmount }} TND</dd>
+
+                <dt>TTC</dt>
+                <dd class="fw-bold text-success">{{ invoice.amountTtc }} TND</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3 : DATES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="clock" class="me-2"></fa-icon>
+                Dates
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Issue Date</dt>
+                <dd>{{ invoice.issueDate | formatMediumDatetime }}</dd>
+
+                <dt>Due Date</dt>
+                <dd>{{ invoice.dueDate | formatMediumDatetime }}</dd>
+
+                <dt>Paid At</dt>
+                <dd>{{ invoice.paidAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4 : RELATIONS & AUDIT -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="link" class="me-2"></fa-icon>
+                Relations
+              </h5>
+
+              <dl class="jh-entity-details mb-0">
+                <dt>Client</dt>
+                <dd *ngIf="invoice.client">
+                  <a [routerLink]="['/client', invoice.client.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ invoice.client.name }}
+                  </a>
+                </dd>
+
+                <dt>Order</dt>
+                <dd *ngIf="invoice.order">
+                  <a [routerLink]="['/order', invoice.order.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ invoice.order.orderNumber }}
+                  </a>
+                </dd>
+
+                <dt>Created At</dt>
+                <dd>{{ invoice.createdAt | formatMediumDatetime }}</dd>
+
+                <dt>Updated At</dt>
+                <dd>{{ invoice.updatedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/invoice', invoice.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

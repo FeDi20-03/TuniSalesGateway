@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { IInvoice } from '../invoice.model';
+import { InvoiceStatus } from '../../../enumerations/invoice-status.model';
 
 @Component({
   selector: 'jhi-invoice-detail',
@@ -21,4 +22,6 @@ export class InvoiceDetailComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
+
+  protected readonly InvoiceStatus = InvoiceStatus;
 }

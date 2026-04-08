@@ -1,66 +1,92 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="priceList">
-      <h2 data-cy="priceListDetailsHeading">
-        <span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.detail.title">Price List</span>
-      </h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="priceList" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="priceListDetailsHeading">
+          <fa-icon icon="tags" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.detail.title"> Price List </span>
+          <small class="text-muted ms-2">#{{ priceList.id }}</small>
+        </h2>
+      </div>
 
-      <hr />
-
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ priceList.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.unitPrice">Unit Price</span></dt>
-        <dd>
-          <span>{{ priceList.unitPrice }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.maxDiscountPct">Max Discount Pct</span></dt>
-        <dd>
-          <span>{{ priceList.maxDiscountPct }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.validFrom">Valid From</span></dt>
-        <dd>
-          <span>{{ priceList.validFrom | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.validTo">Valid To</span></dt>
-        <dd>
-          <span>{{ priceList.validTo | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.isActive">Is Active</span></dt>
-        <dd>
-          <span>{{ priceList.isActive }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ priceList.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.product">Product</span></dt>
-        <dd>
-          <div *ngIf="priceList.product">
-            <a [routerLink]="['/product', priceList.product.id, 'view']">{{ priceList.product.name }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.client">Client</span></dt>
-        <dd>
-          <div *ngIf="priceList.client">
-            <a [routerLink]="['/client', priceList.client.id, 'view']">{{ priceList.client.name }}</a>
-          </div>
-        </dd>
-      </dl>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="info-circle" class="me-2"></fa-icon>
+                Infos
+              </h5>
+              <dl class="jh-entity-details mb-0">
+                <dt>Unit Price</dt>
+                <dd class="fw-bold">{{ priceList.unitPrice }}</dd>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+                <dt>Max Discount Pct</dt>
+                <dd>{{ priceList.maxDiscountPct }}</dd>
 
-      <button type="button" [routerLink]="['/price-list', priceList.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+                <dt>Valid From</dt>
+                <dd>{{ priceList.validFrom | formatMediumDatetime }}</dd>
+
+                <dt>Valid To</dt>
+                <dd>{{ priceList.validTo | formatMediumDatetime }}</dd>
+
+                <dt>Is Active</dt>
+                <dd>{{ priceList.isActive }}</dd>
+
+                <dt>Created At</dt>
+                <dd>{{ priceList.createdAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2 : RELATIONS -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3">
+                <fa-icon icon="link" class="me-2"></fa-icon>
+                Relations
+              </h5>
+              <dl class="jh-entity-details mb-0">
+                <dt>Product</dt>
+                <dd *ngIf="priceList.product">
+                  <a [routerLink]="['/product', priceList.product.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ priceList.product.name }}
+                  </a>
+                </dd>
+
+                <dt>Client</dt>
+                <dd *ngIf="priceList.client">
+                  <a [routerLink]="['/client', priceList.client.id, 'view']" class="fw-bold text-decoration-none">
+                    {{ priceList.client.name }}
+                  </a>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary">
+          <fa-icon icon="arrow-left"></fa-icon>
+          Retour
+        </button>
+
+        <button type="button" [routerLink]="['/price-list', priceList.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>
+          Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>

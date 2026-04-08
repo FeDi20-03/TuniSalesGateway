@@ -1,72 +1,87 @@
 <div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="swap">
-      <h2 data-cy="swapDetailsHeading"><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.detail.title">Swap</span></h2>
+  <div class="col-10 col-md-8">
+    <div *ngIf="swap" class="card jh-card border-0">
+      <!-- HEADER -->
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+        <h2 class="mb-0" data-cy="swapDetailsHeading">
+          <fa-icon icon="exchange-alt" class="text-primary me-2"></fa-icon>
+          <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.detail.title">Swap</span>
+          <small class="text-muted ms-2">#{{ swap.id }}</small>
+        </h2>
 
-      <hr />
+        <!-- BADGE STATUS -->
+        <span
+          class="badge fs-6"
+          [ngClass]="{
+            'bg-success': swap.status === 'RESOLVED',
+            'bg-warning': swap.status === 'PENDING',
+            'bg-danger': swap.status === 'CANCELLED'
+          }"
+        >
+          {{ swap.status }}
+        </span>
+      </div>
 
+      <!-- ALERTS -->
       <jhi-alert-error></jhi-alert-error>
-
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ swap.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.tenantId">Tenant Id</span></dt>
-        <dd>
-          <span>{{ swap.tenantId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.clientId">Client Id</span></dt>
-        <dd>
-          <span>{{ swap.clientId }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.clientName">Client Name</span></dt>
-        <dd>
-          <span>{{ swap.clientName }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.status">Status</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'tuniSalesGatewayApp.SwapStatus.' + swap.status }}">{{ swap.status }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.reason">Reason</span></dt>
-        <dd>
-          <span>{{ swap.reason }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.createdAt">Created At</span></dt>
-        <dd>
-          <span>{{ swap.createdAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.resolvedAt">Resolved At</span></dt>
-        <dd>
-          <span>{{ swap.resolvedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.updatedAt">Updated At</span></dt>
-        <dd>
-          <span>{{ swap.updatedAt | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.outgoingItem">Outgoing Item</span></dt>
-        <dd>
-          <div *ngIf="swap.outgoingItem">
-            <a [routerLink]="['/stock-item', swap.outgoingItem.id, 'view']">{{ swap.outgoingItem.imei }}</a>
+      <!-- CONTENT -->
+      <div class="row">
+        <!-- SECTION 1 : INFOS GÉNÉRALES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="info-circle" class="me-2"></fa-icon> Informations Générales</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Tenant Id</dt>
+                <dd>{{ swap.tenantId }}</dd>
+                <dt>Client Id</dt>
+                <dd>{{ swap.clientId }}</dd>
+                <dt>Client Name</dt>
+                <dd>{{ swap.clientName }}</dd>
+                <dt>Reason</dt>
+                <dd>{{ swap.reason }}</dd>
+                <dt>Created At</dt>
+                <dd>{{ swap.createdAt | formatMediumDatetime }}</dd>
+                <dt>Resolved At</dt>
+                <dd>{{ swap.resolvedAt | formatMediumDatetime }}</dd>
+                <dt>Updated At</dt>
+                <dd>{{ swap.updatedAt | formatMediumDatetime }}</dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-        <dt><span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.incomingItem">Incoming Item</span></dt>
-        <dd>
-          <div *ngIf="swap.incomingItem">
-            <a [routerLink]="['/stock-item', swap.incomingItem.id, 'view']">{{ swap.incomingItem.imei }}</a>
+        </div>
+
+        <!-- SECTION 2 : ARTICLES -->
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
+            <div class="card-body">
+              <h5 class="card-title text-muted mb-3"><fa-icon icon="boxes" class="me-2"></fa-icon> Articles</h5>
+              <dl class="row-md jh-entity-details mb-0">
+                <dt>Outgoing Item</dt>
+                <dd *ngIf="swap.outgoingItem">
+                  <a [routerLink]="['/stock-item', swap.outgoingItem.id, 'view']">{{ swap.outgoingItem.imei }}</a>
+                </dd>
+
+                <dt>Incoming Item</dt>
+                <dd *ngIf="swap.incomingItem">
+                  <a [routerLink]="['/stock-item', swap.incomingItem.id, 'view']">{{ swap.incomingItem.imei }}</a>
+                </dd>
+              </dl>
+            </div>
           </div>
-        </dd>
-      </dl>
+        </div>
+      </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
-      </button>
+      <!-- FOOTER -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+        <button type="button" (click)="previousState()" class="btn btn-secondary"><fa-icon icon="arrow-left"></fa-icon> Retour</button>
 
-      <button type="button" [routerLink]="['/swap', swap.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
-      </button>
+        <button type="button" [routerLink]="['/swap', swap.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon> Editer
+        </button>
+      </div>
     </div>
   </div>
 </div>
