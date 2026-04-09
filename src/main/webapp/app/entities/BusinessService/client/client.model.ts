@@ -1,6 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { ClientType } from 'app/entities/enumerations/client-type.model';
 import { ClientStatus } from 'app/entities/enumerations/client-status.model';
+import { IClientContact } from '../client-contact/client-contact.model';
 
 export interface IClient {
   id: number;
@@ -16,6 +17,7 @@ export interface IClient {
   isDeleted?: boolean | null;
   createdAt?: dayjs.Dayjs | null;
   updatedAt?: dayjs.Dayjs | null;
+  contacts?: Pick<IClientContact, 'id' | 'fullName' | 'phone' | 'email' | 'role'>[] | null;
 }
 
 export type NewClient = Omit<IClient, 'id'> & { id: null };
