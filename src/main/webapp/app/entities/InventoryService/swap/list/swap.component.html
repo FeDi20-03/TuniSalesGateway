@@ -102,7 +102,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let swap of swaps; trackBy: trackId" data-cy="entityTable">
+        <tr
+          *ngFor="let swap of swaps; trackBy: trackId"
+          data-cy="entityTable"
+          [routerLink]="['/swap', swap.id, 'view']"
+          class="btn btn-info btn-sm"
+        >
           <td>
             <a [routerLink]="['/swap', swap.id, 'view']">{{ swap.id }}</a>
           </td>
@@ -126,10 +131,6 @@
           </td>
           <td class="text-end">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/swap', swap.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-              </button>
-
               <button type="submit" [routerLink]="['/swap', swap.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
               </button>

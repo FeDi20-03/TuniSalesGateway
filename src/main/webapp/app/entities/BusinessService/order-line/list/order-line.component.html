@@ -84,7 +84,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let orderLine of orderLines; trackBy: trackId" data-cy="entityTable">
+        <tr
+          *ngFor="let orderLine of orderLines; trackBy: trackId"
+          data-cy="entityTable"
+          [routerLink]="['/order-line', orderLine.id, 'view']"
+        >
           <td>
             <a [routerLink]="['/order-line', orderLine.id, 'view']">{{ orderLine.id }}</a>
           </td>
@@ -105,15 +109,6 @@
           </td>
           <td class="text-end">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/order-line', orderLine.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-              </button>
-
               <button
                 type="submit"
                 [routerLink]="['/order-line', orderLine.id, 'edit']"

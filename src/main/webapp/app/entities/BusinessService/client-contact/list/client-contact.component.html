@@ -84,7 +84,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let clientContact of clientContacts; trackBy: trackId" data-cy="entityTable">
+        <tr
+          *ngFor="let clientContact of clientContacts; trackBy: trackId"
+          data-cy="entityTable"
+          [routerLink]="['/client-contact', clientContact.id, 'view']"
+        >
           <td>
             <a [routerLink]="['/client-contact', clientContact.id, 'view']">{{ clientContact.id }}</a>
           </td>
@@ -101,15 +105,6 @@
           </td>
           <td class="text-end">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/client-contact', clientContact.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-              </button>
-
               <button
                 type="submit"
                 [routerLink]="['/client-contact', clientContact.id, 'edit']"

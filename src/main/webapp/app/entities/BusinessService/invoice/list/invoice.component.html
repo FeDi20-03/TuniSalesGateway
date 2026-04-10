@@ -142,7 +142,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let invoice of invoices; trackBy: trackId" data-cy="entityTable">
+          <tr *ngFor="let invoice of invoices; trackBy: trackId" data-cy="entityTable" [routerLink]="['/invoice', invoice.id, 'view']">
             <td>
               <a [routerLink]="['/invoice', invoice.id, 'view']" class="fw-bold text-decoration-none">{{ invoice.id }}</a>
             </td>
@@ -182,16 +182,6 @@
             </td>
             <td class="text-end">
               <div class="btn-group gap-1">
-                <button
-                  type="submit"
-                  [routerLink]="['/invoice', invoice.id, 'view']"
-                  class="btn btn-info btn-sm"
-                  data-cy="entityDetailsButton"
-                  title="Voir"
-                >
-                  <fa-icon icon="eye"></fa-icon>
-                </button>
-
                 <button
                   type="submit"
                   [routerLink]="['/invoice', invoice.id, 'edit']"

@@ -90,7 +90,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let objective of objectives; trackBy: trackId" data-cy="entityTable">
+        <tr
+          *ngFor="let objective of objectives; trackBy: trackId"
+          data-cy="entityTable"
+          [routerLink]="['/objective', objective.id, 'view']"
+        >
           <td>
             <a [routerLink]="['/objective', objective.id, 'view']">{{ objective.id }}</a>
           </td>
@@ -104,15 +108,6 @@
           <td>{{ objective.updatedAt | formatMediumDatetime }}</td>
           <td class="text-end">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/objective', objective.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-              </button>
-
               <button
                 type="submit"
                 [routerLink]="['/objective', objective.id, 'edit']"

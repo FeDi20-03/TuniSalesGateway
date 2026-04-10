@@ -139,7 +139,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let client of clients; trackBy: trackId" data-cy="entityTable">
+          <tr *ngFor="let client of clients; trackBy: trackId" data-cy="entityTable" [routerLink]="['/client', client.id, 'view']">
             <!--<td>
               <a [routerLink]="['/client', client.id, 'view']" class="fw-bold text-decoration-none">{{ client.id }}</a>
             </td>-->
@@ -167,16 +167,6 @@
             <!--<td>{{ client.updatedAt | formatMediumDatetime }}</td>-->
             <td class="text-end">
               <div class="btn-group gap-1">
-                <button
-                  type="submit"
-                  [routerLink]="['/client', client.id, 'view']"
-                  class="btn btn-info btn-sm"
-                  data-cy="entityDetailsButton"
-                  title="Voir"
-                >
-                  <fa-icon icon="eye"></fa-icon>
-                </button>
-
                 <button
                   type="submit"
                   [routerLink]="['/client', client.id, 'edit']"

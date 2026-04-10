@@ -154,7 +154,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let order of orders; trackBy: trackId" data-cy="entityTable">
+          <tr *ngFor="let order of orders; trackBy: trackId" data-cy="entityTable" [routerLink]="['/order', order.id, 'view']">
             <td>
               <a [routerLink]="['/order', order.id, 'view']" class="fw-bold text-decoration-none">{{ order.id }}</a>
             </td>
@@ -192,16 +192,6 @@
             </td>
             <td class="text-end">
               <div class="btn-group gap-1">
-                <button
-                  type="submit"
-                  [routerLink]="['/order', order.id, 'view']"
-                  class="btn btn-info btn-sm"
-                  data-cy="entityDetailsButton"
-                  title="Voir"
-                >
-                  <fa-icon icon="eye"></fa-icon>
-                </button>
-
                 <button
                   type="submit"
                   [routerLink]="['/order', order.id, 'edit']"

@@ -78,7 +78,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let stockAuditLine of stockAuditLines; trackBy: trackId" data-cy="entityTable">
+        <tr
+          *ngFor="let stockAuditLine of stockAuditLines; trackBy: trackId"
+          data-cy="entityTable"
+          [routerLink]="['/stock-audit-line', stockAuditLine.id, 'view']"
+        >
           <td>
             <a [routerLink]="['/stock-audit-line', stockAuditLine.id, 'view']">{{ stockAuditLine.id }}</a>
           </td>
@@ -98,15 +102,6 @@
           </td>
           <td class="text-end">
             <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/stock-audit-line', stockAuditLine.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-              </button>
-
               <button
                 type="submit"
                 [routerLink]="['/stock-audit-line', stockAuditLine.id, 'edit']"
