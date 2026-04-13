@@ -81,7 +81,7 @@
         <tr
           *ngFor="let stockAuditLine of stockAuditLines; trackBy: trackId"
           data-cy="entityTable"
-          [routerLink]="['/stock-audit-line', stockAuditLine.id, 'view']"
+          (dblclick)="gotostockAuditLine(stockAuditLine.id)"
         >
           <td>
             <a [routerLink]="['/stock-audit-line', stockAuditLine.id, 'view']">{{ stockAuditLine.id }}</a>

@@ -102,7 +102,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let auditLog of auditLogs; trackBy: trackId" data-cy="entityTable" [routerLink]="['/audit-log', auditLog.id, 'view']">
+        <tr *ngFor="let auditLog of auditLogs; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoauditlog(auditLog.id)" )>
           <td>
             <a [routerLink]="['/audit-log', auditLog.id, 'view']">{{ auditLog.id }}</a>
           </td>

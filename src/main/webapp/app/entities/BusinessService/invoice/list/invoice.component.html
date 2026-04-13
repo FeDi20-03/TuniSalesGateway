@@ -142,7 +142,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let invoice of invoices; trackBy: trackId" data-cy="entityTable" [routerLink]="['/invoice', invoice.id, 'view']">
+          <tr *ngFor="let invoice of invoices; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoinvoice(invoice.id)">
             <td>
               <a [routerLink]="['/invoice', invoice.id, 'view']" class="fw-bold text-decoration-none">{{ invoice.id }}</a>
             </td>

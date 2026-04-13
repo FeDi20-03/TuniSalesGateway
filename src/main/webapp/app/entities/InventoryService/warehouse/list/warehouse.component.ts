@@ -132,4 +132,8 @@ export class WarehouseComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotowarehouse(id: number) {
+    this.router.navigate(['/warehouse', id, 'view']);
+  }
 }

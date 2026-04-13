@@ -133,4 +133,8 @@ export class StockItemComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotostockItem(id: number) {
+    this.router.navigate(['/stock-item', id, 'view']);
+  }
 }

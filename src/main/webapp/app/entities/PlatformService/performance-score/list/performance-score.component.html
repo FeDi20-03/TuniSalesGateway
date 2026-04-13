@@ -95,7 +95,7 @@
         <tr
           *ngFor="let performanceScore of performanceScores; trackBy: trackId"
           data-cy="entityTable"
-          [routerLink]="['/performance-score', performanceScore.id, 'view']"
+          (dblclick)="gotoperformancescore(performanceScore.id)"
         >
           <td>
             <a [routerLink]="['/performance-score', performanceScore.id, 'view']">{{ performanceScore.id }}</a>

@@ -142,4 +142,8 @@ export class PerformanceScoreComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoperformancescore(id: number) {
+    this.router.navigate(['/performance-score', id, 'view']);
+  }
 }

@@ -133,4 +133,8 @@ export class PriceListComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoppriceList(id: number) {
+    this.router.navigate(['/price-list', id, 'view']);
+  }
 }

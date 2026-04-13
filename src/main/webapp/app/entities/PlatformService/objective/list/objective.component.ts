@@ -132,4 +132,8 @@ export class ObjectiveComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoobjective(id: number) {
+    this.router.navigate(['/objective', id, 'view']);
+  }
 }

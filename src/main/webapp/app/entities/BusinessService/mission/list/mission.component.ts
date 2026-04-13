@@ -132,4 +132,8 @@ export class MissionComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotomission(id: number) {
+    this.router.navigate(['/mission', id, 'view']);
+  }
 }

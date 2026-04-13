@@ -133,4 +133,8 @@ export class VisitComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotovisit(id: number) {
+    this.router.navigate(['/visit', id, 'view']);
+  }
 }

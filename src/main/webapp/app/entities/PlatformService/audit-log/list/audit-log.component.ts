@@ -142,4 +142,8 @@ export class AuditLogComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoauditlog(id: number) {
+    this.router.navigate(['/audit-log', id, 'view']);
+  }
 }

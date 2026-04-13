@@ -136,4 +136,8 @@ export class InvoiceComponent implements OnInit {
   }
 
   protected readonly InvoiceStatus = InvoiceStatus;
+
+  protected gotoinvoice(id: number) {
+    this.router.navigate(['/invoice', id, 'view']);
+  }
 }

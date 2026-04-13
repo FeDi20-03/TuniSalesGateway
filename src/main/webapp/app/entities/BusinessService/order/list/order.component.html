@@ -154,7 +154,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let order of orders; trackBy: trackId" data-cy="entityTable" [routerLink]="['/order', order.id, 'view']">
+          <tr *ngFor="let order of orders; trackBy: trackId" data-cy="entityTable" (dblclick)="goToOrder(order.id)">
             <td>
               <a [routerLink]="['/order', order.id, 'view']" class="fw-bold text-decoration-none">{{ order.id }}</a>
             </td>

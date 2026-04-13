@@ -133,4 +133,8 @@ export class StockMovementComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotostockmovement(id: number) {
+    this.router.navigate(['/stock-movement', id, 'view']);
+  }
 }

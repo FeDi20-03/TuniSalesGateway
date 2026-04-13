@@ -132,4 +132,8 @@ export class TenantComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gototenant(id: number) {
+    this.router.navigate(['/tenant', id, 'view']);
+  }
 }

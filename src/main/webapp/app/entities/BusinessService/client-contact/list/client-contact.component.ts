@@ -133,4 +133,8 @@ export class ClientContactComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoclientContact(id: number) {
+    this.router.navigate(['/client-contact', id, 'view']);
+  }
 }

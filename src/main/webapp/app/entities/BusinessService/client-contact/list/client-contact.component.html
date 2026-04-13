@@ -87,7 +87,7 @@
         <tr
           *ngFor="let clientContact of clientContacts; trackBy: trackId"
           data-cy="entityTable"
-          [routerLink]="['/client-contact', clientContact.id, 'view']"
+          (dblclick)="gotoclientContact(clientContact.id)"
         >
           <td>
             <a [routerLink]="['/client-contact', clientContact.id, 'view']">{{ clientContact.id }}</a>

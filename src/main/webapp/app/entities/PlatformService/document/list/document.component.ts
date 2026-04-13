@@ -132,4 +132,8 @@ export class DocumentComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotodocument(id: number) {
+    this.router.navigate(['/document', id, 'view']);
+  }
 }

@@ -133,4 +133,8 @@ export class DeliveryComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotodetail(id: number) {
+    this.router.navigate(['/delivery', id, 'view']);
+  }
 }

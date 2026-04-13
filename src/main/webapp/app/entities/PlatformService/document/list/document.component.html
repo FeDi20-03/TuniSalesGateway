@@ -108,7 +108,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let document of documents; trackBy: trackId" data-cy="entityTable" [routerLink]="['/document', document.id, 'view']">
+        <tr *ngFor="let document of documents; trackBy: trackId" data-cy="entityTable" (dblclick)="gotodocument(document.id)">
           <td>
             <a [routerLink]="['/document', document.id, 'view']">{{ document.id }}</a>
           </td>

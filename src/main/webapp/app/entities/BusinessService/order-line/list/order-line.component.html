@@ -84,11 +84,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let orderLine of orderLines; trackBy: trackId"
-          data-cy="entityTable"
-          [routerLink]="['/order-line', orderLine.id, 'view']"
-        >
+        <tr *ngFor="let orderLine of orderLines; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoorderLine(orderLine.id)">
           <td>
             <a [routerLink]="['/order-line', orderLine.id, 'view']">{{ orderLine.id }}</a>
           </td>

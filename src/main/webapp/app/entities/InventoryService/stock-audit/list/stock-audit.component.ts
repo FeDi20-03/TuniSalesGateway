@@ -133,4 +133,8 @@ export class StockAuditComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotostockAudit(id: number) {
+    this.router.navigate(['/stock-audit', id, 'view']);
+  }
 }

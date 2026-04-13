@@ -90,11 +90,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let clientScore of clientScores; trackBy: trackId"
-          data-cy="entityTable"
-          [routerLink]="['/client-score', clientScore.id, 'view']"
-        >
+        <tr *ngFor="let clientScore of clientScores; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoclientscore(clientScore.id)">
           <td>
             <a [routerLink]="['/client-score', clientScore.id, 'view']">{{ clientScore.id }}</a>
           </td>

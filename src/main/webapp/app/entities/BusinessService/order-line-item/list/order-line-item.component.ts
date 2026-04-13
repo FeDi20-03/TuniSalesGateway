@@ -115,4 +115,8 @@ export class OrderLineItemComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoDetail(id: number) {
+    this.router.navigate(['/order-line-item', id, 'view']);
+  }
 }

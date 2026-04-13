@@ -133,4 +133,8 @@ export class OrderComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected goToOrder(id: number) {
+    this.router.navigate(['/order', id, 'view']);
+  }
 }

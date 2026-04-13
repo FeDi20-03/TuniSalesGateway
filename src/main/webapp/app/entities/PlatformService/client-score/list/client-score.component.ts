@@ -142,4 +142,8 @@ export class ClientScoreComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoclientscore(id: number) {
+    this.router.navigate(['/client-score', id, 'view']);
+  }
 }

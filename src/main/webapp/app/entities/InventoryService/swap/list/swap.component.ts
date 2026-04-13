@@ -133,4 +133,8 @@ export class SwapComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoswap(id: number) {
+    this.router.navigate(['/swap', id, 'view']);
+  }
 }

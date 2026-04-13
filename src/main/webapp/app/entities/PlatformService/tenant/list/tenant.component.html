@@ -75,7 +75,7 @@
         <tr
           *ngFor="let tenant of tenants; trackBy: trackId"
           data-cy="entityTable"
-          [routerLink]="['/tenant', tenant.id, 'view']"
+          (dblclick)="gototenant(tenant.id)"
           class="btn btn-info btn-sm"
         >
           <td>

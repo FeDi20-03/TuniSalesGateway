@@ -142,4 +142,8 @@ export class NotificationComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotonotification(id: number) {
+    this.router.navigate(['/notification', id, 'view']);
+  }
 }

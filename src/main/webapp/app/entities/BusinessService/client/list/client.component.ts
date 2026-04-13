@@ -171,4 +171,8 @@ export class ClientComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
+  protected gotoclient(id: number) {
+    this.router.navigate(['/client', id, 'view']);
+  }
 }

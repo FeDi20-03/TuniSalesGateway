@@ -139,7 +139,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let client of clients; trackBy: trackId" data-cy="entityTable" [routerLink]="['/client', client.id, 'view']">
+          <tr *ngFor="let client of clients; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoclient(client.id)">
             <!--<td>
               <a [routerLink]="['/client', client.id, 'view']" class="fw-bold text-decoration-none">{{ client.id }}</a>
             </td>-->

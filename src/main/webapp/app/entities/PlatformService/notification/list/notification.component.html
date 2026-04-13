@@ -99,7 +99,7 @@
         <tr
           *ngFor="let notification of notifications; trackBy: trackId"
           data-cy="entityTable"
-          [routerLink]="['/notification', notification.id, 'view']"
+          (dblclick)="gotonotification(notification.id)"
         >
           <td>
             <a [routerLink]="['/notification', notification.id, 'view']">{{ notification.id }}</a>
