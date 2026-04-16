@@ -1,247 +1,118 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
+<div class="container py-4">
+  <div class="col-10 col-md-8 mx-auto">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-delivery-heading"
-        data-cy="DeliveryCreateUpdateHeading"
-        jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.home.createOrEditLabel"
-      >
-        Créer ou éditer un Delivery
-      </h2>
+      <!-- HEADER -->
+      <div class="border-bottom pb-3 mb-4">
+        <h2
+          id="jhi-delivery-heading"
+          data-cy="DeliveryCreateUpdateHeading"
+          jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.home.createOrEditLabel"
+          class="mb-0"
+        >
+          Créer ou éditer un Delivery
+        </h2>
+      </div>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+      <!-- SECTION 1 : INFOS -->
+      <div class="mb-4">
+        <h5 class="border-bottom pb-2 mb-3">Informations générales</h5>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.tenantId" for="field_tenantId"
-            >Tenant Id</label
-          >
-          <input type="number" class="form-control" name="tenantId" id="field_tenantId" data-cy="tenantId" formControlName="tenantId" />
-          <div *ngIf="editForm.get('tenantId')!.invalid && (editForm.get('tenantId')!.dirty || editForm.get('tenantId')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('tenantId')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('tenantId')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              Ce champ doit être un nombre.
-            </small>
+        <div class="row">
+          <div class="col-md-6 mb-3" *ngIf="editForm.controls.id.value !== null">
+            <label class="form-label" for="field_id">ID</label>
+            <input type="number" class="form-control" id="field_id" formControlName="id" [readonly]="true" />
           </div>
-        </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.deliveryNumber" for="field_deliveryNumber"
-            >Delivery Number</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="deliveryNumber"
-            id="field_deliveryNumber"
-            data-cy="deliveryNumber"
-            formControlName="deliveryNumber"
-          />
-          <div
-            *ngIf="
-              editForm.get('deliveryNumber')!.invalid && (editForm.get('deliveryNumber')!.dirty || editForm.get('deliveryNumber')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('deliveryNumber')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('deliveryNumber')?.errors?.minlength"
-              jhiTranslate="entity.validation.minlength"
-              [translateValues]="{ min: 5 }"
-            >
-              Ce champ doit faire au minimum 5 caractères.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('deliveryNumber')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 50 }"
-            >
-              Ce champ doit faire moins de 50 caractères.
-            </small>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="field_tenantId">Tenant Id</label>
+            <input type="number" class="form-control" id="field_tenantId" formControlName="tenantId" />
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.status" for="field_status">Status</label>
-          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
-            <option [ngValue]="null">{{ 'tuniSalesGatewayApp.DeliveryStatus.null' | translate }}</option>
-            <option *ngFor="let deliveryStatus of deliveryStatusValues" [value]="deliveryStatus">
-              {{ 'tuniSalesGatewayApp.DeliveryStatus.' + deliveryStatus | translate }}
-            </option>
-          </select>
-          <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('status')?.errors?.required" jhiTranslate="entity.validation.required">
-              Ce champ est obligatoire.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.trackingNumber" for="field_trackingNumber"
-            >Tracking Number</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="trackingNumber"
-            id="field_trackingNumber"
-            data-cy="trackingNumber"
-            formControlName="trackingNumber"
-          />
-          <div
-            *ngIf="
-              editForm.get('trackingNumber')!.invalid && (editForm.get('trackingNumber')!.dirty || editForm.get('trackingNumber')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('trackingNumber')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 100 }"
-            >
-              Ce champ doit faire moins de 100 caractères.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.shippedAt" for="field_shippedAt"
-            >Shipped At</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_shippedAt"
-              data-cy="shippedAt"
-              type="datetime-local"
-              class="form-control"
-              name="shippedAt"
-              formControlName="shippedAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.deliveredAt" for="field_deliveredAt"
-            >Delivered At</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_deliveredAt"
-              data-cy="deliveredAt"
-              type="datetime-local"
-              class="form-control"
-              name="deliveredAt"
-              formControlName="deliveredAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.confirmedAt" for="field_confirmedAt"
-            >Confirmed At</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_confirmedAt"
-              data-cy="confirmedAt"
-              type="datetime-local"
-              class="form-control"
-              name="confirmedAt"
-              formControlName="confirmedAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.notes" for="field_notes">Notes</label>
-          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
-          <div *ngIf="editForm.get('notes')!.invalid && (editForm.get('notes')!.dirty || editForm.get('notes')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('notes')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 2000 }"
-            >
-              Ce champ doit faire moins de 2000 caractères.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.createdAt" for="field_createdAt"
-            >Created At</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_createdAt"
-              data-cy="createdAt"
-              type="datetime-local"
-              class="form-control"
-              name="createdAt"
-              formControlName="createdAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-          <div *ngIf="editForm.get('createdAt')!.invalid && (editForm.get('createdAt')!.dirty || editForm.get('createdAt')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('createdAt')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('createdAt')?.errors?.datetimelocal"
-              jhiTranslate="entity.validation.datetimelocal"
-            >
-              Ce champ doit être une date et une heure.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.order" for="field_order">Order</label>
-          <select class="form-control" id="field_order" data-cy="order" name="order" formControlName="order" [compareWith]="compareOrder">
-            <option *ngIf="editForm.get(['order'])!.value == null" [ngValue]="null" selected></option>
-            <option [ngValue]="orderOption" *ngFor="let orderOption of ordersSharedCollection">{{ orderOption.orderNumber }}</option>
-          </select>
-        </div>
-        <div *ngIf="editForm.get(['order'])!.invalid && (editForm.get(['order'])!.dirty || editForm.get(['order'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['order'])?.errors?.required" jhiTranslate="entity.validation.required">
-            Ce champ est obligatoire.
-          </small>
         </div>
       </div>
 
-      <div>
+      <!-- SECTION 2 : LIVRAISON -->
+      <div class="mb-4">
+        <h5 class="border-bottom pb-2 mb-3">Livraison</h5>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="field_deliveryNumber">Delivery Number</label>
+            <input type="text" class="form-control" id="field_deliveryNumber" formControlName="deliveryNumber" />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="field_status">Status</label>
+            <select class="form-control" id="field_status" formControlName="status">
+              <option [ngValue]="null">{{ 'tuniSalesGatewayApp.DeliveryStatus.null' | translate }}</option>
+              <option *ngFor="let deliveryStatus of deliveryStatusValues" [value]="deliveryStatus">
+                {{ 'tuniSalesGatewayApp.DeliveryStatus.' + deliveryStatus | translate }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="form-label" for="field_trackingNumber">Tracking Number</label>
+            <input type="text" class="form-control" id="field_trackingNumber" formControlName="trackingNumber" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3 : DATES -->
+      <div class="mb-4">
+        <h5 class="border-bottom pb-2 mb-3">Dates</h5>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label" for="field_shippedAt">Shipped At</label>
+            <input type="datetime-local" class="form-control" id="field_shippedAt" formControlName="shippedAt" />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label class="form-label" for="field_deliveredAt">Delivered At</label>
+            <input type="datetime-local" class="form-control" id="field_deliveredAt" formControlName="deliveredAt" />
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label class="form-label" for="field_confirmedAt">Confirmed At</label>
+            <input type="datetime-local" class="form-control" id="field_confirmedAt" formControlName="confirmedAt" />
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="form-label" for="field_createdAt">Created At</label>
+            <input type="datetime-local" class="form-control" id="field_createdAt" formControlName="createdAt" />
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4 : NOTES + RELATION -->
+      <div class="mb-4">
+        <h5 class="border-bottom pb-2 mb-3">Notes & Relation</h5>
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label class="form-label" for="field_notes">Notes</label>
+            <input type="text" class="form-control" id="field_notes" formControlName="notes" />
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="form-label" for="field_order">Order</label>
+            <select class="form-control" id="field_order" formControlName="order" [compareWith]="compareOrder">
+              <option *ngIf="editForm.get(['order'])!.value == null" [ngValue]="null" selected></option>
+              <option [ngValue]="orderOption" *ngFor="let orderOption of ordersSharedCollection">
+                {{ orderOption.orderNumber }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-4">
         <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+          <fa-icon icon="ban"></fa-icon>
+          Annuler
         </button>
 
         <button
@@ -251,7 +122,8 @@
           [disabled]="editForm.invalid || isSaving"
           class="btn btn-primary"
         >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+          <fa-icon icon="save"></fa-icon>
+          Sauvegarder
         </button>
       </div>
     </form>

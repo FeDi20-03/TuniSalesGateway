@@ -1,256 +1,172 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-objective-heading"
-        data-cy="ObjectiveCreateUpdateHeading"
-        jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.home.createOrEditLabel"
-      >
-        Créer ou éditer un Objective
-      </h2>
+<div class="container py-4">
+  <div class="col-12 col-md-10 col-lg-8 mx-auto">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm" class="shadow-sm rounded bg-white p-4 border">
+      <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-4">
+        <h2
+          id="jhi-objective-heading"
+          data-cy="ObjectiveCreateUpdateHeading"
+          jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.home.createOrEditLabel"
+          class="h4 mb-0 text-primary"
+        >
+          Créer ou éditer un Objectif
+        </h2>
+        <span class="badge bg-light text-dark border" *ngIf="editForm.get('id')?.value"> ID: {{ editForm.get('id')?.value }} </span>
+      </div>
 
-      <div>
-        <jhi-alert-error></jhi-alert-error>
+      <jhi-alert-error></jhi-alert-error>
 
-        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="p-3 mb-3 rounded bg-light border-start border-4 border-primary">
+            <h6 class="fw-bold mb-3 text-uppercase small text-muted">Configuration</h6>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.tenantId" for="field_tenantId"
-            >Tenant Id</label
-          >
-          <input type="number" class="form-control" name="tenantId" id="field_tenantId" data-cy="tenantId" formControlName="tenantId" />
-          <div *ngIf="editForm.get('tenantId')!.invalid && (editForm.get('tenantId')!.dirty || editForm.get('tenantId')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('tenantId')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('tenantId')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              Ce champ doit être un nombre.
-            </small>
+            <div class="mb-3">
+              <label
+                class="form-label fw-semibold"
+                jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.assignedToLogin"
+                for="field_assignedToLogin"
+                >Assigné à</label
+              >
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                name="assignedToLogin"
+                id="field_assignedToLogin"
+                formControlName="assignedToLogin"
+              />
+              <div
+                *ngIf="
+                  editForm.get('assignedToLogin')!.invalid &&
+                  (editForm.get('assignedToLogin')!.dirty || editForm.get('assignedToLogin')!.touched)
+                "
+              >
+                <small
+                  class="text-danger"
+                  *ngIf="editForm.get('assignedToLogin')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                  >Obligatoire.</small
+                >
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.period" for="field_period"
+                >Période</label
+              >
+              <input
+                type="text"
+                class="form-control shadow-sm"
+                name="period"
+                id="field_period"
+                formControlName="period"
+                placeholder="ex: 2026-04"
+              />
+            </div>
+
+            <div class="mb-0 small">
+              <label class="form-label text-muted" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.tenantId">Tenant Id</label>
+              <input
+                type="number"
+                class="form-control form-control-sm border-dashed"
+                name="tenantId"
+                id="field_tenantId"
+                formControlName="tenantId"
+              />
+            </div>
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.assignedToLogin" for="field_assignedToLogin"
-            >Assigned To Login</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="assignedToLogin"
-            id="field_assignedToLogin"
-            data-cy="assignedToLogin"
-            formControlName="assignedToLogin"
-          />
-          <div
-            *ngIf="
-              editForm.get('assignedToLogin')!.invalid &&
-              (editForm.get('assignedToLogin')!.dirty || editForm.get('assignedToLogin')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('assignedToLogin')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('assignedToLogin')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 100 }"
-            >
-              Ce champ doit faire moins de 100 caractères.
-            </small>
-          </div>
-        </div>
+        <div class="col-md-6">
+          <div class="p-3 mb-3 rounded border h-100">
+            <h6 class="fw-bold mb-3 text-uppercase small text-muted">Indicateurs (KPI)</h6>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.period" for="field_period">Period</label>
-          <input type="text" class="form-control" name="period" id="field_period" data-cy="period" formControlName="period" />
-          <div *ngIf="editForm.get('period')!.invalid && (editForm.get('period')!.dirty || editForm.get('period')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('period')?.errors?.required" jhiTranslate="entity.validation.required">
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('period')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 7 }"
-            >
-              Ce champ doit faire moins de 7 caractères.
-            </small>
-          </div>
-        </div>
+            <div class="mb-3">
+              <label
+                class="form-label fw-semibold"
+                jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.metricType"
+                for="field_metricType"
+                >Type de Métrique</label
+              >
+              <select
+                class="form-select shadow-sm border-primary-subtle"
+                name="metricType"
+                formControlName="metricType"
+                id="field_metricType"
+              >
+                <option [ngValue]="null">{{ 'tuniSalesGatewayApp.MetricType.null' | translate }}</option>
+                <option *ngFor="let metricType of metricTypeValues" [value]="metricType">
+                  {{ 'tuniSalesGatewayApp.MetricType.' + metricType | translate }}
+                </option>
+              </select>
+            </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.metricType" for="field_metricType"
-            >Metric Type</label
-          >
-          <select class="form-control" name="metricType" formControlName="metricType" id="field_metricType" data-cy="metricType">
-            <option [ngValue]="null">{{ 'tuniSalesGatewayApp.MetricType.null' | translate }}</option>
-            <option *ngFor="let metricType of metricTypeValues" [value]="metricType">
-              {{ 'tuniSalesGatewayApp.MetricType.' + metricType | translate }}
-            </option>
-          </select>
-          <div *ngIf="editForm.get('metricType')!.invalid && (editForm.get('metricType')!.dirty || editForm.get('metricType')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('metricType')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.targetValue" for="field_targetValue"
-            >Target Value</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="targetValue"
-            id="field_targetValue"
-            data-cy="targetValue"
-            formControlName="targetValue"
-          />
-          <div *ngIf="editForm.get('targetValue')!.invalid && (editForm.get('targetValue')!.dirty || editForm.get('targetValue')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('targetValue')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('targetValue')?.errors?.min"
-              jhiTranslate="entity.validation.min"
-              [translateValues]="{ min: 0 }"
-            >
-              Ce champ doit être supérieur à 0.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('targetValue')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              Ce champ doit être un nombre.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.achievedValue" for="field_achievedValue"
-            >Achieved Value</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="achievedValue"
-            id="field_achievedValue"
-            data-cy="achievedValue"
-            formControlName="achievedValue"
-          />
-          <div
-            *ngIf="
-              editForm.get('achievedValue')!.invalid && (editForm.get('achievedValue')!.dirty || editForm.get('achievedValue')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('achievedValue')?.errors?.min"
-              jhiTranslate="entity.validation.min"
-              [translateValues]="{ min: 0 }"
-            >
-              Ce champ doit être supérieur à 0.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('achievedValue')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              Ce champ doit être un nombre.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.createdAt" for="field_createdAt"
-            >Created At</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_createdAt"
-              data-cy="createdAt"
-              type="datetime-local"
-              class="form-control"
-              name="createdAt"
-              formControlName="createdAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-          <div *ngIf="editForm.get('createdAt')!.invalid && (editForm.get('createdAt')!.dirty || editForm.get('createdAt')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('createdAt')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              Ce champ est obligatoire.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('createdAt')?.errors?.datetimelocal"
-              jhiTranslate="entity.validation.datetimelocal"
-            >
-              Ce champ doit être une date et une heure.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.updatedAt" for="field_updatedAt"
-            >Updated At</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_updatedAt"
-              data-cy="updatedAt"
-              type="datetime-local"
-              class="form-control"
-              name="updatedAt"
-              formControlName="updatedAt"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label
+                  class="form-label fw-semibold text-primary"
+                  jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.targetValue"
+                  for="field_targetValue"
+                  >Objectif</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-control-lg border-primary shadow-sm text-center font-monospace"
+                  name="targetValue"
+                  id="field_targetValue"
+                  formControlName="targetValue"
+                />
+              </div>
+              <div class="col-6 mb-3">
+                <label
+                  class="form-label fw-semibold text-success"
+                  jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.achievedValue"
+                  for="field_achievedValue"
+                  >Réalisé</label
+                >
+                <input
+                  type="number"
+                  class="form-control form-control-lg border-success shadow-sm text-center font-monospace"
+                  name="achievedValue"
+                  id="field_achievedValue"
+                  formControlName="achievedValue"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+      <div class="row mt-2 px-2">
+        <div class="col-md-6 mb-3">
+          <label class="form-label small text-muted" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.createdAt">Créé le</label>
+          <input
+            type="datetime-local"
+            class="form-control form-control-sm bg-light"
+            name="createdAt"
+            id="field_createdAt"
+            formControlName="createdAt"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label small text-muted" jhiTranslate="tuniSalesGatewayApp.platformServiceObjective.updatedAt"
+            >Mis à jour le</label
+          >
+          <input
+            type="datetime-local"
+            class="form-control form-control-sm bg-light"
+            name="updatedAt"
+            id="field_updatedAt"
+            formControlName="updatedAt"
+          />
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2 border-top pt-4 mt-2">
+        <button type="button" id="cancel-save" class="btn btn-outline-secondary px-4 shadow-sm" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
         </button>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
+        <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary px-5 shadow-sm">
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
         </button>
       </div>

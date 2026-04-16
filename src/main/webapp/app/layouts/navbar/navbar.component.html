@@ -49,6 +49,15 @@
       >
         <span>Commandes</span>
       </button>
+      <Button
+        class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
+        routerLink="stock-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="collapseNavbar()"
+      >
+        <span jhiTranslate="global.menu.entities.inventoryServiceStockItem">Stock Item</span>
+      </Button>
       <!--<button
         class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
         routerLink="client-contact"
