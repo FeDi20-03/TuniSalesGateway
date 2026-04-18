@@ -14,6 +14,16 @@ import { Account } from 'app/core/auth/account.model';
 export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
 
+  ventesSemaine = 45000;
+  tauxObjectifs = 85;
+  commandesAttente = 12;
+
+  performancesEquipe = [
+    { nom: 'Sarah Connor', ventes: 21000, objectif: 110 },
+    { nom: 'Alice Dupont', ventes: 15600, objectif: 95 },
+    { nom: 'Bob Martin', ventes: 12400, objectif: 82 },
+  ];
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(private accountService: AccountService, private router: Router) {}

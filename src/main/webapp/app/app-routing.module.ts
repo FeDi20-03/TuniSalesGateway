@@ -7,11 +7,19 @@ import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/config/authority.constants';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { EquipeComponent } from './equipe/equipe.component';
 
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
+        {
+          path: 'equipe',
+          component: EquipeComponent,
+          data: {
+            pageTitle: 'Équipe Commerciale',
+          },
+        },
         {
           path: 'admin',
           data: {
