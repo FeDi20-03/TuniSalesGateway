@@ -1,23 +1,7 @@
 export enum OrderStatus {
-  DRAFT = 'DRAFT',
-
-  SUBMITTED = 'SUBMITTED',
-
-  UNDER_REVIEW = 'UNDER_REVIEW',
-
-  APPROVED = 'APPROVED',
-
-  IN_PREPARATION = 'IN_PREPARATION',
-
-  SHIPPED = 'SHIPPED',
-
-  DELIVERED = 'DELIVERED',
-
-  INVOICED = 'INVOICED',
-
-  PAID = 'PAID',
-
-  REJECTED = 'REJECTED',
-
-  CANCELLED = 'CANCELLED',
+  enAttente = 'enAttente',
+  valide = 'valide',
+  enCours = 'enCours',
+  livre = 'livre',
+  rejete = 'rejete',
 }

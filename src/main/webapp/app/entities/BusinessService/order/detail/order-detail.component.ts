@@ -19,6 +19,20 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
+  validerCommande(): void {
+    if (this.order) {
+      this.order.status = OrderStatus.valide;
+      // You may also want to call your orderService.update(this.order) and subscribe...
+    }
+  }
+
+  rejeterCommande(): void {
+    if (this.order) {
+      this.order.status = OrderStatus.rejete;
+      // You may also want to call your orderService.update(this.order) and subscribe...
+    }
+  }
+
   previousState(): void {
     window.history.back();
   }

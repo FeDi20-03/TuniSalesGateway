@@ -10,17 +10,23 @@
         </h2>
 
         <!-- STATUS BADGE -->
-        <span
-          class="badge fs-6"
-          [ngClass]="{
-            'bg-success': order.status === OrderStatus.APPROVED,
-            'bg-warning': order.status === OrderStatus.SUBMITTED,
-            'bg-danger': order.status === OrderStatus.REJECTED,
-            'bg-secondary': order.status === OrderStatus.DRAFT
-          }"
-        >
-          {{ order.status }}
-        </span>
+        <div class="d-flex align-items-center gap-2">
+          <span
+            class="badge fs-6 me-3"
+            [ngClass]="{
+              'bg-success': order.status === OrderStatus.valide || order.status === OrderStatus.livre,
+              'bg-warning': order.status === OrderStatus.enAttente,
+              'bg-primary': order.status === OrderStatus.enCours,
+              'bg-danger': order.status === OrderStatus.rejete
+            }"
+          >
+            {{ order.status }}
+          </span>
+          <ng-container *ngIf="order.status === OrderStatus.enAttente">
+            <button class="btn btn-sm btn-success" (click)="validerCommande()"><fa-icon icon="check"></fa-icon> Valider</button>
+            <button class="btn btn-sm btn-danger" (click)="rejeterCommande()"><fa-icon icon="times"></fa-icon> Rejeter</button>
+          </ng-container>
+        </div>
       </div>
 
       <!-- ALERTS -->
@@ -104,8 +110,8 @@
                 <dt>Validated At</dt>
                 <dd>{{ order.validatedAt | formatMediumDatetime }}</dd>
 
-                <dt *ngIf="order.status === OrderStatus.REJECTED">Rejection Reason</dt>
-                <dd *ngIf="order.status === OrderStatus.REJECTED">
+                <dt *ngIf="order.status === OrderStatus.rejete">Rejection Reason</dt>
+                <dd *ngIf="order.status === OrderStatus.rejete">
                   <span class="text-danger">{{ order.rejectionReason }}</span>
                 </dd>
               </dl>
