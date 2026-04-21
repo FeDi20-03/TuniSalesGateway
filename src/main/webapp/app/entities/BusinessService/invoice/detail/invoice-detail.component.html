@@ -13,9 +13,7 @@
           class="badge fs-6"
           [ngClass]="{
             'bg-success': invoice.status === InvoiceStatus.PAID,
-            'bg-warning': invoice.status === InvoiceStatus.ISSUED,
-            'bg-danger': invoice.status === InvoiceStatus.CANCELLED,
-            'bg-secondary': invoice.status === InvoiceStatus.DRAFT
+            'bg-danger': invoice.status === InvoiceStatus.NOT_PAID
           }"
         >
           {{ invoice.status }}

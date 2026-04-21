@@ -48,7 +48,7 @@
       <table class="table table-hover align-middle" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
-            <th scope="col" jhiSortBy="id">
+            <!--<th scope="col" jhiSortBy="id">
               <div class="d-flex">
                 <span jhiTranslate="global.field.id">ID</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -59,7 +59,7 @@
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.tenantId">Tenant Id</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <th scope="col" jhiSortBy="orderNumber">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.orderNumber">Order Number</span>
@@ -72,7 +72,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="subtotal">
+            <!--<th scope="col" jhiSortBy="subtotal">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.subtotal">Subtotal</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -89,14 +89,14 @@
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.taxAmount">Tax Amount</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <th scope="col" jhiSortBy="totalAmount">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.totalAmount">Total Amount</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="paymentTermsDays">
+            <!--<th scope="col" jhiSortBy="paymentTermsDays">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.paymentTermsDays">Payment Terms Days</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -107,7 +107,7 @@
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.dueDate">Due Date</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <th scope="col" jhiSortBy="rejectionReason">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.rejectionReason">Rejection Reason</span>
@@ -126,12 +126,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="isDeleted">
+            <!--<th scope="col" jhiSortBy="isDeleted">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.isDeleted">Is Deleted</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <th scope="col" jhiSortBy="createdAt">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.createdAt">Created At</span>
@@ -155,10 +155,10 @@
         </thead>
         <tbody>
           <tr *ngFor="let order of orders; trackBy: trackId" data-cy="entityTable" (dblclick)="goToOrder(order.id)">
-            <td>
+            <!--<td>
               <a [routerLink]="['/order', order.id, 'view']" class="fw-bold text-decoration-none">{{ order.id }}</a>
             </td>
-            <td>{{ order.tenantId }}</td>
+            <td>{{ order.tenantId }}</td>-->
             <td>
               <span class="badge bg-light text-dark border">{{ order.orderNumber }}</span>
             </td>
@@ -167,20 +167,20 @@
                 {{ order.status }}
               </span>
             </td>
-            <td>{{ order.subtotal | currency }}</td>
+            <!--<td>{{ order.subtotal | currency }}</td>
             <td>{{ order.discountAmount | currency }}</td>
-            <td>{{ order.taxAmount | currency }}</td>
+            <td>{{ order.taxAmount | currency }}</td>-->
             <td class="fw-bold">{{ order.totalAmount | currency }}</td>
-            <td>{{ order.paymentTermsDays }}</td>
-            <td>{{ order.dueDate | formatMediumDatetime }}</td>
+            <!--<td>{{ order.paymentTermsDays }}</td>
+            <td>{{ order.dueDate | formatMediumDatetime }}</td>-->
             <td>{{ order.rejectionReason }}</td>
             <td>{{ order.submittedAt | formatMediumDatetime }}</td>
             <td>{{ order.validatedAt | formatMediumDatetime }}</td>
-            <td>
+            <!--<td>
               <span class="badge" [ngClass]="order.isDeleted ? 'bg-danger' : 'bg-success'">
                 {{ order.isDeleted ? 'Yes' : 'No' }}
               </span>
-            </td>
+            </td>-->
             <td>{{ order.createdAt | formatMediumDatetime }}</td>
             <td>{{ order.updatedAt | formatMediumDatetime }}</td>
             <td>
