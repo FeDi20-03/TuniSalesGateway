@@ -1,6 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { IClient } from 'app/entities/BusinessService/client/client.model';
 import { OrderStatus } from 'app/entities/enumerations/order-status.model';
+import { IOrderLine } from '../order-line/order-line.model';
 
 export interface IOrder {
   id: number;
@@ -20,6 +21,7 @@ export interface IOrder {
   createdAt?: dayjs.Dayjs | null;
   updatedAt?: dayjs.Dayjs | null;
   client?: Pick<IClient, 'id' | 'name'> | null;
+  orderLines?: IOrderLine[] | null;
 }
 
 export type NewOrder = Omit<IOrder, 'id'> & { id: null };
