@@ -5,9 +5,10 @@ import { OrderDetailComponent } from './detail/order-detail.component';
 import { OrderUpdateComponent } from './update/order-update.component';
 import { OrderDeleteDialogComponent } from './delete/order-delete-dialog.component';
 import { OrderRoutingModule } from './route/order-routing.module';
+import { OrderNewWizardComponent } from './update/order-new-wizard/order-new-wizard.component';
 
 @NgModule({
   imports: [SharedModule, OrderRoutingModule],
-  declarations: [OrderComponent, OrderDetailComponent, OrderUpdateComponent, OrderDeleteDialogComponent],
+  declarations: [OrderComponent, OrderDetailComponent, OrderUpdateComponent, OrderDeleteDialogComponent, OrderNewWizardComponent],
 })
 export class BusinessServiceOrderModule {}

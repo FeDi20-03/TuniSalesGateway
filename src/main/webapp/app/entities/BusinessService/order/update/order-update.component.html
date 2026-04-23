@@ -17,12 +17,12 @@
       <div class="mb-4">
         <h5 class="border-bottom pb-2 mb-3">Informations générales</h5>
         <div class="row">
-          <div class="col-md-4 mb-3" *ngIf="editForm.controls.id.value !== null">
+          <!--<div class="col-md-4 mb-3" *ngIf="editForm.controls.id.value !== null">
             <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
             <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          </div>
+          </div>-->
 
-          <div class="col-md-4 mb-3">
+          <!--<div class="col-md-4 mb-3">
             <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.tenantId" for="field_tenantId"
               >Tenant Id</label
             >
@@ -35,7 +35,7 @@
                 >Ce champ est obligatoire.</small
               >
             </div>
-          </div>
+          </div>-->
 
           <div class="col-md-4 mb-3">
             <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.orderNumber" for="field_orderNumber"
@@ -142,7 +142,7 @@
             </select>
           </div>
 
-          <div class="col-md-6 mb-3 d-flex align-items-center">
+          <!--<div class="col-md-6 mb-3 d-flex align-items-center">
             <div class="form-check mt-4">
               <input
                 type="checkbox"
@@ -156,7 +156,7 @@
                 >Is Deleted</label
               >
             </div>
-          </div>
+          </div>-->
 
           <div class="col-12 mb-3" *ngIf="editForm.get('status')?.value === 'rejete' || editForm.get('rejectionReason')?.value">
             <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.rejectionReason" for="field_rejectionReason"
@@ -174,7 +174,7 @@
         </div>
       </div>
 
-      <div class="mb-4">
+      <!--<div class="mb-4">
         <h5 class="border-bottom pb-2 mb-3">Dates Clés</h5>
         <div class="row">
           <div class="col-md-4 mb-3">
@@ -210,7 +210,7 @@
             <input type="datetime-local" class="form-control" name="updatedAt" id="field_updatedAt" formControlName="updatedAt" />
           </div>
         </div>
-      </div>
+      </div>-->
 
       <div class="mb-4">
         <h5 class="border-bottom pb-2 mb-3">Relations</h5>

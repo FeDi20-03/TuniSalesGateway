@@ -7,6 +7,7 @@ import { OrderDetailComponent } from '../detail/order-detail.component';
 import { OrderUpdateComponent } from '../update/order-update.component';
 import { OrderRoutingResolveService } from './order-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
+import { OrderNewWizardComponent } from '../update/order-new-wizard/order-new-wizard.component';
 
 const orderRoute: Routes = [
   {
@@ -28,6 +29,14 @@ const orderRoute: Routes = [
   {
     path: 'new',
     component: OrderUpdateComponent,
+    resolve: {
+      order: OrderRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'newWizard',
+    component: OrderNewWizardComponent,
     resolve: {
       order: OrderRoutingResolveService,
     },
