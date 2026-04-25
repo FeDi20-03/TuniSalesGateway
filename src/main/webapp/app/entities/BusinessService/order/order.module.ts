@@ -8,7 +8,7 @@ import { OrderRoutingModule } from './route/order-routing.module';
 import { OrderNewWizardComponent } from './update/order-new-wizard/order-new-wizard.component';
 
 @NgModule({
-  imports: [SharedModule, OrderRoutingModule],
-  declarations: [OrderComponent, OrderDetailComponent, OrderUpdateComponent, OrderDeleteDialogComponent, OrderNewWizardComponent],
+  imports: [SharedModule, OrderRoutingModule, OrderNewWizardComponent],
+  declarations: [OrderComponent, OrderDetailComponent, OrderUpdateComponent, OrderDeleteDialogComponent],
 })
 export class BusinessServiceOrderModule {}

@@ -1,0 +1,281 @@
+<div class="wizard-container">
+  <!-- ECRAN DE SUCCES -->
+  <ng-container *ngIf="submitted; else tunnelTemplate">
+    <div class="success-screen">
+      <div class="success-icon popIn">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          width="48"
+          height="48"
+          stroke="white"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2 class="title" style="color: #1b2a4a">Commande envoyée !</h2>
+      <p class="subtitle" *ngIf="isOffline">Mise en attente de synchronisation.</p>
+      <p class="subtitle" *ngIf="!isOffline">Votre commande a été transmise avec succès.</p>
+      <div class="ref-badge">{{ orderReference }}</div>
+      <button class="btn-primary" (click)="resetWizard()">Nouvelle commande</button>
+    </div>
+  </ng-container>
+
+  <ng-template #tunnelTemplate>
+    <!-- TUNNEL -->
+    <div class="tunnel-layout" [ngClass]="animationClass">
+      <!-- STEP 1 : CLIENT -->
+      <ng-container *ngIf="currentStep === 1">
+        <div class="header">
+          <button class="back-btn" disabled>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="24"
+              height="24"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="header-title">Nouvelle Vente</div>
+        </div>
+
+        <!-- Remplacement du Stepper supprimé -->
+        <div class="step-indicator" style="text-align: center; padding: 10px; font-weight: bold; color: #666">
+          Étape 1 / 3 : Choix du client
+        </div>
+
+        <div class="screen-body screen-body-step1">
+          <div class="step-desc">
+            <label class="desc-label">Sélectionner un client</label>
+            <p class="desc-text">Recherchez par nom ou code distributeur</p>
+          </div>
+
+          <div class="search-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="search-icon"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Rechercher..." [(ngModel)]="searchQueryClient" />
+          </div>
+
+          <div class="clients-list">
+            <ng-container *ngIf="filteredClients.length > 0; else noClients">
+              <div
+                class="client-card"
+                *ngFor="let client of filteredClients"
+                [class.selected]="selectedClient?.id === client.id"
+                (click)="selectClient(client)"
+              >
+                <div class="client-name">{{ client.name }}</div>
+                <div class="client-info">{{ client.id }} &middot; {{ client.taxId || 'N/A' }}</div>
+              </div>
+            </ng-container>
+            <ng-template #noClients>
+              <div class="empty-state">Aucun client trouvé</div>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="footer-bar">
+          <button class="btn-teal full-width" [disabled]="!selectedClient" (click)="nextStep()">Suivant &rarr;</button>
+        </div>
+      </ng-container>
+
+      <!-- STEP 2 : PRODUITS -->
+      <ng-container *ngIf="currentStep === 2">
+        <div class="header">
+          <button class="back-btn" (click)="prevStep()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="24"
+              height="24"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="header-title">Nouvelle Vente</div>
+        </div>
+
+        <!-- Remplacement du Stepper supprimé -->
+        <div class="step-indicator" style="text-align: center; padding: 10px; font-weight: bold; color: #666">
+          Étape 2 / 3 : Choix des produits
+        </div>
+
+        <div class="screen-body screen-body-step2" [style.padding-bottom.px]="cartCount > 0 ? 80 : 20">
+          <div class="search-box">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="search-icon"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" placeholder="Rechercher un produit..." [(ngModel)]="searchQueryProduct" />
+          </div>
+
+          <div class="products-list">
+            <div class="product-card" *ngFor="let prod of filteredProducts" [class.rupture]="!prod.isActive">
+              <div class="emoji-box">📦</div>
+              <div class="prod-details">
+                <div class="prod-name">{{ prod.name }}</div>
+                <div class="prod-brand">{{ prod.brand || prod.category }}</div>
+                <!-- Sécurisation du type de price -->
+                <div class="prod-price">{{ prod.price || 0 | number: '1.3-3' }} TND</div>
+                <ng-container *ngIf="!prod.isActive; else stockInfo">
+                  <span class="badge-rupture">Indisponible</span>
+                </ng-container>
+                <ng-template #stockInfo>
+                  <span class="stock-info">En stock</span>
+                </ng-template>
+              </div>
+              <div class="qty-control">
+                <button
+                  class="qty-btn minus"
+                  [disabled]="getProductQty(prod.id!) === 0 || !prod.isActive"
+                  (click)="changeQty(prod.id!, -1)"
+                >
+                  &minus;
+                </button>
+                <span class="qty-text">{{ getProductQty(prod.id!) }}</span>
+                <button class="qty-btn plus" [disabled]="!prod.isActive" (click)="changeQty(prod.id!, 1)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Cart Bar -->
+        <div class="floating-cart" *ngIf="cartCount > 0">
+          <div class="cart-left">
+            <div class="cart-items-count">{{ cartCount }} article(s)</div>
+            <div class="cart-total-price">{{ cartTotal | number: '1.3-3' }} TND</div>
+          </div>
+          <button class="btn-teal" (click)="nextStep()">Suivant &rarr;</button>
+        </div>
+      </ng-container>
+
+      <!-- STEP 3 : RECAPITULATIF -->
+      <ng-container *ngIf="currentStep === 3">
+        <div class="header">
+          <button class="back-btn" (click)="prevStep()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="24"
+              height="24"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="header-title">Nouvelle Vente</div>
+        </div>
+
+        <!-- Remplacement du Stepper supprimé -->
+        <div class="step-indicator" style="text-align: center; padding: 10px; font-weight: bold; color: #666">
+          Étape 3 / 3 : Récapitulatif
+        </div>
+
+        <div class="screen-body screen-body-step3">
+          <div class="recap-section">
+            <div class="section-label">CLIENT</div>
+            <!-- Remplacement de state.client par selectedClient -->
+            <div class="recap-client-name">{{ selectedClient?.name }}</div>
+            <div class="recap-client-info">{{ selectedClient?.id }} &middot; {{ selectedClient?.taxId || 'N/A' }}</div>
+          </div>
+
+          <div class="recap-section">
+            <div class="section-label">PRODUITS ({{ cartCount }})</div>
+            <div class="recap-items">
+              <div class="recap-row" *ngFor="let item of cartItems">
+                <div class="recap-row-left">
+                  <div class="recap-prod-name">{{ item.product?.name }}</div>
+                  <div class="recap-prod-qty">Qté: {{ item.qty }} &times; {{ item.product?.price || 0 | number: '1.3-3' }} TND</div>
+                </div>
+                <div class="recap-row-right">
+                  {{ item.qty * (item.product?.price || 0) | number: '1.3-3' }}
+                </div>
+              </div>
+            </div>
+            <div class="recap-total">
+              <span>Total</span>
+              <span class="total-amount">{{ cartTotal | number: '1.3-3' }} TND</span>
+            </div>
+          </div>
+
+          <div class="recap-section">
+            <div class="section-label">Notes (optionnel)</div>
+            <!-- Remplacement de state.notes par notes -->
+            <textarea
+              class="notes-area"
+              placeholder="Instructions de livraison, remarques..."
+              [ngModel]="notes"
+              (ngModelChange)="updateNotes($event)"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="footer-bar double-btn">
+          <button class="btn-outline" [disabled]="isSubmitting" (click)="submitOrder(true)">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              width="16"
+              height="16"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="margin-right: 8px; vertical-align: middle"
+            >
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+              <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+              <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+              <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+              <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+              <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+            Hors ligne
+          </button>
+          <button class="btn-primary flex-1" [disabled]="isSubmitting" (click)="submitOrder(false)">
+            <span *ngIf="isSubmitting">Traitement...</span>
+            <span *ngIf="!isSubmitting">Envoyer pour validation</span>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </ng-template>
+</div>

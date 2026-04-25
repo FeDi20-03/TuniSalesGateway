@@ -19,6 +19,9 @@ export class OrderComponent implements OnInit {
   orders?: IOrder[];
   isLoading = false;
 
+  // Variable pour afficher ou cacher le wizard
+  isWizardVisible = false;
+
   predicate = 'id';
   ascending = true;
 
@@ -39,10 +42,20 @@ export class OrderComponent implements OnInit {
     this.load();
   }
 
+  // --- NOUVELLES MÉTHODES POUR LE WIZARD ---
+  openWizard(): void {
+    this.isWizardVisible = true;
+  }
+
+  closeWizard(): void {
+    this.isWizardVisible = false;
+    this.load(); // On recharge la liste des commandes au cas où une a été ajoutée
+  }
+  // -----------------------------------------
+
   delete(order: IOrder): void {
     const modalRef = this.modalService.open(OrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.order = order;
-    // unsubscribe not needed because closed completes on modal close
     modalRef.closed
       .pipe(
         filter(reason => reason === ITEM_DELETED_EVENT),
