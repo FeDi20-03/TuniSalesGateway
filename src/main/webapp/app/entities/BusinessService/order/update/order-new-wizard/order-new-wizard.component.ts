@@ -8,6 +8,11 @@ import { IClient } from 'app/entities/BusinessService/client/client.model';
 import { IProduct } from 'app/entities/BusinessService/product/product.model';
 import { ClientService } from 'app/entities/BusinessService/client/service/client.service';
 import { ProductService } from 'app/entities/BusinessService/product/service/product.service'; // Si vous l'avez
+import { NewOrder } from 'app/entities/BusinessService/order/order.model';
+import { IOrderLine } from 'app/entities/BusinessService/order-line/order-line.model';
+import { OrderService } from 'app/entities/BusinessService/order/service/order.service';
+import { OrderStatus } from 'app/entities/enumerations/order-status.model';
+import dayjs from 'dayjs/esm';
 
 @Component({
   selector: 'jhi-order-new-wizard',
@@ -40,7 +45,8 @@ export class OrderNewWizardComponent implements OnInit {
   constructor(
     private router: Router,
     private clientService: ClientService,
-    private productService: ProductService // Si vous l'avez
+    private productService: ProductService, // Si vous l'avez
+    private orderService: OrderService
   ) {}
 
   ngOnInit(): void {
@@ -149,20 +155,61 @@ export class OrderNewWizardComponent implements OnInit {
     this.orderReference = this.generateRef();
     this.isSubmitting = true;
 
-    // Simulation de la sauvegarde de la commande (remplace l'appel au backend)
-    setTimeout(() => {
-      console.log('Commande créée avec succès : ', {
-        reference: this.orderReference,
-        client: this.selectedClient,
-        items: this.cartItems,
-        total: this.cartTotal,
-        notes: this.notes,
-        offline: this.isOffline,
+    if (!offline) {
+      const orderLines: IOrderLine[] = this.cartItems.map(item => {
+        const qty = item.qty;
+        const unitPrice = item.product ? (item.product as any).price || 0 : 0;
+        const lineTotal = qty * unitPrice;
+
+        return {
+          quantity: qty,
+          unitPrice: unitPrice,
+          lineTotal: lineTotal,
+          product: { id: item.product!.id } as IProduct,
+          createdAt: dayjs(),
+        } as IOrderLine;
       });
 
-      this.isSubmitting = false;
-      this.submitted = true;
-    }, 1000);
+      const newOrder = {
+        tenantId: 1,
+        orderNumber: this.orderReference,
+        status: OrderStatus.enAttente,
+        subtotal: this.cartTotal,
+        taxAmount: 0,
+        totalAmount: this.cartTotal,
+        isDeleted: false,
+        createdAt: dayjs(),
+        client: { id: this.selectedClient!.id } as IClient,
+        orderLines: orderLines,
+      } as NewOrder;
+
+      this.orderService.create(newOrder).subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.submitted = true;
+          console.log('Commande créée avec succès !');
+        },
+        error: () => {
+          this.isSubmitting = false;
+          alert('Erreur lors de la création de la commande');
+        },
+      });
+    } else {
+      // Simulation pour le offline
+      setTimeout(() => {
+        console.log('Commande hors ligne créée avec succès : ', {
+          reference: this.orderReference,
+          client: this.selectedClient,
+          items: this.cartItems,
+          total: this.cartTotal,
+          notes: this.notes,
+          offline: this.isOffline,
+        });
+
+        this.isSubmitting = false;
+        this.submitted = true;
+      }, 1000);
+    }
   }
 
   // --- RÉINITIALISATION ---
