@@ -50,12 +50,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="assignedAt">
+          <!--<th scope="col" jhiSortBy="assignedAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.assignedAt">Assigned At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="orderLine.id">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLineItem.orderLine">Order Line</span>
@@ -72,7 +72,7 @@
           </td>
           <td>{{ orderLineItem.stockItemId }}</td>
           <td>{{ orderLineItem.stockItemImei }}</td>
-          <td>{{ orderLineItem.assignedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ orderLineItem.assignedAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="orderLineItem.orderLine">
               <a [routerLink]="['/order-line', orderLineItem.orderLine.id, 'view']">{{ orderLineItem.orderLine.id }}</a>

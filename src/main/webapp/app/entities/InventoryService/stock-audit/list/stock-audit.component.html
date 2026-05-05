@@ -80,7 +80,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="startedAt">
+          <!--<th scope="col" jhiSortBy="startedAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.startedAt">Started At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -91,7 +91,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.closedAt">Closed At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="warehouse.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.warehouse">Warehouse</span>
@@ -113,8 +113,8 @@
           <td>{{ stockAudit.discrepancyCount }}</td>
           <td>{{ stockAudit.notes }}</td>
           <td>{{ stockAudit.auditorLogin }}</td>
-          <td>{{ stockAudit.startedAt | formatMediumDatetime }}</td>
-          <td>{{ stockAudit.closedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ stockAudit.startedAt | formatMediumDatetime }}</td>
+          <td>{{ stockAudit.closedAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="stockAudit.warehouse">
               <a [routerLink]="['/warehouse', stockAudit.warehouse.id, 'view']">{{ stockAudit.warehouse.name }}</a>

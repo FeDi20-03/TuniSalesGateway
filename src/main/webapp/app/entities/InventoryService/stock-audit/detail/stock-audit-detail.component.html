@@ -4,7 +4,6 @@
       <!-- HEADER -->
       <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="mb-0" data-cy="stockAuditDetailsHeading">
-          <fa-icon icon="clipboard-list" class="text-primary me-2"></fa-icon>
           <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAudit.detail.title">Stock Audit</span>
           <small class="text-muted ms-2">#{{ stockAudit.id }}</small>
         </h2>
@@ -49,7 +48,7 @@
         <div class="col-md-6 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
-              <h5 class="card-title text-muted mb-3"><fa-icon icon="calculator" class="me-2"></fa-icon> Comptage</h5>
+              <h5 class="card-title text-muted mb-3">Comptage</h5>
               <dl class="row-md jh-entity-details mb-0">
                 <dt>Theoretical Count</dt>
                 <dd>{{ stockAudit.theoreticalCount }}</dd>
@@ -62,7 +61,7 @@
           </div>
         </div>
 
-        <!-- SECTION 3 : AUDIT -->
+        <!-- SECTION 3 : AUDIT
         <div class="col-md-6 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
@@ -75,13 +74,13 @@
               </dl>
             </div>
           </div>
-        </div>
+        </div>-->
 
         <!-- SECTION 4 : RÉFÉRENCES -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-12 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
-              <h5 class="card-title text-muted mb-3"><fa-icon icon="warehouse" class="me-2"></fa-icon> Références</h5>
+              <h5 class="card-title text-muted mb-3">Références</h5>
               <dl class="row-md jh-entity-details mb-0">
                 <dt>Warehouse</dt>
                 <dd *ngIf="stockAudit.warehouse">

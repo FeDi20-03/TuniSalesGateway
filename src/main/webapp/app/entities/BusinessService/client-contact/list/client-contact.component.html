@@ -62,7 +62,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="isPrimary">
+          <!--<th scope="col" jhiSortBy="isPrimary">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.isPrimary">Is Primary</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -73,7 +73,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="client.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceClientContact.client">Client</span>
@@ -96,8 +96,8 @@
           <td>{{ clientContact.email }}</td>
           <td>{{ clientContact.phone }}</td>
           <td jhiTranslate="{{ 'tuniSalesGatewayApp.ContactRole.' + clientContact.role }}">{{ clientContact.role }}</td>
-          <td>{{ clientContact.isPrimary }}</td>
-          <td>{{ clientContact.createdAt | formatMediumDatetime }}</td>
+          <!--<td>{{ clientContact.isPrimary }}</td>
+          <td>{{ clientContact.createdAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="clientContact.client">
               <a [routerLink]="['/client', clientContact.client.id, 'view']">{{ clientContact.client.name }}</a>

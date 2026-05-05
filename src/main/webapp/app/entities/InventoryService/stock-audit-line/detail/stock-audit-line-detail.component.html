@@ -4,7 +4,6 @@
       <!-- HEADER -->
       <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="mb-0" data-cy="stockAuditLineDetailsHeading">
-          <fa-icon icon="clipboard-check" class="text-primary me-2"></fa-icon>
           <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockAuditLine.detail.title">Stock Audit Line</span>
           <small class="text-muted ms-2">#{{ stockAuditLine.id }}</small>
         </h2>
@@ -39,8 +38,8 @@
                 <dd>{{ stockAuditLine.foundPhysically }}</dd>
                 <dt>Resolution Note</dt>
                 <dd>{{ stockAuditLine.resolutionNote }}</dd>
-                <dt>Created At</dt>
-                <dd>{{ stockAuditLine.createdAt | formatMediumDatetime }}</dd>
+                <!--<dt>Created At</dt>
+                <dd>{{ stockAuditLine.createdAt | formatMediumDatetime }}</dd>-->
               </dl>
             </div>
           </div>
@@ -50,7 +49,7 @@
         <div class="col-md-6 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
-              <h5 class="card-title text-muted mb-3"><fa-icon icon="layer-group" class="me-2"></fa-icon> Références</h5>
+              <h5 class="card-title text-muted mb-3">Références</h5>
               <dl class="row-md jh-entity-details mb-0">
                 <dt>Stock Item</dt>
                 <dd *ngIf="stockAuditLine.stockItem">

@@ -111,13 +111,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="lastOrderAt">
+            <!--<th scope="col" jhiSortBy="lastOrderAt">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceClient.lastOrderAt">Last Order At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <!--<th scope="col" jhiSortBy="isDeleted">
+            <th scope="col" jhiSortBy="isDeleted">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceClient.isDeleted">Is Deleted</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -157,8 +157,8 @@
                 {{ client.status }}
               </span>
             </td>
-            <td>{{ client.lastOrderAt | formatMediumDatetime }}</td>
-            <!--<td>
+            <!--<td>{{ client.lastOrderAt | formatMediumDatetime }}</td>
+            <td>
               <span class="badge" [ngClass]="client.isDeleted ? 'bg-danger' : 'bg-success'">
                 {{ client.isDeleted ? 'Yes' : 'No' }}
               </span>

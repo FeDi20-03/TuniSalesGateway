@@ -50,7 +50,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="validFrom">
+          <!--<th scope="col" jhiSortBy="validFrom">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.validFrom">Valid From</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -73,7 +73,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="product.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServicePriceList.product">Product</span>
@@ -96,10 +96,10 @@
           </td>
           <td>{{ priceList.unitPrice }}</td>
           <td>{{ priceList.maxDiscountPct }}</td>
-          <td>{{ priceList.validFrom | formatMediumDatetime }}</td>
+          <!--<td>{{ priceList.validFrom | formatMediumDatetime }}</td>
           <td>{{ priceList.validTo | formatMediumDatetime }}</td>
           <td>{{ priceList.isActive }}</td>
-          <td>{{ priceList.createdAt | formatMediumDatetime }}</td>
+          <td>{{ priceList.createdAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="priceList.product">
               <a [routerLink]="['/product', priceList.product.id, 'view']">{{ priceList.product.name }}</a>

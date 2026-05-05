@@ -74,7 +74,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -85,7 +85,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceMission.updatedAt">Updated At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -100,8 +100,8 @@
           <td>{{ mission.description }}</td>
           <td>{{ mission.missionDate | formatMediumDatetime }}</td>
           <td jhiTranslate="{{ 'tuniSalesGatewayApp.MissionStatus.' + mission.status }}">{{ mission.status }}</td>
-          <td>{{ mission.createdAt | formatMediumDatetime }}</td>
-          <td>{{ mission.updatedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ mission.createdAt | formatMediumDatetime }}</td>
+          <td>{{ mission.updatedAt | formatMediumDatetime }}</td>-->
           <td class="text-end">
             <div class="btn-group">
               <button

@@ -114,7 +114,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="submittedAt">
+            <!--<th scope="col" jhiSortBy="submittedAt">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.submittedAt">Submitted At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -125,14 +125,14 @@
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.validatedAt">Validated At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <!--<th scope="col" jhiSortBy="isDeleted">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.isDeleted">Is Deleted</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>-->
-            <th scope="col" jhiSortBy="createdAt">
+            <!--<th scope="col" jhiSortBy="createdAt">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.createdAt">Created At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -143,7 +143,7 @@
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.updatedAt">Updated At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <th scope="col" jhiSortBy="client.name">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.client">Client</span>
@@ -174,15 +174,15 @@
             <!--<td>{{ order.paymentTermsDays }}</td>
             <td>{{ order.dueDate | formatMediumDatetime }}</td>-->
             <td>{{ order.rejectionReason }}</td>
-            <td>{{ order.submittedAt | formatMediumDatetime }}</td>
-            <td>{{ order.validatedAt | formatMediumDatetime }}</td>
+            <!--<td>{{ order.submittedAt | formatMediumDatetime }}</td>
+            <td>{{ order.validatedAt | formatMediumDatetime }}</td>-->
             <!--<td>
               <span class="badge" [ngClass]="order.isDeleted ? 'bg-danger' : 'bg-success'">
                 {{ order.isDeleted ? 'Yes' : 'No' }}
               </span>
             </td>-->
-            <td>{{ order.createdAt | formatMediumDatetime }}</td>
-            <td>{{ order.updatedAt | formatMediumDatetime }}</td>
+            <!--<td>{{ order.createdAt | formatMediumDatetime }}</td>
+            <td>{{ order.updatedAt | formatMediumDatetime }}</td>-->
             <td>
               <div *ngIf="order.client">
                 <a [routerLink]="['/client', order.client.id, 'view']" class="text-decoration-none fw-bold text-primary">{{

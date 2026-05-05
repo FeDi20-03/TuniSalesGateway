@@ -4,7 +4,6 @@
       <!-- HEADER -->
       <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="mb-0" data-cy="deliveryDetailsHeading">
-          <fa-icon icon="truck" class="text-primary me-2"></fa-icon>
           <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.detail.title"> Delivery </span>
           <small class="text-muted ms-2">#{{ delivery.id }}</small>
         </h2>
@@ -53,7 +52,7 @@
         </div>
 
         <!-- SECTION 2 : DATES -->
-        <div class="col-md-6 mb-4">
+        <!--<div class="col-md-6 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
               <h5 class="card-title text-muted mb-3">
@@ -73,16 +72,13 @@
               </dl>
             </div>
           </div>
-        </div>
+        </div>-->
 
         <!-- SECTION 3 : NOTES & RELATION -->
-        <div class="col-md-12 mb-4">
-          <div class="card bg-light border-0 shadow-none">
+        <div class="col-md-6 mb-4">
+          <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
-              <h5 class="card-title text-muted mb-3">
-                <fa-icon icon="file-alt" class="me-2"></fa-icon>
-                Notes & Relation
-              </h5>
+              <h5 class="card-title text-muted mb-3">Notes & Relation</h5>
 
               <dl class="jh-entity-details mb-0">
                 <dt>Notes</dt>
@@ -95,8 +91,8 @@
                   </a>
                 </dd>
 
-                <dt>Created At</dt>
-                <dd>{{ delivery.createdAt | formatMediumDatetime }}</dd>
+                <!--<dt>Created At</dt>
+                <dd>{{ delivery.createdAt | formatMediumDatetime }}</dd>-->
               </dl>
             </div>
           </div>

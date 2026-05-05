@@ -77,7 +77,7 @@
         </div>
 
         <!-- SECTION 3 : AUDIT -->
-        <div class="col-md-12 mb-4">
+        <!--<div class="col-md-12 mb-4">
           <div class="card bg-light border-0 shadow-none">
             <div class="card-body">
               <h5 class="card-title text-muted mb-3">
@@ -99,19 +99,20 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
-      <!-- FOOTER -->
-      <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
-        <button type="button" (click)="previousState()" class="btn btn-secondary">
-          <fa-icon icon="arrow-left"></fa-icon>
-          Retour
-        </button>
+        <!-- FOOTER -->
+        <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-2">
+          <button type="button" (click)="previousState()" class="btn btn-secondary">
+            <fa-icon icon="arrow-left"></fa-icon>
+            Retour
+          </button>
 
-        <button type="button" [routerLink]="['/mission', mission.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>
-          Editer
-        </button>
+          <button type="button" [routerLink]="['/mission', mission.id, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>
+            Editer
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -68,7 +68,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="isDeleted">
+          <!--<th scope="col" jhiSortBy="isDeleted">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.isDeleted">Is Deleted</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -85,7 +85,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.updatedAt">Updated At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="warehouse.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.warehouse">Warehouse</span>
@@ -105,9 +105,9 @@
           <td>{{ stockItem.productName }}</td>
           <td>{{ stockItem.imei }}</td>
           <td jhiTranslate="{{ 'tuniSalesGatewayApp.StockItemStatus.' + stockItem.status }}">{{ stockItem.status }}</td>
-          <td>{{ stockItem.isDeleted }}</td>
+          <!--<td>{{ stockItem.isDeleted }}</td>
           <td>{{ stockItem.acquiredAt | formatMediumDatetime }}</td>
-          <td>{{ stockItem.updatedAt | formatMediumDatetime }}</td>
+          <td>{{ stockItem.updatedAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="stockItem.warehouse">
               <a [routerLink]="['/warehouse', stockItem.warehouse.id, 'view']">{{ stockItem.warehouse.name }}</a>

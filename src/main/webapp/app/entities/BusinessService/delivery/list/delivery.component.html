@@ -62,7 +62,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="shippedAt">
+          <!--<th scope="col" jhiSortBy="shippedAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.shippedAt">Shipped At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -79,19 +79,19 @@
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.confirmedAt">Confirmed At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="notes">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.notes">Notes</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="order.orderNumber">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceDelivery.order">Order</span>
@@ -110,11 +110,11 @@
           <td>{{ delivery.deliveryNumber }}</td>
           <td jhiTranslate="{{ 'tuniSalesGatewayApp.DeliveryStatus.' + delivery.status }}">{{ delivery.status }}</td>
           <td>{{ delivery.trackingNumber }}</td>
-          <td>{{ delivery.shippedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ delivery.shippedAt | formatMediumDatetime }}</td>
           <td>{{ delivery.deliveredAt | formatMediumDatetime }}</td>
-          <td>{{ delivery.confirmedAt | formatMediumDatetime }}</td>
+          <td>{{ delivery.confirmedAt | formatMediumDatetime }}</td>-->
           <td>{{ delivery.notes }}</td>
-          <td>{{ delivery.createdAt | formatMediumDatetime }}</td>
+          <!--<td>{{ delivery.createdAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="delivery.order">
               <a [routerLink]="['/order', delivery.order.id, 'view']">{{ delivery.order.orderNumber }}</a>

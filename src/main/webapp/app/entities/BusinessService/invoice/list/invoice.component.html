@@ -108,19 +108,19 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>-->
-            <th scope="col" jhiSortBy="paidAt">
+            <!--<th scope="col" jhiSortBy="paidAt">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.paidAt">Paid At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <!--<th scope="col" jhiSortBy="isDeleted">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.isDeleted">Is Deleted</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>-->
-            <th scope="col" jhiSortBy="createdAt">
+            <!--<th scope="col" jhiSortBy="createdAt">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.createdAt">Created At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -131,7 +131,7 @@
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.updatedAt">Updated At</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
-            </th>
+            </th>-->
             <!--<th scope="col" jhiSortBy="client.name">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceInvoice.client">Client</span>
@@ -171,14 +171,14 @@
             </td>
             <!--<td>{{ invoice.issueDate | formatMediumDatetime }}</td>
             <td>{{ invoice.dueDate | formatMediumDatetime }}</td>-->
-            <td>{{ invoice.paidAt | formatMediumDatetime }}</td>
+            <!--<td>{{ invoice.paidAt | formatMediumDatetime }}</td>-->
             <!--<td>
               <span class="badge" [ngClass]="invoice.isDeleted ? 'bg-danger' : 'bg-success'">
                 {{ invoice.isDeleted ? 'Yes' : 'No' }}
               </span>
             </td>-->
-            <td>{{ invoice.createdAt | formatMediumDatetime }}</td>
-            <td>{{ invoice.updatedAt | formatMediumDatetime }}</td>
+            <!--<td>{{ invoice.createdAt | formatMediumDatetime }}</td>
+            <td>{{ invoice.updatedAt | formatMediumDatetime }}</td>-->
             <td>
               <div *ngIf="invoice.order">
                 <a [routerLink]="['/order', invoice.order.id, 'view']" class="text-decoration-none fw-bold text-primary">{{

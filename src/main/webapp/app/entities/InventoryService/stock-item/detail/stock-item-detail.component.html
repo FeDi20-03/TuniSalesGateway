@@ -4,7 +4,6 @@
       <!-- HEADER -->
       <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="mb-0" data-cy="stockItemDetailsHeading">
-          <fa-icon icon="box" class="text-primary me-2"></fa-icon>
           <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.detail.title">Stock Item</span>
           <small class="text-muted ms-2">#{{ stockItem.id }}</small>
         </h2>
@@ -42,12 +41,12 @@
                 <dd class="fw-bold">{{ stockItem.productName }}</dd>
                 <dt>Imei</dt>
                 <dd>{{ stockItem.imei }}</dd>
-                <dt>Is Deleted</dt>
+                <!--<dt>Is Deleted</dt>
                 <dd>{{ stockItem.isDeleted }}</dd>
                 <dt>Acquired At</dt>
                 <dd>{{ stockItem.acquiredAt | formatMediumDatetime }}</dd>
                 <dt>Updated At</dt>
-                <dd>{{ stockItem.updatedAt | formatMediumDatetime }}</dd>
+                <dd>{{ stockItem.updatedAt | formatMediumDatetime }}</dd>-->
               </dl>
             </div>
           </div>
@@ -57,7 +56,7 @@
         <div class="col-md-6 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
-              <h5 class="card-title text-muted mb-3"><fa-icon icon="warehouse" class="me-2"></fa-icon> Warehouse</h5>
+              <h5 class="card-title text-muted mb-3">Warehouse</h5>
               <dl class="row-md jh-entity-details mb-0">
                 <dt>Warehouse</dt>
                 <dd *ngIf="stockItem.warehouse">

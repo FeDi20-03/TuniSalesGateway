@@ -68,7 +68,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="checkinAt">
+          <!--<th scope="col" jhiSortBy="checkinAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.checkinAt">Checkin At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -79,19 +79,19 @@
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.checkoutAt">Checkout At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="notes">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.notes">Notes</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="client.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceVisit.client">Client</span>
@@ -117,10 +117,10 @@
           <td jhiTranslate="{{ 'tuniSalesGatewayApp.VisitStatus.' + visit.status }}">{{ visit.status }}</td>
           <td>{{ visit.latitude }}</td>
           <td>{{ visit.longitude }}</td>
-          <td>{{ visit.checkinAt | formatMediumDatetime }}</td>
-          <td>{{ visit.checkoutAt | formatMediumDatetime }}</td>
+          <!--<td>{{ visit.checkinAt | formatMediumDatetime }}</td>
+          <td>{{ visit.checkoutAt | formatMediumDatetime }}</td>-->
           <td>{{ visit.notes }}</td>
-          <td>{{ visit.createdAt | formatMediumDatetime }}</td>
+          <!--<td>{{ visit.createdAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="visit.client">
               <a [routerLink]="['/client', visit.client.id, 'view']">{{ visit.client.name }}</a>

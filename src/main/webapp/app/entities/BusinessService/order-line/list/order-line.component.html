@@ -62,12 +62,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLine.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="product.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrderLine.product">Product</span>
@@ -92,7 +92,7 @@
           <td>{{ orderLine.unitPrice }}</td>
           <td>{{ orderLine.discountPct }}</td>
           <td>{{ orderLine.lineTotal }}</td>
-          <td>{{ orderLine.createdAt | formatMediumDatetime }}</td>
+          <!--<td>{{ orderLine.createdAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="orderLine.product">
               <a [routerLink]="['/product', orderLine.product.id, 'view']">{{ orderLine.product.name }}</a>
