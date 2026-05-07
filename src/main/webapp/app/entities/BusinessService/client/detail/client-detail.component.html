@@ -128,7 +128,7 @@
                   </th>
                 </thead>
                 <tbody *ngIf="client.contacts && client.contacts.length > 0">
-                  <tr *ngFor="let contact of client.contacts" [routerLink]="['/client-contact', client.id, 'view']">
+                  <tr *ngFor="let contact of client.contacts" [routerLink]="['/client-contact', contact.id, 'view']">
                     <td>{{ contact.fullName }}</td>
                     <td>{{ contact.email }}</td>
                     <td>{{ contact.phone }}</td>

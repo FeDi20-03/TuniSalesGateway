@@ -42,6 +42,17 @@ export class ClientContactUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      const clientId = params['clientId'];
+      if (clientId) {
+        this.editForm.patchValue({ client: { id: Number(clientId) } });
+        // Make sure it exists in the shared collection to bind properly
+        this.clientsSharedCollection = this.clientService.addClientToCollectionIfMissing<IClient>(this.clientsSharedCollection, {
+          id: Number(clientId),
+        } as IClient);
+      }
+    });
   }
 
   previousState(): void {

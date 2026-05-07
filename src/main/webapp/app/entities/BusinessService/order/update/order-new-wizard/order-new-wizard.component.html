@@ -73,14 +73,19 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Rechercher..." [(ngModel)]="searchQueryClient" />
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              [ngModel]="searchQueryClient"
+              (ngModelChange)="onClientSearch($event); searchQueryClient = $event"
+            />
           </div>
 
           <div class="clients-list">
-            <ng-container *ngIf="filteredClients.length > 0; else noClients">
+            <ng-container *ngIf="clients.length > 0; else noClients">
               <div
                 class="client-card"
-                *ngFor="let client of filteredClients"
+                *ngFor="let client of clients"
                 [class.selected]="selectedClient?.id === client.id"
                 (click)="selectClient(client)"
               >

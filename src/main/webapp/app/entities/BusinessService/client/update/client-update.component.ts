@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
@@ -16,6 +16,7 @@ import { ClientStatus } from 'app/entities/enumerations/client-status.model';
 })
 export class ClientUpdateComponent implements OnInit {
   isSaving = false;
+  isNewClient = false;
   client: IClient | null = null;
   clientTypeValues = Object.keys(ClientType);
   clientStatusValues = Object.keys(ClientStatus);
@@ -25,7 +26,8 @@ export class ClientUpdateComponent implements OnInit {
   constructor(
     protected clientService: ClientService,
     protected clientFormService: ClientFormService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,21 +47,27 @@ export class ClientUpdateComponent implements OnInit {
     this.isSaving = true;
     const client = this.clientFormService.getClient(this.editForm);
     if (client.id !== null) {
+      this.isNewClient = false;
       this.subscribeToSaveResponse(this.clientService.update(client));
     } else {
+      this.isNewClient = true;
       this.subscribeToSaveResponse(this.clientService.create(client));
     }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IClient>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: res => this.onSaveSuccess(res.body),
       error: () => this.onSaveError(),
     });
   }
 
-  protected onSaveSuccess(): void {
-    this.previousState();
+  protected onSaveSuccess(savedClient: IClient | null): void {
+    if (this.isNewClient && savedClient?.id) {
+      this.router.navigate(['/client-contact/new'], { queryParams: { clientId: savedClient.id } });
+    } else {
+      this.previousState();
+    }
   }
 
   protected onSaveError(): void {

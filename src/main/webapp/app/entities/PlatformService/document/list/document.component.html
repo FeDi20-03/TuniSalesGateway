@@ -92,7 +92,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -103,7 +103,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.platformServiceDocument.updatedAt">Updated At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -121,8 +121,8 @@
           <td>{{ document.mimeType }}</td>
           <td>{{ document.sizeBytes }}</td>
           <td>{{ document.uploadedByLogin }}</td>
-          <td>{{ document.createdAt | formatMediumDatetime }}</td>
-          <td>{{ document.updatedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ document.createdAt | formatMediumDatetime }}</td>
+          <td>{{ document.updatedAt | formatMediumDatetime }}</td>-->
           <td class="text-end">
             <div class="btn-group">
               <button

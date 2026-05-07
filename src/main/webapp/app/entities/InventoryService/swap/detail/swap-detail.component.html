@@ -4,7 +4,6 @@
       <!-- HEADER -->
       <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
         <h2 class="mb-0" data-cy="swapDetailsHeading">
-          <fa-icon icon="exchange-alt" class="text-primary me-2"></fa-icon>
           <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.detail.title">Swap</span>
           <small class="text-muted ms-2">#{{ swap.id }}</small>
         </h2>
@@ -42,12 +41,12 @@
                 <dd>{{ swap.clientName }}</dd>
                 <dt>Reason</dt>
                 <dd>{{ swap.reason }}</dd>
-                <dt>Created At</dt>
+                <!--<dt>Created At</dt>
                 <dd>{{ swap.createdAt | formatMediumDatetime }}</dd>
                 <dt>Resolved At</dt>
                 <dd>{{ swap.resolvedAt | formatMediumDatetime }}</dd>
                 <dt>Updated At</dt>
-                <dd>{{ swap.updatedAt | formatMediumDatetime }}</dd>
+                <dd>{{ swap.updatedAt | formatMediumDatetime }}</dd>-->
               </dl>
             </div>
           </div>
@@ -57,7 +56,7 @@
         <div class="col-md-6 mb-4">
           <div class="card bg-light border-0 shadow-none h-100">
             <div class="card-body">
-              <h5 class="card-title text-muted mb-3"><fa-icon icon="boxes" class="me-2"></fa-icon> Articles</h5>
+              <h5 class="card-title text-muted mb-3">Articles</h5>
               <dl class="row-md jh-entity-details mb-0">
                 <dt>Outgoing Item</dt>
                 <dd *ngIf="swap.outgoingItem">

@@ -68,12 +68,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col" jhiSortBy="fromWarehouse.name">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockMovement.fromWarehouse">From Warehouse</span>
@@ -109,7 +109,7 @@
           <td>{{ stockMovement.reference }}</td>
           <td>{{ stockMovement.quantity }}</td>
           <td>{{ stockMovement.performedByLogin }}</td>
-          <td>{{ stockMovement.createdAt | formatMediumDatetime }}</td>
+          <!--<td>{{ stockMovement.createdAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="stockMovement.fromWarehouse">
               <a [routerLink]="['/warehouse', stockMovement.fromWarehouse.id, 'view']">{{ stockMovement.fromWarehouse.name }}</a>

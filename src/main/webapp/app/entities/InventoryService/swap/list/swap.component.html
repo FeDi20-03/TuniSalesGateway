@@ -68,41 +68,41 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.createdAt">Created At</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="resolvedAt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.resolvedAt">Resolved At</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="updatedAt">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.updatedAt">Updated At</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+          <!--<th scope="col" jhiSortBy="createdAt">
+          <div class="d-flex">
+            <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.createdAt">Created At</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="resolvedAt">
+          <div class="d-flex">
+            <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.resolvedAt">Resolved At</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>
+        <th scope="col" jhiSortBy="updatedAt">
+          <div class="d-flex">
+            <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.updatedAt">Updated At</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>-->
           <th scope="col" jhiSortBy="outgoingItem.imei">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.outgoingItem">Outgoing Item</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="incomingItem.imei">
-            <div class="d-flex">
-              <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.incomingItem">Incoming Item</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
+          <!--<th scope="col" jhiSortBy="incomingItem.imei">
+          <div class="d-flex">
+            <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceSwap.incomingItem">Incoming Item</span>
+            <fa-icon class="p-1" icon="sort"></fa-icon>
+          </div>
+        </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let swap of swaps; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoswap(swap.id)" class="btn btn-info btn-sm">
+        <tr *ngFor="let swap of swaps; trackBy: trackId" data-cy="entityTable" (dblclick)="gotoswap(swap.id)">
           <td>
             <a [routerLink]="['/swap', swap.id, 'view']">{{ swap.id }}</a>
           </td>
@@ -111,19 +111,19 @@
           <td>{{ swap.clientName }}</td>
           <td jhiTranslate="{{ 'tuniSalesGatewayApp.SwapStatus.' + swap.status }}">{{ swap.status }}</td>
           <td>{{ swap.reason }}</td>
-          <td>{{ swap.createdAt | formatMediumDatetime }}</td>
-          <td>{{ swap.resolvedAt | formatMediumDatetime }}</td>
-          <td>{{ swap.updatedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ swap.createdAt | formatMediumDatetime }}</td>
+        <td>{{ swap.resolvedAt | formatMediumDatetime }}</td>
+        <td>{{ swap.updatedAt | formatMediumDatetime }}</td>-->
           <td>
             <div *ngIf="swap.outgoingItem">
               <a [routerLink]="['/stock-item', swap.outgoingItem.id, 'view']">{{ swap.outgoingItem.imei }}</a>
             </div>
           </td>
-          <td>
-            <div *ngIf="swap.incomingItem">
-              <a [routerLink]="['/stock-item', swap.incomingItem.id, 'view']">{{ swap.incomingItem.imei }}</a>
-            </div>
-          </td>
+          <!--<td>
+          <div *ngIf="swap.incomingItem">
+            <a [routerLink]="['/stock-item', swap.incomingItem.id, 'view']">{{ swap.incomingItem.imei }}</a>
+          </div>
+        </td>-->
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/swap', swap.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">

@@ -80,12 +80,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="calculatedAt">
+          <!--<th scope="col" jhiSortBy="calculatedAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.platformServiceClientScore.calculatedAt">Calculated At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -103,7 +103,7 @@
             {{ clientScore.classification }}
           </td>
           <td>{{ clientScore.breakdownJson }}</td>
-          <td>{{ clientScore.calculatedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ clientScore.calculatedAt | formatMediumDatetime }}</td>-->
           <td class="text-end">
             <div class="btn-group">
               <button

@@ -80,7 +80,7 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="createdAt">
+          <!--<th scope="col" jhiSortBy="createdAt">
             <div class="d-flex">
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.createdAt">Created At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -91,7 +91,7 @@
               <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceWarehouse.updatedAt">Updated At</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -107,8 +107,8 @@
           <td>{{ warehouse.city }}</td>
           <td>{{ warehouse.minThreshold }}</td>
           <td>{{ warehouse.isActive }}</td>
-          <td>{{ warehouse.createdAt | formatMediumDatetime }}</td>
-          <td>{{ warehouse.updatedAt | formatMediumDatetime }}</td>
+          <!--<td>{{ warehouse.createdAt | formatMediumDatetime }}</td>
+          <td>{{ warehouse.updatedAt | formatMediumDatetime }}</td>-->
           <td class="text-end">
             <div class="btn-group">
               <button
