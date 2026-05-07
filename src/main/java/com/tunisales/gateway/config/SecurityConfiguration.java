@@ -104,9 +104,24 @@ public class SecurityConfiguration {
             .pathMatchers("/api/activate").permitAll()
             .pathMatchers("/api/account/reset-password/init").permitAll()
             .pathMatchers("/api/account/reset-password/finish").permitAll()
-            .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN_SYSTEME)
             .pathMatchers("/api/**").authenticated()
-            .pathMatchers("/services/*/v3/api-docs").hasAuthority(AuthoritiesConstants.ADMIN)
+            .pathMatchers("/services/*/v3/api-docs").hasAuthority(AuthoritiesConstants.ADMIN_SYSTEME)
+            .pathMatchers("/services/inventory/**").hasAnyAuthority(
+                AuthoritiesConstants.MAGASINIER,
+                AuthoritiesConstants.COMMERCIAL,
+                AuthoritiesConstants.ADMIN_COMMERCIAL,
+                AuthoritiesConstants.ADMIN_SYSTEME
+            )
+            .pathMatchers("/services/business/**").hasAnyAuthority(
+                AuthoritiesConstants.COMMERCIAL,
+                AuthoritiesConstants.VENDEUR,
+                AuthoritiesConstants.RESP_PV,
+                AuthoritiesConstants.ADMIN_COMMERCIAL,
+                AuthoritiesConstants.ADMIN_SYSTEME,
+                AuthoritiesConstants.CLIENT
+            )
+            .pathMatchers("/services/platform/**").authenticated()
             .pathMatchers("/services/**").authenticated()
             .pathMatchers("/management/health").permitAll()
             .pathMatchers("/management/health/**").permitAll()
