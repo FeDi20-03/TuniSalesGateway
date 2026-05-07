@@ -6,6 +6,7 @@ import com.tunisales.gateway.security.AuthoritiesConstants;
 import com.tunisales.gateway.security.jwt.JWTFilter;
 import com.tunisales.gateway.security.jwt.TokenProvider;
 import com.tunisales.gateway.web.filter.SpaWebFilter;
+import com.tunisales.gateway.web.filter.TenantHeaderFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -40,19 +41,22 @@ public class SecurityConfiguration {
 
     private final SecurityProblemSupport problemSupport;
     private final CorsWebFilter corsWebFilter;
+    private final TenantHeaderFilter tenantHeaderFilter;
 
     public SecurityConfiguration(
         ReactiveUserDetailsService userDetailsService,
         TokenProvider tokenProvider,
         JHipsterProperties jHipsterProperties,
         SecurityProblemSupport problemSupport,
-        CorsWebFilter corsWebFilter
+        CorsWebFilter corsWebFilter,
+        TenantHeaderFilter tenantHeaderFilter
     ) {
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
         this.jHipsterProperties = jHipsterProperties;
         this.problemSupport = problemSupport;
         this.corsWebFilter = corsWebFilter;
+        this.tenantHeaderFilter = tenantHeaderFilter;
     }
 
     @Bean
@@ -82,6 +86,7 @@ public class SecurityConfiguration {
             .addFilterBefore(corsWebFilter, SecurityWebFiltersOrder.REACTOR_CONTEXT)
             .addFilterAt(new SpaWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
             .addFilterAt(new JWTFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
+            .addFilterAfter(tenantHeaderFilter, SecurityWebFiltersOrder.HTTP_BASIC)
             .authenticationManager(reactiveAuthenticationManager())
             .exceptionHandling()
                 .accessDeniedHandler(problemSupport)

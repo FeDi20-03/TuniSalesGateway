@@ -28,6 +28,8 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
 
+    private static final String TENANT_ID_KEY = "tenantId";
+
     private static final String INVALID_JWT_TOKEN = "Invalid JWT token.";
 
     private final Key key;
@@ -99,6 +101,23 @@ public class TokenProvider {
         User principal = new User(claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+
+    /**
+     * Extracts the {@code tenantId} claim from a (pre-validated) JWT.
+     *
+     * @param token the raw JWT string
+     * @return the tenantId value, or {@code null} if the claim is absent
+     */
+    public String getTenantId(String token) {
+        try {
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+            Object tenantId = claims.get(TENANT_ID_KEY);
+            return tenantId != null ? tenantId.toString() : null;
+        } catch (Exception e) {
+            log.trace("Could not extract tenantId from token", e);
+            return null;
+        }
     }
 
     public boolean validateToken(String authToken) {
