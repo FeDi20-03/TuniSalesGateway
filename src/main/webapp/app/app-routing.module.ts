@@ -23,7 +23,7 @@ import { EquipeComponent } from './equipe/equipe.component';
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN],
+            authorities: [Authority.ADMIN, Authority.ADMIN_SYSTEME],
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),

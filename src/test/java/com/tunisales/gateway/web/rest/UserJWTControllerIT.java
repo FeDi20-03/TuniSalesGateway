@@ -54,7 +54,11 @@ class UserJWTControllerIT {
             .valueMatches("Authorization", "Bearer .+")
             .expectBody()
             .jsonPath("$.id_token")
-            .isNotEmpty();
+            .isNotEmpty()
+            .jsonPath("$.refresh_token")
+            .isNotEmpty()
+            .jsonPath("$.expires_in")
+            .isNumber();
     }
 
     @Test
@@ -84,7 +88,11 @@ class UserJWTControllerIT {
             .valueMatches("Authorization", "Bearer .+")
             .expectBody()
             .jsonPath("$.id_token")
-            .isNotEmpty();
+            .isNotEmpty()
+            .jsonPath("$.refresh_token")
+            .isNotEmpty()
+            .jsonPath("$.expires_in")
+            .isNumber();
     }
 
     @Test

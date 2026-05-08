@@ -30,6 +30,15 @@ public class TokenProvider {
 
     private static final String TENANT_ID_KEY = "tenantId";
 
+    private static final String TOKEN_TYPE_KEY = "type";
+
+    private static final String TOKEN_TYPE_ACCESS = "access";
+
+    private static final String TOKEN_TYPE_REFRESH = "refresh";
+
+    /** Refresh token validity: 14 days in milliseconds. */
+    private static final long REFRESH_TOKEN_VALIDITY_MS = 14L * 24 * 60 * 60 * 1000;
+
     private static final String INVALID_JWT_TOKEN = "Invalid JWT token.";
 
     private final Key key;
@@ -87,6 +96,94 @@ public class TokenProvider {
             .setExpiration(validity)
             .serializeToJsonWith(new JacksonSerializer<>())
             .compact();
+    }
+
+    /**
+     * Creates a short-lived access token (same validity as the current token).
+     *
+     * @param authentication the authenticated principal
+     * @return signed JWT access token
+     */
+    public String createAccessToken(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+
+        long now = new Date().getTime();
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+
+        return Jwts
+            .builder()
+            .setSubject(authentication.getName())
+            .claim(AUTHORITIES_KEY, authorities)
+            .claim(TOKEN_TYPE_KEY, TOKEN_TYPE_ACCESS)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(validity)
+            .serializeToJsonWith(new JacksonSerializer<>())
+            .compact();
+    }
+
+    /**
+     * Creates a long-lived refresh token (14 days).
+     * The token carries a {@code type: refresh} claim so it cannot be used as an access token.
+     *
+     * @param authentication the authenticated principal
+     * @return signed JWT refresh token
+     */
+    public String createRefreshToken(Authentication authentication) {
+        long now = new Date().getTime();
+        Date validity = new Date(now + REFRESH_TOKEN_VALIDITY_MS);
+
+        return Jwts
+            .builder()
+            .setSubject(authentication.getName())
+            .claim(TOKEN_TYPE_KEY, TOKEN_TYPE_REFRESH)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(validity)
+            .serializeToJsonWith(new JacksonSerializer<>())
+            .compact();
+    }
+
+    /**
+     * Validates a refresh token: it must be a structurally valid, non-expired JWT
+     * and carry {@code type: refresh}.
+     *
+     * @param refreshToken the raw JWT refresh token
+     * @return {@code true} if the token is a valid, non-expired refresh token
+     */
+    public boolean validateRefreshToken(String refreshToken) {
+        try {
+            Claims claims = jwtParser.parseClaimsJws(refreshToken).getBody();
+            return TOKEN_TYPE_REFRESH.equals(claims.get(TOKEN_TYPE_KEY));
+        } catch (ExpiredJwtException e) {
+            this.securityMetersService.trackTokenExpired();
+            log.trace(INVALID_JWT_TOKEN, e);
+        } catch (UnsupportedJwtException e) {
+            this.securityMetersService.trackTokenUnsupported();
+            log.trace(INVALID_JWT_TOKEN, e);
+        } catch (MalformedJwtException e) {
+            this.securityMetersService.trackTokenMalformed();
+            log.trace(INVALID_JWT_TOKEN, e);
+        } catch (SignatureException e) {
+            this.securityMetersService.trackTokenInvalidSignature();
+            log.trace(INVALID_JWT_TOKEN, e);
+        } catch (IllegalArgumentException e) {
+            log.error("Refresh token validation error {}", e.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Returns the subject (username) from a refresh token without full validation.
+     * Should only be called after {@link #validateRefreshToken(String)} returns {@code true}.
+     */
+    public String getSubjectFromRefreshToken(String refreshToken) {
+        return jwtParser.parseClaimsJws(refreshToken).getBody().getSubject();
+    }
+
+    /**
+     * Returns the configured access token validity in seconds (used in the {@code expires_in} field).
+     */
+    public long getAccessTokenValidityInSeconds() {
+        return this.tokenValidityInMilliseconds / 1000;
     }
 
     public Authentication getAuthentication(String token) {
