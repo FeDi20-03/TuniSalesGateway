@@ -1,0 +1,7 @@
+{
+  "notifications": {
+    "title": "Notifications",
+    "empty": "Aucune notification.",
+    "unread": "{{ count }} non lue(s)"
+  }
+}

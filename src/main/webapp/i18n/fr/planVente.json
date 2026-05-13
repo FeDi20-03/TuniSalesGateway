@@ -1,0 +1,20 @@
+{
+  "planVente": {
+    "title": "Plan de vente",
+    "createMission": "Nouvelle mission",
+    "filterCommercial": "Commercial",
+    "filterType": "Type de mission",
+    "filterStatus": "Statut",
+    "all": "Tous",
+    "weekView": "Vue semaine",
+    "commercial": "Commercial",
+    "allMissions": "Toutes les missions",
+    "noMissions": "Aucune mission trouvée.",
+    "title2": "Titre",
+    "type": "Type",
+    "date": "Date",
+    "status": "Statut",
+    "description": "Description",
+    "selectCommercial": "-- Sélectionner un commercial --"
+  }
+}

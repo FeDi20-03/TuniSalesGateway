@@ -1,0 +1,117 @@
+<div class="container-fluid">
+  <jhi-alert></jhi-alert>
+  <jhi-alert-error></jhi-alert-error>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 jhiTranslate="creditNote.title">Avoirs</h2>
+    <button class="btn btn-primary" (click)="openModal(cnModal)">
+      <fa-icon icon="plus"></fa-icon> <span jhiTranslate="creditNote.create">Nouvel avoir</span>
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-4"><div class="spinner-border" role="status"></div></div>
+  <div *ngIf="!isLoading && creditNotes.length === 0" class="alert alert-info" jhiTranslate="creditNote.noItems">Aucun avoir.</div>
+
+  <div *ngIf="!isLoading && creditNotes.length > 0" class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" jhiTranslate="creditNote.client">Client</th>
+          <th scope="col" jhiTranslate="creditNote.amount">Montant</th>
+          <th scope="col" jhiTranslate="creditNote.reason">Raison</th>
+          <th scope="col" jhiTranslate="creditNote.status">Statut</th>
+          <th scope="col" jhiTranslate="creditNote.createdAt">Créé le</th>
+          <th scope="col" jhiTranslate="entity.action.edit">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cn of creditNotes">
+          <td>{{ cn.clientName }}</td>
+          <td>{{ cn.amount | number: '1.2-2' }} DT</td>
+          <td>{{ cn.reason }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-secondary': cn.status === 'DRAFT',
+                'bg-success': cn.status === 'VALIDATED',
+                'bg-primary': cn.status === 'APPLIED',
+                'bg-danger': cn.status === 'CANCELLED'
+              }"
+              >{{ cn.status }}</span
+            >
+          </td>
+          <td>{{ cn.createdAt | formatMediumDatetime }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button
+                *ngIf="isAdminCommercial && cn.status === 'DRAFT'"
+                class="btn btn-sm btn-success"
+                (click)="validate(cn)"
+                [attr.aria-label]="'Valider avoir'"
+              >
+                <fa-icon icon="check"></fa-icon> <span jhiTranslate="creditNote.validate">Valider</span>
+              </button>
+              <button class="btn btn-sm btn-outline-primary" (click)="openModal(cnModal, cn)" aria-label="Éditer">
+                <fa-icon icon="pencil-alt"></fa-icon>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="delete(cn.id)" aria-label="Supprimer"><fa-icon icon="trash"></fa-icon></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #cnModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" jhiTranslate="creditNote.form.title">Avoir</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="cnClient" jhiTranslate="creditNote.client">Client</label>
+        <input id="cnClient" type="text" class="form-control" formControlName="clientName" />
+        <div
+          *ngIf="form.get('clientName')?.invalid && form.get('clientName')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="cnAmount" jhiTranslate="creditNote.amount">Montant (DT)</label>
+        <input id="cnAmount" type="number" class="form-control" formControlName="amount" min="0" />
+        <div
+          *ngIf="form.get('amount')?.invalid && form.get('amount')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire, >= 0.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="cnReason" jhiTranslate="creditNote.reason">Raison</label>
+        <textarea id="cnReason" class="form-control" formControlName="reason" rows="3"></textarea>
+        <div
+          *ngIf="form.get('reason')?.invalid && form.get('reason')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire.
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      <span jhiTranslate="entity.action.cancel">Annuler</span>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="form.invalid || isSaving">
+      <span jhiTranslate="entity.action.save">Sauvegarder</span>
+    </button>
+  </div>
+</ng-template>

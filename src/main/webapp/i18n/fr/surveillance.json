@@ -1,0 +1,16 @@
+{
+  "surveillance": {
+    "title": "Surveillance des ventes",
+    "refresh": "Actualiser",
+    "period": "Période (YYYY-MM)",
+    "zone": "Zone",
+    "commercial": "Commercial",
+    "totalSales": "Total ventes",
+    "validatedOrders": "Commandes validées",
+    "topCommercials": "Top 3 Commerciaux",
+    "topProducts": "Top 3 Produits",
+    "salesByZone": "Ventes par zone",
+    "dailyEvolution": "Évolution journalière",
+    "noData": "Pas de données disponibles."
+  }
+}

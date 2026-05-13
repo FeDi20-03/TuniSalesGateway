@@ -1,0 +1,21 @@
+{
+  "ordersPending": {
+    "title": "Offres de vente en attente",
+    "noOrders": "Aucune commande soumise en attente de validation.",
+    "orderNumber": "N° Commande",
+    "client": "Client",
+    "total": "Montant total",
+    "submittedAt": "Date soumission",
+    "actions": "Actions",
+    "accept": "Accepter",
+    "negotiate": "Négocier",
+    "reject": "Refuser",
+    "negotiateTitle": "Motif de négociation",
+    "rejectTitle": "Motif de refus",
+    "reason": "Raison",
+    "accepted": "Commande acceptée avec succès.",
+    "negotiated": "Commande mise en négociation.",
+    "rejected": "Commande refusée.",
+    "error": "Une erreur est survenue."
+  }
+}

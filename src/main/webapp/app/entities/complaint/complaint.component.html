@@ -1,0 +1,136 @@
+<div class="container-fluid">
+  <jhi-alert></jhi-alert>
+  <jhi-alert-error></jhi-alert-error>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 jhiTranslate="complaint.title">Réclamations</h2>
+    <button class="btn btn-primary" (click)="openCreateModal(createModal)">
+      <fa-icon icon="plus"></fa-icon> <span jhiTranslate="complaint.create">Nouvelle réclamation</span>
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-4"><div class="spinner-border" role="status"></div></div>
+  <div *ngIf="!isLoading && complaints.length === 0" class="alert alert-info" jhiTranslate="complaint.noItems">Aucune réclamation.</div>
+
+  <div *ngIf="!isLoading && complaints.length > 0" class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" jhiTranslate="complaint.type">Type</th>
+          <th scope="col" jhiTranslate="complaint.description">Description</th>
+          <th scope="col" jhiTranslate="complaint.imei">IMEI</th>
+          <th scope="col" jhiTranslate="complaint.status">Statut</th>
+          <th scope="col" jhiTranslate="complaint.createdAt">Date</th>
+          <th scope="col" jhiTranslate="entity.action.edit">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of complaints">
+          <td>
+            <span class="badge bg-secondary">{{ c.type }}</span>
+          </td>
+          <td>{{ c.description }}</td>
+          <td>{{ c.imei || '–' }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-danger': c.status === 'OPEN',
+                'bg-warning text-dark': c.status === 'IN_PROGRESS',
+                'bg-success': c.status === 'RESOLVED',
+                'bg-secondary': c.status === 'CLOSED'
+              }"
+              >{{ c.status }}</span
+            >
+          </td>
+          <td>{{ c.createdAt | formatMediumDate }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button
+                *ngIf="isAdmin && c.status !== 'RESOLVED' && c.status !== 'CLOSED'"
+                class="btn btn-sm btn-success"
+                (click)="openResolveModal(resolveModal, c)"
+                [attr.aria-label]="'Résoudre réclamation'"
+              >
+                <fa-icon icon="check-circle"></fa-icon> <span jhiTranslate="complaint.resolve">Résoudre</span>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="delete(c.id)" aria-label="Supprimer"><fa-icon icon="trash"></fa-icon></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal création -->
+<ng-template #createModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" jhiTranslate="complaint.create">Nouvelle réclamation</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="createForm" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="cType" jhiTranslate="complaint.type">Type</label>
+        <select id="cType" class="form-select" formControlName="type">
+          <option *ngFor="let t of complaintTypes" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="cDesc" jhiTranslate="complaint.description">Description</label>
+        <textarea id="cDesc" class="form-control" formControlName="description" rows="4"></textarea>
+        <div
+          *ngIf="createForm.get('description')?.invalid && createForm.get('description')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="cImei" jhiTranslate="complaint.imei">IMEI (optionnel)</label>
+        <input id="cImei" type="text" class="form-control" formControlName="imei" />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      <span jhiTranslate="entity.action.cancel">Annuler</span>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="createForm.invalid || isSaving">
+      <span jhiTranslate="entity.action.save">Envoyer</span>
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal résolution -->
+<ng-template #resolveModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" jhiTranslate="complaint.resolveTitle">Résoudre la réclamation</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="resolveForm" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="resolution" jhiTranslate="complaint.resolution">Résolution</label>
+        <textarea id="resolution" class="form-control" formControlName="resolution" rows="4"></textarea>
+        <div
+          *ngIf="resolveForm.get('resolution')?.invalid && resolveForm.get('resolution')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire (min 5 chars).
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      <span jhiTranslate="entity.action.cancel">Annuler</span>
+    </button>
+    <button type="button" class="btn btn-success" (click)="resolve()" [disabled]="resolveForm.invalid || isSaving">
+      <span jhiTranslate="complaint.resolve">Résoudre</span>
+    </button>
+  </div>
+</ng-template>

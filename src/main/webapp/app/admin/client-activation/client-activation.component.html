@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <h2 jhiTranslate="clientActivation.title">Activation des clients</h2>
+
+  <jhi-alert></jhi-alert>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden" jhiTranslate="global.loading">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && pendingUsers.length === 0" class="alert alert-info">
+    <span jhiTranslate="clientActivation.noPending">Aucun client en attente d'activation.</span>
+  </div>
+
+  <div *ngIf="!isLoading && pendingUsers.length > 0" class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" jhiTranslate="userManagement.login">Login</th>
+          <th scope="col" jhiTranslate="userManagement.firstName">Prénom</th>
+          <th scope="col" jhiTranslate="userManagement.lastName">Nom</th>
+          <th scope="col" jhiTranslate="userManagement.email">Email</th>
+          <th scope="col" jhiTranslate="clientActivation.actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of pendingUsers">
+          <td>{{ user.login }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-success btn-sm"
+                (click)="activate(user)"
+                [disabled]="processingId === user.id"
+                [attr.aria-label]="'Activer ' + user.login"
+              >
+                <fa-icon icon="check"></fa-icon>
+                <span jhiTranslate="clientActivation.activate">Activer</span>
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="reject(user)"
+                [disabled]="processingId === user.id"
+                [attr.aria-label]="'Refuser ' + user.login"
+              >
+                <fa-icon icon="times"></fa-icon>
+                <span jhiTranslate="clientActivation.reject">Refuser</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

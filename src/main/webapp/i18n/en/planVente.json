@@ -1,0 +1,20 @@
+{
+  "planVente": {
+    "title": "Sales Plan",
+    "createMission": "New Mission",
+    "filterCommercial": "Sales Rep",
+    "filterType": "Mission Type",
+    "filterStatus": "Status",
+    "all": "All",
+    "weekView": "Week View",
+    "commercial": "Sales Rep",
+    "allMissions": "All Missions",
+    "noMissions": "No missions found.",
+    "title2": "Title",
+    "type": "Type",
+    "date": "Date",
+    "status": "Status",
+    "description": "Description",
+    "selectCommercial": "-- Select a sales rep --"
+  }
+}

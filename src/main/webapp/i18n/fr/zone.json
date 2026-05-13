@@ -1,0 +1,22 @@
+{
+  "zone": {
+    "title": "Zones & Affectations",
+    "create": "Nouvelle zone",
+    "zoneList": "Liste des zones",
+    "noZones": "Aucune zone définie.",
+    "mapPlaceholder": "Carte",
+    "mapComingSoon": "Carte disponible prochainement (Leaflet)",
+    "assignments": "Affectations clients",
+    "selectCommercial": "Sélectionner un commercial",
+    "noClients": "Aucun client affecté à ce commercial.",
+    "clientName": "Client",
+    "currentCommercial": "Commercial actuel",
+    "reassign": "Réaffecter",
+    "assign": "Assigner",
+    "form": {
+      "title": "Zone",
+      "name": "Nom",
+      "description": "Description"
+    }
+  }
+}

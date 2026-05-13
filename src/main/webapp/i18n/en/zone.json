@@ -1,0 +1,22 @@
+{
+  "zone": {
+    "title": "Zones & Assignments",
+    "create": "New Zone",
+    "zoneList": "Zone List",
+    "noZones": "No zones defined.",
+    "mapPlaceholder": "Map",
+    "mapComingSoon": "Map coming soon (Leaflet)",
+    "assignments": "Client Assignments",
+    "selectCommercial": "Select a sales rep",
+    "noClients": "No clients assigned to this sales rep.",
+    "clientName": "Client",
+    "currentCommercial": "Current Sales Rep",
+    "reassign": "Reassign",
+    "assign": "Assign",
+    "form": {
+      "title": "Zone",
+      "name": "Name",
+      "description": "Description"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 jhiTranslate="promotion.title">Promotions</h2>
+    <button class="btn btn-primary" (click)="openModal(promoModal)">
+      <fa-icon icon="plus"></fa-icon> <span jhiTranslate="promotion.create">Nouvelle promotion</span>
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-4"><div class="spinner-border" role="status"></div></div>
+  <div *ngIf="!isLoading && promotions.length === 0" class="alert alert-info" jhiTranslate="promotion.noItems">Aucune promotion.</div>
+
+  <div *ngIf="!isLoading && promotions.length > 0" class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" jhiTranslate="promotion.product">Produit</th>
+          <th scope="col" jhiTranslate="promotion.discount">Remise %</th>
+          <th scope="col" jhiTranslate="promotion.period">Période</th>
+          <th scope="col" jhiTranslate="entity.action.edit">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of promotions">
+          <td>{{ p.productName }}</td>
+          <td>
+            <span class="badge bg-warning text-dark">{{ p.discountPercent }}%</span>
+          </td>
+          <td>{{ p.startDate | formatMediumDate }} → {{ p.endDate | formatMediumDate }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-primary" (click)="openModal(promoModal, p)" aria-label="Éditer">
+                <fa-icon icon="pencil-alt"></fa-icon>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="delete(p.id)" aria-label="Supprimer"><fa-icon icon="trash"></fa-icon></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #promoModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" jhiTranslate="promotion.form.title">Promotion</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="pProduct" jhiTranslate="promotion.product">Produit</label>
+        <input id="pProduct" type="text" class="form-control" formControlName="productName" />
+        <div
+          *ngIf="form.get('productName')?.invalid && form.get('productName')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="pDiscount" jhiTranslate="promotion.discount">Remise (%)</label>
+        <input id="pDiscount" type="number" class="form-control" formControlName="discountPercent" min="0" max="100" />
+        <div
+          *ngIf="form.get('discountPercent')?.invalid && form.get('discountPercent')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire, 0–100.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="pStart" jhiTranslate="promotion.startDate">Début</label>
+          <input id="pStart" type="date" class="form-control" formControlName="startDate" />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="pEnd" jhiTranslate="promotion.endDate">Fin</label>
+          <input id="pEnd" type="date" class="form-control" formControlName="endDate" />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="pCond" jhiTranslate="promotion.conditions">Conditions (JSON)</label>
+        <textarea
+          id="pCond"
+          class="form-control font-monospace"
+          formControlName="conditions"
+          rows="4"
+          placeholder='{"minQty": 5, "clientType": "A"}'
+        ></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      <span jhiTranslate="entity.action.cancel">Annuler</span>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="form.invalid || isSaving">
+      <span jhiTranslate="entity.action.save">Sauvegarder</span>
+    </button>
+  </div>
+</ng-template>

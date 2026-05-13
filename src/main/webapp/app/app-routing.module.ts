@@ -23,7 +23,7 @@ import { EquipeComponent } from './equipe/equipe.component';
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN, Authority.ADMIN_SYSTEME],
+            authorities: [Authority.ADMIN, Authority.ADMIN_SYSTEME, Authority.ADMIN_COMMERCIAL],
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
@@ -35,6 +35,18 @@ import { EquipeComponent } from './equipe/equipe.component';
         {
           path: 'login',
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
+        },
+        {
+          path: 'dashboard/surveillance',
+          data: { authorities: [Authority.ADMIN_COMMERCIAL, Authority.ADMIN_SYSTEME, Authority.ADMIN] },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('./dashboard/surveillance/surveillance.module').then(m => m.SurveillanceModule),
+        },
+        {
+          path: 'stats',
+          data: { authorities: [Authority.ADMIN_COMMERCIAL, Authority.ADMIN_SYSTEME, Authority.ADMIN] },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('./stats/stats.module').then(m => m.StatsModule),
         },
         {
           path: '',

@@ -1,0 +1,16 @@
+{
+  "bonusRule": {
+    "title": "Règles de bonus",
+    "create": "Nouvelle règle",
+    "noRules": "Aucune règle de bonus définie.",
+    "product": "Produit",
+    "zone": "Zone",
+    "noZone": "Toutes zones",
+    "period": "Période",
+    "periodStart": "Début période",
+    "periodEnd": "Fin période",
+    "amount": "Montant (DT)",
+    "description": "Description",
+    "form": { "title": "Règle de bonus" }
+  }
+}

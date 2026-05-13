@@ -1,0 +1,21 @@
+{
+  "ordersPending": {
+    "title": "Pending Sales Orders",
+    "noOrders": "No orders pending validation.",
+    "orderNumber": "Order Number",
+    "client": "Client",
+    "total": "Total Amount",
+    "submittedAt": "Submitted At",
+    "actions": "Actions",
+    "accept": "Accept",
+    "negotiate": "Negotiate",
+    "reject": "Reject",
+    "negotiateTitle": "Negotiation Reason",
+    "rejectTitle": "Rejection Reason",
+    "reason": "Reason",
+    "accepted": "Order accepted successfully.",
+    "negotiated": "Order put under negotiation.",
+    "rejected": "Order rejected.",
+    "error": "An error occurred."
+  }
+}

@@ -1,0 +1,203 @@
+<div class="container">
+  <jhi-alert></jhi-alert>
+  <jhi-alert-error></jhi-alert-error>
+
+  <h2 jhiTranslate="onboarding.title">Création Point de Vente</h2>
+
+  <!-- Stepper -->
+  <div class="d-flex align-items-center mb-4">
+    <div *ngFor="let step of [1, 2, 3, 4]; let i = index" class="d-flex align-items-center">
+      <div
+        class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+        style="width: 36px; height: 36px"
+        [ngClass]="{
+          'bg-primary text-white': currentStep === step,
+          'bg-success text-white': currentStep > step,
+          'bg-light border': currentStep < step
+        }"
+      >
+        {{ step }}
+      </div>
+      <span
+        class="mx-2 small"
+        [class.text-primary]="currentStep === step"
+        [class.text-success]="currentStep > step"
+        [class.text-muted]="currentStep < step"
+      >
+        <span *ngIf="step === 1" jhiTranslate="onboarding.step1.label">Point de vente</span>
+        <span *ngIf="step === 2" jhiTranslate="onboarding.step2.label">Responsable PV</span>
+        <span *ngIf="step === 3" jhiTranslate="onboarding.step3.label">Vendeurs</span>
+        <span *ngIf="step === 4" jhiTranslate="onboarding.step4.label">Récapitulatif</span>
+      </span>
+      <div *ngIf="i < 3" class="flex-grow-1 border-top mx-1" style="min-width: 30px"></div>
+    </div>
+  </div>
+
+  <!-- Étape 1 : PDV -->
+  <div *ngIf="currentStep === 1">
+    <h4 jhiTranslate="onboarding.step1.title">Informations du point de vente</h4>
+    <form [formGroup]="pdvForm" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="pdvName" jhiTranslate="onboarding.step1.name">Nom</label>
+        <input id="pdvName" type="text" class="form-control" formControlName="name" />
+        <div
+          *ngIf="pdvForm.get('name')?.invalid && pdvForm.get('name')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="pdvAddress" jhiTranslate="onboarding.step1.address">Adresse</label>
+        <input id="pdvAddress" type="text" class="form-control" formControlName="address" />
+        <div
+          *ngIf="pdvForm.get('address')?.invalid && pdvForm.get('address')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Obligatoire.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="pdvContact" jhiTranslate="onboarding.step1.contact">Contact (email)</label>
+        <input id="pdvContact" type="email" class="form-control" formControlName="contact" />
+        <div
+          *ngIf="pdvForm.get('contact')?.invalid && pdvForm.get('contact')?.touched"
+          class="text-danger small"
+          jhiTranslate="entity.validation.required"
+        >
+          Email valide requis.
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="submitStepA()" [disabled]="pdvForm.invalid || isSaving">
+        <span jhiTranslate="onboarding.next">Suivant</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Étape 2 : Resp PV -->
+  <div *ngIf="currentStep === 2">
+    <h4 jhiTranslate="onboarding.step2.title">Créer le responsable du point de vente</h4>
+    <form [formGroup]="respForm" novalidate>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="rLogin" jhiTranslate="userManagement.login">Login</label>
+          <input id="rLogin" type="text" class="form-control" formControlName="login" />
+          <div
+            *ngIf="respForm.get('login')?.invalid && respForm.get('login')?.touched"
+            class="text-danger small"
+            jhiTranslate="entity.validation.required"
+          >
+            Obligatoire.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="rEmail" jhiTranslate="userManagement.email">Email</label>
+          <input id="rEmail" type="email" class="form-control" formControlName="email" />
+          <div
+            *ngIf="respForm.get('email')?.invalid && respForm.get('email')?.touched"
+            class="text-danger small"
+            jhiTranslate="entity.validation.required"
+          >
+            Email valide requis.
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="rFirstName" jhiTranslate="userManagement.firstName">Prénom</label>
+          <input id="rFirstName" type="text" class="form-control" formControlName="firstName" />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label" for="rLastName" jhiTranslate="userManagement.lastName">Nom</label>
+          <input id="rLastName" type="text" class="form-control" formControlName="lastName" />
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary" (click)="back()"><span jhiTranslate="entity.action.back">Retour</span></button>
+        <button type="button" class="btn btn-primary" (click)="submitStepB()" [disabled]="respForm.invalid || isSaving">
+          <span jhiTranslate="onboarding.next">Suivant</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Étape 3 : Vendeurs -->
+  <div *ngIf="currentStep === 3">
+    <h4 jhiTranslate="onboarding.step3.title">Créer les vendeurs</h4>
+    <form [formGroup]="vendeursForm" novalidate>
+      <div *ngFor="let g of vendeursArray.controls; let i = index" class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+          <span jhiTranslate="onboarding.vendeur">Vendeur</span> {{ i + 1 }}
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            *ngIf="vendeursArray.length > 1"
+            (click)="removeVendeur(i)"
+            aria-label="Supprimer vendeur"
+          >
+            <fa-icon icon="times"></fa-icon>
+          </button>
+        </div>
+        <div class="card-body" [formGroup]="$any(g)">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label" [for]="'vLogin' + i" jhiTranslate="userManagement.login">Login</label>
+              <input [id]="'vLogin' + i" type="text" class="form-control" formControlName="login" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" [for]="'vEmail' + i" jhiTranslate="userManagement.email">Email</label>
+              <input [id]="'vEmail' + i" type="email" class="form-control" formControlName="email" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" [for]="'vFirst' + i" jhiTranslate="userManagement.firstName">Prénom</label>
+              <input [id]="'vFirst' + i" type="text" class="form-control" formControlName="firstName" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label" [for]="'vLast' + i" jhiTranslate="userManagement.lastName">Nom</label>
+              <input [id]="'vLast' + i" type="text" class="form-control" formControlName="lastName" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-outline-secondary btn-sm mb-3" (click)="addVendeur()">
+        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="onboarding.addVendeur">Ajouter vendeur</span>
+      </button>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary" (click)="back()"><span jhiTranslate="entity.action.back">Retour</span></button>
+        <button type="button" class="btn btn-primary" (click)="submitStepC()" [disabled]="vendeursForm.invalid || isSaving">
+          <span jhiTranslate="onboarding.next">Créer</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Étape 4 : Récapitulatif -->
+  <div *ngIf="currentStep === 4">
+    <h4 jhiTranslate="onboarding.step4.title">Récapitulatif</h4>
+    <div class="card mb-3">
+      <div class="card-header bg-success text-white" jhiTranslate="onboarding.step1.label">Point de vente</div>
+      <div class="card-body">
+        <p><strong jhiTranslate="onboarding.step1.name">Nom</strong> : {{ createdPDV?.name }}</p>
+        <p><strong jhiTranslate="onboarding.step1.address">Adresse</strong> : {{ createdPDV?.address }}</p>
+        <p><strong jhiTranslate="onboarding.step1.contact">Contact</strong> : {{ createdPDV?.contact }}</p>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header bg-primary text-white" jhiTranslate="onboarding.step2.label">Responsable PV</div>
+      <div class="card-body">
+        <p>{{ createdRespPV?.firstName }} {{ createdRespPV?.lastName }} ({{ createdRespPV?.login }})</p>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header bg-info text-white" jhiTranslate="onboarding.step3.label">Vendeurs</div>
+      <div class="card-body">
+        <ul>
+          <li *ngFor="let v of createdVendeurs">{{ v.firstName }} {{ v.lastName }} ({{ v.login }})</li>
+        </ul>
+      </div>
+    </div>
+    <button type="button" class="btn btn-success" (click)="finish()">
+      <fa-icon icon="check"></fa-icon> <span jhiTranslate="onboarding.finish">Terminer</span>
+    </button>
+  </div>
+</div>

@@ -6,7 +6,6 @@ import com.tunisales.gateway.security.AuthoritiesConstants;
 import com.tunisales.gateway.security.jwt.JWTFilter;
 import com.tunisales.gateway.security.jwt.TokenProvider;
 import com.tunisales.gateway.web.filter.SpaWebFilter;
-import com.tunisales.gateway.web.filter.TenantHeaderFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -41,22 +40,19 @@ public class SecurityConfiguration {
 
     private final SecurityProblemSupport problemSupport;
     private final CorsWebFilter corsWebFilter;
-    private final TenantHeaderFilter tenantHeaderFilter;
 
     public SecurityConfiguration(
         ReactiveUserDetailsService userDetailsService,
         TokenProvider tokenProvider,
         JHipsterProperties jHipsterProperties,
         SecurityProblemSupport problemSupport,
-        CorsWebFilter corsWebFilter,
-        TenantHeaderFilter tenantHeaderFilter
+        CorsWebFilter corsWebFilter
     ) {
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
         this.jHipsterProperties = jHipsterProperties;
         this.problemSupport = problemSupport;
         this.corsWebFilter = corsWebFilter;
-        this.tenantHeaderFilter = tenantHeaderFilter;
     }
 
     @Bean
@@ -82,46 +78,44 @@ public class SecurityConfiguration {
                 pathMatchers(HttpMethod.OPTIONS, "/**")
             )))
             .csrf()
-                .disable()
+            .disable()
             .addFilterBefore(corsWebFilter, SecurityWebFiltersOrder.REACTOR_CONTEXT)
             .addFilterAt(new SpaWebFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
             .addFilterAt(new JWTFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
-            .addFilterAfter(tenantHeaderFilter, SecurityWebFiltersOrder.HTTP_BASIC)
             .authenticationManager(reactiveAuthenticationManager())
             .exceptionHandling()
-                .accessDeniedHandler(problemSupport)
-                .authenticationEntryPoint(problemSupport)
-        .and()
+            .accessDeniedHandler(problemSupport)
+            .authenticationEntryPoint(problemSupport)
+            .and()
             .headers()
-                .contentSecurityPolicy(jHipsterProperties.getSecurity().getContentSecurityPolicy())
+            .contentSecurityPolicy(jHipsterProperties.getSecurity().getContentSecurityPolicy())
             .and()
-                .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+            .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
             .and()
-                .permissionsPolicy().policy("camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")
+            .permissionsPolicy().policy("camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")
             .and()
-                .frameOptions().mode(Mode.DENY)
-        .and()
+            .frameOptions().mode(Mode.DENY)
+            .and()
             .authorizeExchange()
             .pathMatchers("/").permitAll()
             .pathMatchers("/*.*").permitAll()
             .pathMatchers("/api/authenticate").permitAll()
-            .pathMatchers("/api/refresh-token").permitAll()
             .pathMatchers("/api/register").permitAll()
             .pathMatchers("/api/activate").permitAll()
             .pathMatchers("/api/account/reset-password/init").permitAll()
             .pathMatchers("/api/account/reset-password/finish").permitAll()
-            .pathMatchers("/api/admin/**").hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.ADMIN_SYSTEME)
+            .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .pathMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN_SYSTEME)
             .pathMatchers("/api/**").authenticated()
-            .pathMatchers("/services/*/v3/api-docs").hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.ADMIN_SYSTEME)
+            .pathMatchers("/services/*/v3/api-docs").hasAuthority(AuthoritiesConstants.ADMIN)
+            .pathMatchers("/services/*/v3/api-docs").hasAuthority(AuthoritiesConstants.ADMIN_SYSTEME)
             .pathMatchers("/services/inventory/**").hasAnyAuthority(
-                AuthoritiesConstants.ADMIN,
                 AuthoritiesConstants.MAGASINIER,
                 AuthoritiesConstants.COMMERCIAL,
                 AuthoritiesConstants.ADMIN_COMMERCIAL,
                 AuthoritiesConstants.ADMIN_SYSTEME
             )
             .pathMatchers("/services/business/**").hasAnyAuthority(
-                AuthoritiesConstants.ADMIN,
                 AuthoritiesConstants.COMMERCIAL,
                 AuthoritiesConstants.VENDEUR,
                 AuthoritiesConstants.RESP_PV,

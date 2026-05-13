@@ -1,0 +1,151 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 jhiTranslate="surveillance.title">Surveillance des ventes</h2>
+    <button class="btn btn-outline-primary btn-sm" (click)="load()">
+      <fa-icon icon="sync"></fa-icon>
+      <span jhiTranslate="surveillance.refresh">Actualiser</span>
+    </button>
+  </div>
+
+  <!-- Filtres -->
+  <div class="row g-2 mb-4">
+    <div class="col-md-3">
+      <label class="form-label" for="filterPeriod" jhiTranslate="surveillance.period">Période</label>
+      <input id="filterPeriod" type="month" class="form-control" [(ngModel)]="filterPeriod" (change)="load()" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="filterZone" jhiTranslate="surveillance.zone">Zone</label>
+      <input id="filterZone" type="text" class="form-control" [(ngModel)]="filterZone" (change)="load()" />
+    </div>
+    <div class="col-md-3">
+      <label class="form-label" for="filterCommercial" jhiTranslate="surveillance.commercial">Commercial</label>
+      <input id="filterCommercial" type="text" class="form-control" [(ngModel)]="filterCommercial" (change)="load()" />
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!isLoading && overview">
+    <!-- KPI Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card border-primary h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted" jhiTranslate="surveillance.totalSales">Total ventes</h6>
+            <h3 class="card-title text-primary">{{ overview.totalSales | number: '1.0-0' }} DT</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-success h-100">
+          <div class="card-body text-center">
+            <h6 class="card-subtitle mb-2 text-muted" jhiTranslate="surveillance.validatedOrders">Commandes validées</h6>
+            <h3 class="card-title text-success">{{ overview.validatedOrdersCount }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 3 Commerciaux -->
+      <div class="col-md-3">
+        <div class="card border-info h-100">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted" jhiTranslate="surveillance.topCommercials">Top 3 Commerciaux</h6>
+            <ol class="ps-3 mb-0">
+              <li *ngFor="let c of overview.topCommercials ?? [] | slice: 0:3">
+                <strong>{{ c.login }}</strong> — {{ c.total | number: '1.0-0' }} DT
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top 3 Produits -->
+      <div class="col-md-3">
+        <div class="card border-warning h-100">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted" jhiTranslate="surveillance.topProducts">Top 3 Produits</h6>
+            <ol class="ps-3 mb-0">
+              <li *ngFor="let p of overview.topProducts ?? [] | slice: 0:3">
+                <strong>{{ p.name }}</strong> — {{ p.quantity }} unités
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header" jhiTranslate="surveillance.salesByZone">Ventes par zone</div>
+          <div class="card-body">
+            <div *ngIf="barChartData.labels?.length; else noBarData">
+              <!-- Placeholder chart: canvas element for ng2-charts integration -->
+              <canvas id="barChart" height="120" role="img" aria-label="Graphique ventes par zone">
+                <!-- ng2-charts BaseChartDirective would be used here -->
+              </canvas>
+              <div class="mt-2">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Zone</th>
+                      <th scope="col">Total (DT)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let z of overview.salesByZone">
+                      <td>{{ z.zone }}</td>
+                      <td>{{ z.total | number: '1.0-0' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <ng-template #noBarData>
+              <p class="text-muted text-center" jhiTranslate="surveillance.noData">Pas de données disponibles.</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header" jhiTranslate="surveillance.dailyEvolution">Évolution journalière</div>
+          <div class="card-body">
+            <div *ngIf="lineChartData.labels?.length; else noLineData">
+              <canvas id="lineChart" height="120" role="img" aria-label="Graphique évolution journalière">
+                <!-- ng2-charts BaseChartDirective would be used here -->
+              </canvas>
+              <div class="mt-2">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Total (DT)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let d of overview.dailyEvolution">
+                      <td>{{ d.date }}</td>
+                      <td>{{ d.total | number: '1.0-0' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <ng-template #noLineData>
+              <p class="text-muted text-center" jhiTranslate="surveillance.noData">Pas de données disponibles.</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !overview" class="alert alert-warning" jhiTranslate="surveillance.noData">
+    Pas de données disponibles pour la période sélectionnée.
+  </div>
+</div>

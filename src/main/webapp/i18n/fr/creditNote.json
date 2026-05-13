@@ -1,0 +1,16 @@
+{
+  "creditNote": {
+    "title": "Avoirs",
+    "create": "Nouvel avoir",
+    "noItems": "Aucun avoir.",
+    "client": "Client",
+    "amount": "Montant",
+    "reason": "Raison",
+    "status": "Statut",
+    "createdAt": "Créé le",
+    "validate": "Valider",
+    "validated": "Avoir validé avec succès.",
+    "error": "Une erreur est survenue.",
+    "form": { "title": "Avoir" }
+  }
+}

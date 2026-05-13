@@ -78,7 +78,7 @@
       </button>-->
     </div>
 
-    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
+    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
@@ -88,6 +88,43 @@
           </a>
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+        <!-- Cloche notifications (connecté uniquement) -->
+        <li *ngIf="account" ngbDropdown class="nav-item dropdown pointer" display="dynamic">
+          <a class="nav-link position-relative" ngbDropdownToggle href="javascript:void(0);" id="notif-menu" aria-label="Notifications">
+            <fa-icon icon="bell"></fa-icon>
+            <span
+              *ngIf="unreadCount > 0"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="font-size: 0.6rem"
+            >
+              {{ unreadCount > 99 ? '99+' : unreadCount }}
+            </span>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            ngbDropdownMenu
+            aria-labelledby="notif-menu"
+            style="min-width: 320px; max-width: 400px"
+          >
+            <li class="dropdown-header d-flex justify-content-between align-items-center">
+              <span jhiTranslate="notifications.title">Notifications</span>
+              <small *ngIf="unreadCount > 0" class="text-muted">({{ unreadCount }} non lu(s))</small>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li *ngIf="recentNotifications.length === 0" class="px-3 py-2 text-muted small" jhiTranslate="notifications.empty">
+              Aucune notification.
+            </li>
+            <li *ngFor="let n of recentNotifications">
+              <a class="dropdown-item text-wrap" href="javascript:void(0);" (click)="navigateToNotification(n); collapseNavbar()">
+                <div class="small">
+                  <span class="badge bg-info me-1" *ngIf="n.type">{{ n.type }}</span>
+                  {{ n.message }}
+                </div>
+                <small class="text-muted">{{ n.createdAt | date: 'HH:mm' }}</small>
+              </a>
+            </li>
+          </ul>
+        </li>
         <!--<li
           *ngSwitchCase="true"
           ngbDropdown
@@ -394,6 +431,77 @@
            ** jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here **
           </ul>
         </li>-->
+        <!-- Menu commercial (ADMIN_COMMERCIAL) -->
+        <li
+          *jhiHasAnyAuthority="['ROLE_ADMIN_COMMERCIAL', 'ROLE_ADMIN', 'ROLE_ADMIN_SYSTEME']"
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="commercial-menu">
+            <span><fa-icon icon="chart-line"></fa-icon></span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="commercial-menu">
+            <li>
+              <a class="dropdown-item" routerLink="orders-pending" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="clipboard-list" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.ordersPending">Offres en attente</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="plan-vente" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="calendar-alt" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.planVente">Plan de vente</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="zone" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="map" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.zones">Zones & Affectations</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="dashboard/surveillance" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.surveillance">Surveillance</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="stats" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="chart-bar" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.stats">Statistiques</span>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" routerLink="bonus-rule" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="star" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.bonusRules">Règles de bonus</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="promotion" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="tags" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.promotions">Promotions</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="credit-note" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="file-alt" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.creditNotes">Avoirs</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="complaint" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="exclamation-triangle" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.complaints">Réclamations</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Admin systeme -->
         <li
           *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_ADMIN_SYSTEME']"
           ngbDropdown
@@ -450,6 +558,12 @@
                 <span jhiTranslate="global.menu.admin.apidocs">API</span>
               </a>
             </li>
+            <li *jhiHasAnyAuthority="['ROLE_ADMIN_COMMERCIAL', 'ROLE_ADMIN']">
+              <a class="dropdown-item" routerLink="admin/client-activation" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="user-check" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.clientActivation">Activation clients</span>
+              </a>
+            </li>
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
@@ -487,7 +601,7 @@
               <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
             </span>
           </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu" [ngSwitch]="account !== null">
             <li *ngSwitchCase="true">
               <a
                 class="dropdown-item"

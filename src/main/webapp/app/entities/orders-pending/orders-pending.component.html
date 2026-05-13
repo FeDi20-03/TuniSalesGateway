@@ -1,0 +1,95 @@
+<div class="container-fluid">
+  <h2 jhiTranslate="ordersPending.title">Offres de vente en attente</h2>
+
+  <jhi-alert></jhi-alert>
+  <jhi-alert-error></jhi-alert-error>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden" jhiTranslate="global.loading">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && orders.length === 0" class="alert alert-info" jhiTranslate="ordersPending.noOrders">
+    Aucune commande en attente de validation.
+  </div>
+
+  <div *ngIf="!isLoading && orders.length > 0" class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" jhiTranslate="ordersPending.orderNumber">N° Commande</th>
+          <th scope="col" jhiTranslate="ordersPending.client">Client</th>
+          <th scope="col" jhiTranslate="ordersPending.total">Total</th>
+          <th scope="col" jhiTranslate="ordersPending.submittedAt">Soumis le</th>
+          <th scope="col" jhiTranslate="ordersPending.actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.orderNumber }}</td>
+          <td>{{ order.client?.name }}</td>
+          <td>{{ order.totalAmount | number: '1.2-2' }} DT</td>
+          <td>{{ order.submittedAt | formatMediumDatetime }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <button class="btn btn-success btn-sm" (click)="accept(order)" [attr.aria-label]="'Accepter commande ' + order.orderNumber">
+                <fa-icon icon="check"></fa-icon>
+                <span jhiTranslate="ordersPending.accept">Accepter</span>
+              </button>
+              <button
+                class="btn btn-warning btn-sm"
+                (click)="openNegotiateModal(order, reasonModal)"
+                [attr.aria-label]="'Négocier commande ' + order.orderNumber"
+              >
+                <span jhiTranslate="ordersPending.negotiate">Négocier</span>
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="openRejectModal(order, reasonModal)"
+                [attr.aria-label]="'Refuser commande ' + order.orderNumber"
+              >
+                <fa-icon icon="times"></fa-icon>
+                <span jhiTranslate="ordersPending.reject">Refuser</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal raison -->
+<ng-template #reasonModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="actionType === 'negotiate'" jhiTranslate="ordersPending.negotiateTitle">Raison de négociation</span>
+      <span *ngIf="actionType === 'reject'" jhiTranslate="ordersPending.rejectTitle">Raison de refus</span>
+    </h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Fermer"></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label class="form-label" for="reasonInput" jhiTranslate="ordersPending.reason">Raison</label>
+      <textarea
+        id="reasonInput"
+        class="form-control"
+        [formControl]="reasonControl"
+        rows="4"
+        [placeholder]="actionType === 'negotiate' ? 'Indiquer les conditions de négociation...' : 'Indiquer le motif de refus...'"
+      ></textarea>
+      <div *ngIf="reasonControl.invalid && reasonControl.touched" class="text-danger small" jhiTranslate="entity.validation.required">
+        Obligatoire.
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      <span jhiTranslate="entity.action.cancel">Annuler</span>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="confirmAction()" [disabled]="reasonControl.invalid">
+      <span jhiTranslate="entity.action.save">Confirmer</span>
+    </button>
+  </div>
+</ng-template>

@@ -37,6 +37,13 @@ import { RouterModule } from '@angular/router';
         path: 'gateway',
         loadChildren: () => import('./gateway/gateway.module').then(m => m.GatewayModule),
       },
+      {
+        path: 'client-activation',
+        loadChildren: () => import('./client-activation/client-activation.module').then(m => m.ClientActivationModule),
+        data: {
+          pageTitle: 'clientActivation.title',
+        },
+      },
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),
   ],

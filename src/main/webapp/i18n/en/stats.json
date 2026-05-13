@@ -1,0 +1,24 @@
+{
+  "stats": {
+    "title": "Statistics",
+    "tabs": {
+      "sales": "Sales by model × zone",
+      "performance": "Sales rep performance",
+      "grades": "Client grades"
+    },
+    "model": "Model",
+    "zone": "Zone",
+    "count": "Quantity",
+    "commercial": "Sales Rep",
+    "score": "Score",
+    "client": "Client",
+    "grade": "Grade",
+    "gradeA": "Grade A",
+    "gradeB": "Grade B",
+    "gradeC": "Grade C",
+    "recompute": "Recompute",
+    "recomputed": "Recomputed successfully.",
+    "recomputeError": "Recompute failed.",
+    "noData": "No data available."
+  }
+}

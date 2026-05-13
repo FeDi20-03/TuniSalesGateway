@@ -1,7 +1,9 @@
-import { Component, OnInit, Compiler, Injector, NgModuleFactory, Type } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 import { VERSION } from 'app/app.constants';
 import { LANGUAGES } from 'app/config/language.constants';
@@ -10,13 +12,16 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { AlertService } from 'app/core/util/alert.service';
+import { NotificationsWebSocketService, NotificationDTO } from 'app/core/websocket/notifications-websocket.service';
 
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   inProduction?: boolean;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
@@ -25,19 +30,28 @@ export class NavbarComponent implements OnInit {
   account: Account | null = null;
   entitiesNavbarItems: any[] = [];
 
+  // Notifications
+  unreadCount = 0;
+  recentNotifications: NotificationDTO[] = [];
+  private wsSubscription?: Subscription;
+  private notifUrl: string;
+
   constructor(
     private loginService: LoginService,
     private translateService: TranslateService,
     private sessionStorageService: SessionStorageService,
-    private compiler: Compiler,
-    private injector: Injector,
     private accountService: AccountService,
     private profileService: ProfileService,
+    private http: HttpClient,
+    private applicationConfigService: ApplicationConfigService,
+    private alertService: AlertService,
+    private wsService: NotificationsWebSocketService,
     protected router: Router
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
+    this.notifUrl = this.applicationConfigService.getEndpointFor('api/notifications', 'platformservice');
   }
 
   ngOnInit(): void {
@@ -49,7 +63,47 @@ export class NavbarComponent implements OnInit {
 
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
+      if (account) {
+        this.loadUnreadCount();
+      } else {
+        this.unreadCount = 0;
+        this.recentNotifications = [];
+      }
     });
+
+    // Ecoute WebSocket: auto-toaster + badge refresh
+    this.wsSubscription = this.wsService.notifications$.subscribe((notif: NotificationDTO) => {
+      this.recentNotifications.unshift(notif);
+      if (this.recentNotifications.length > 5) this.recentNotifications.pop();
+      this.unreadCount++;
+      if (notif.message) {
+        this.alertService.addAlert({ type: 'info', message: notif.message, timeout: 5000 });
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.wsSubscription?.unsubscribe();
+  }
+
+  loadUnreadCount(): void {
+    this.http.get<{ count: number }>(`${this.notifUrl}/me/unread-count`).subscribe({
+      next: res => (this.unreadCount = res.count ?? 0),
+      error: () => (this.unreadCount = 0),
+    });
+    // Charger les 5 dernières
+    let params = new HttpParams();
+    params = params.set('size', '5').set('sort', 'createdAt,desc');
+    this.http.get<NotificationDTO[]>(`${this.notifUrl}/me`, { params }).subscribe({
+      next: notifs => (this.recentNotifications = notifs),
+      error: () => {},
+    });
+  }
+
+  navigateToNotification(notif: NotificationDTO): void {
+    if (notif.targetUrl) {
+      this.router.navigateByUrl(notif.targetUrl);
+    }
   }
 
   changeLanguage(languageKey: string): void {
@@ -73,10 +127,5 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  }
-
-  private loadModule(moduleType: Type<any>): void {
-    const moduleFactory = this.compiler.compileModuleAndAllComponentsSync(moduleType);
-    moduleFactory.ngModuleFactory.create(this.injector);
   }
 }

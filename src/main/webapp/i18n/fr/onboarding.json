@@ -1,0 +1,21 @@
+{
+  "onboarding": {
+    "title": "Création Point de Vente",
+    "step1": {
+      "label": "Point de vente",
+      "title": "Informations du point de vente",
+      "name": "Nom",
+      "address": "Adresse",
+      "contact": "Contact (email)"
+    },
+    "step2": { "label": "Responsable PV", "title": "Créer le responsable du point de vente" },
+    "step3": { "label": "Vendeurs", "title": "Créer les vendeurs" },
+    "step4": { "label": "Récapitulatif", "title": "Récapitulatif de la création" },
+    "next": "Suivant",
+    "vendeur": "Vendeur",
+    "addVendeur": "Ajouter un vendeur",
+    "finish": "Terminer",
+    "success": "Point de vente créé avec succès.",
+    "vendeurError": "Erreur lors de la création d'un vendeur."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "complaint": {
+    "title": "Réclamations",
+    "create": "Nouvelle réclamation",
+    "noItems": "Aucune réclamation.",
+    "type": "Type",
+    "description": "Description",
+    "imei": "IMEI",
+    "status": "Statut",
+    "createdAt": "Date",
+    "resolve": "Résoudre",
+    "resolveTitle": "Résolution de la réclamation",
+    "resolution": "Résolution",
+    "resolved": "Réclamation résolue avec succès.",
+    "error": "Une erreur est survenue."
+  }
+}

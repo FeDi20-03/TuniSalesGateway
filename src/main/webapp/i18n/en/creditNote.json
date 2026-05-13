@@ -1,0 +1,16 @@
+{
+  "creditNote": {
+    "title": "Credit Notes",
+    "create": "New Credit Note",
+    "noItems": "No credit notes.",
+    "client": "Client",
+    "amount": "Amount",
+    "reason": "Reason",
+    "status": "Status",
+    "createdAt": "Created At",
+    "validate": "Validate",
+    "validated": "Credit note validated successfully.",
+    "error": "An error occurred.",
+    "form": { "title": "Credit Note" }
+  }
+}

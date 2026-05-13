@@ -29,7 +29,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * Integration tests for the {@link UserResource} REST controller.
  */
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_TIMEOUT)
-@WithMockUser(authorities = AuthoritiesConstants.ADMIN_SYSTEME)
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @IntegrationTest
 class UserResourceIT {
 

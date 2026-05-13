@@ -129,6 +129,46 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'tuniSalesGatewayApp.inventoryServiceWarehouse.home.title' },
         loadChildren: () => import('./InventoryService/warehouse/warehouse.module').then(m => m.InventoryServiceWarehouseModule),
       },
+      {
+        path: 'plan-vente',
+        data: { pageTitle: 'planVente.title' },
+        loadChildren: () => import('./plan-vente/plan-vente.module').then(m => m.PlanVenteModule),
+      },
+      {
+        path: 'zone',
+        data: { pageTitle: 'zone.title' },
+        loadChildren: () => import('./zone/zone.module').then(m => m.ZoneModule),
+      },
+      {
+        path: 'orders-pending',
+        data: { pageTitle: 'ordersPending.title' },
+        loadChildren: () => import('./orders-pending/orders-pending.module').then(m => m.OrdersPendingModule),
+      },
+      {
+        path: 'bonus-rule',
+        data: { pageTitle: 'bonusRule.title' },
+        loadChildren: () => import('./bonus-rule/bonus-rule.module').then(m => m.BonusRuleModule),
+      },
+      {
+        path: 'promotion',
+        data: { pageTitle: 'promotion.title' },
+        loadChildren: () => import('./promotion/promotion.module').then(m => m.PromotionModule),
+      },
+      {
+        path: 'credit-note',
+        data: { pageTitle: 'creditNote.title' },
+        loadChildren: () => import('./credit-note/credit-note.module').then(m => m.CreditNoteModule),
+      },
+      {
+        path: 'complaint',
+        data: { pageTitle: 'complaint.title' },
+        loadChildren: () => import('./complaint/complaint.module').then(m => m.ComplaintModule),
+      },
+      {
+        path: 'clients/:id/onboarding',
+        data: { pageTitle: 'onboarding.title' },
+        loadChildren: () => import('./onboarding/onboarding.module').then(m => m.OnboardingModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

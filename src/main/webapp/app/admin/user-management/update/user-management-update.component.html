@@ -125,10 +125,23 @@
       </div>
 
       <div class="mb-3">
-        <label jhiTranslate="userManagement.profiles">Droits</label>
-        <select class="form-control" multiple name="authority" formControlName="authorities">
-          <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
-        </select>
+        <label class="form-label" jhiTranslate="userManagement.profiles">Droits</label>
+        <div class="border rounded p-2" style="max-height: 280px; overflow-y: auto" aria-label="Sélection des rôles">
+          <div *ngFor="let role of allRoles" class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [id]="'role-' + role.value"
+              [value]="role.value"
+              [checked]="isRoleSelected(role.value)"
+              (change)="toggleRole(role.value, $event)"
+            />
+            <label class="form-check-label" [for]="'role-' + role.value">
+              <span class="badge me-1" [ngClass]="role.badgeClass">{{ role.label }}</span>
+              <small class="text-muted">{{ role.value }}</small>
+            </label>
+          </div>
+        </div>
       </div>
       <button type="button" class="btn btn-secondary" (click)="previousState()">
         <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>

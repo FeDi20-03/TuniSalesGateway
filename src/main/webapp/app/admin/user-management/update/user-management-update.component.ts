@@ -13,6 +13,12 @@ const newUser: IUser = {
   activated: true,
 } as IUser;
 
+export interface RoleOption {
+  value: string;
+  label: string;
+  badgeClass: string;
+}
+
 @Component({
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html',
@@ -21,6 +27,19 @@ export class UserManagementUpdateComponent implements OnInit {
   languages = LANGUAGES;
   authorities: string[] = [];
   isSaving = false;
+
+  allRoles: RoleOption[] = [
+    { value: 'ROLE_ADMIN', label: 'Admin', badgeClass: 'bg-danger' },
+    { value: 'ROLE_USER', label: 'Utilisateur', badgeClass: 'bg-secondary' },
+    { value: 'ROLE_ADMIN_SYSTEME', label: 'Admin Système', badgeClass: 'bg-dark' },
+    { value: 'ROLE_ADMIN_COMMERCIAL', label: 'Admin Commercial', badgeClass: 'bg-primary' },
+    { value: 'ROLE_COMMERCIAL', label: 'Commercial', badgeClass: 'bg-info' },
+    { value: 'ROLE_MAGASINIER', label: 'Magasinier', badgeClass: 'bg-warning text-dark' },
+    { value: 'ROLE_CLIENT', label: 'Client', badgeClass: 'bg-success' },
+    { value: 'ROLE_RESP_PV', label: 'Resp. Point de Vente', badgeClass: 'bg-purple text-white' },
+    { value: 'ROLE_VENDEUR', label: 'Vendeur', badgeClass: 'bg-orange text-white' },
+    { value: 'ROLE_CHEF_PARC', label: 'Chef de Parc', badgeClass: 'bg-teal text-white' },
+  ];
 
   editForm = new FormGroup({
     id: new FormControl(userTemplate.id),
@@ -55,6 +74,23 @@ export class UserManagementUpdateComponent implements OnInit {
       }
     });
     this.userService.authorities().subscribe(authorities => (this.authorities = authorities));
+  }
+
+  isRoleSelected(role: string): boolean {
+    const current = this.editForm.get('authorities')?.value ?? [];
+    return current.includes(role);
+  }
+
+  toggleRole(role: string, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    const current: string[] = [...(this.editForm.get('authorities')?.value ?? [])];
+    if (checked && !current.includes(role)) {
+      current.push(role);
+    } else if (!checked) {
+      const idx = current.indexOf(role);
+      if (idx > -1) current.splice(idx, 1);
+    }
+    this.editForm.patchValue({ authorities: current });
   }
 
   previousState(): void {

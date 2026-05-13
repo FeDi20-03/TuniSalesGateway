@@ -1,0 +1,24 @@
+{
+  "stats": {
+    "title": "Statistiques",
+    "tabs": {
+      "sales": "Ventes par modèle × zone",
+      "performance": "Performance commerciaux",
+      "grades": "Grades clients"
+    },
+    "model": "Modèle",
+    "zone": "Zone",
+    "count": "Quantité",
+    "commercial": "Commercial",
+    "score": "Score",
+    "client": "Client",
+    "grade": "Grade",
+    "gradeA": "Grade A",
+    "gradeB": "Grade B",
+    "gradeC": "Grade C",
+    "recompute": "Recalculer",
+    "recomputed": "Recalcul effectué avec succès.",
+    "recomputeError": "Erreur lors du recalcul.",
+    "noData": "Pas de données disponibles."
+  }
+}

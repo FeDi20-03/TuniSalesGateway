@@ -1,0 +1,17 @@
+{
+  "complaint": {
+    "title": "Complaints",
+    "create": "New Complaint",
+    "noItems": "No complaints.",
+    "type": "Type",
+    "description": "Description",
+    "imei": "IMEI",
+    "status": "Status",
+    "createdAt": "Date",
+    "resolve": "Resolve",
+    "resolveTitle": "Resolve Complaint",
+    "resolution": "Resolution",
+    "resolved": "Complaint resolved successfully.",
+    "error": "An error occurred."
+  }
+}

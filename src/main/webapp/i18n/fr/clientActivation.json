@@ -1,0 +1,11 @@
+{
+  "clientActivation": {
+    "title": "Activation des clients",
+    "noPending": "Aucun client en attente d'activation.",
+    "activate": "Activer",
+    "reject": "Refuser",
+    "actions": "Actions",
+    "activated": "Le client {{ login }} a été activé.",
+    "rejected": "Le client {{ login }} a été refusé."
+  }
+}

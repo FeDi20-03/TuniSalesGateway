@@ -53,6 +53,16 @@
         "logs": "Logs",
         "apidocs": "API",
         "database": "Database",
+        "clientActivation": "Client Activation",
+        "planVente": "Sales Plan",
+        "zones": "Zones & Assignments",
+        "ordersPending": "Pending Orders",
+        "surveillance": "Sales Surveillance",
+        "stats": "Statistics",
+        "bonusRules": "Bonus Rules",
+        "promotions": "Promotions",
+        "creditNotes": "Credit Notes",
+        "complaints": "Complaints",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
       "language": "Language"

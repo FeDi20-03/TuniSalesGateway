@@ -1,0 +1,16 @@
+{
+  "bonusRule": {
+    "title": "Bonus Rules",
+    "create": "New Rule",
+    "noRules": "No bonus rules defined.",
+    "product": "Product",
+    "zone": "Zone",
+    "noZone": "All zones",
+    "period": "Period",
+    "periodStart": "Period Start",
+    "periodEnd": "Period End",
+    "amount": "Amount (DT)",
+    "description": "Description",
+    "form": { "title": "Bonus Rule" }
+  }
+}

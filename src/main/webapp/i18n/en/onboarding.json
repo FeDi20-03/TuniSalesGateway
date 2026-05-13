@@ -1,0 +1,21 @@
+{
+  "onboarding": {
+    "title": "Point of Sale Setup",
+    "step1": {
+      "label": "Point of Sale",
+      "title": "Point of sale information",
+      "name": "Name",
+      "address": "Address",
+      "contact": "Contact (email)"
+    },
+    "step2": { "label": "POS Manager", "title": "Create POS Manager account" },
+    "step3": { "label": "Sales Staff", "title": "Create sales staff accounts" },
+    "step4": { "label": "Summary", "title": "Setup summary" },
+    "next": "Next",
+    "vendeur": "Sales Staff",
+    "addVendeur": "Add sales staff",
+    "finish": "Finish",
+    "success": "Point of sale created successfully.",
+    "vendeurError": "Error creating a sales staff account."
+  }
+}

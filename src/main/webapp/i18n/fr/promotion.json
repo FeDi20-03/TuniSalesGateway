@@ -1,0 +1,14 @@
+{
+  "promotion": {
+    "title": "Promotions",
+    "create": "Nouvelle promotion",
+    "noItems": "Aucune promotion.",
+    "product": "Produit",
+    "discount": "Remise %",
+    "period": "Période",
+    "startDate": "Début",
+    "endDate": "Fin",
+    "conditions": "Conditions (JSON)",
+    "form": { "title": "Promotion" }
+  }
+}

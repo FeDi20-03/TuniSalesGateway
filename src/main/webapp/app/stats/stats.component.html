@@ -1,0 +1,171 @@
+<div class="container-fluid">
+  <jhi-alert></jhi-alert>
+  <jhi-alert-error></jhi-alert-error>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 jhiTranslate="stats.title">Statistiques</h2>
+    <div class="d-flex gap-2 align-items-center">
+      <label class="form-label mb-0" for="statPeriod" jhiTranslate="surveillance.period">Période</label>
+      <input id="statPeriod" type="month" class="form-control form-control-sm" [(ngModel)]="filterPeriod" (change)="loadAll()" />
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" [class.active]="activeTab === 'sales'" (click)="activeTab = 'sales'" role="tab" id="tab-sales">
+        <span jhiTranslate="stats.tabs.sales">Ventes par modèle × zone</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" [class.active]="activeTab === 'performance'" (click)="activeTab = 'performance'" role="tab" id="tab-perf">
+        <span jhiTranslate="stats.tabs.performance">Performance commerciaux</span>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" [class.active]="activeTab === 'grades'" (click)="activeTab = 'grades'" role="tab" id="tab-grades">
+        <span jhiTranslate="stats.tabs.grades">Grades clients</span>
+      </button>
+    </li>
+  </ul>
+
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-5"><div class="spinner-border" role="status"></div></div>
+
+  <!-- Tab: Ventes par modèle × zone (Heatmap) -->
+  <div *ngIf="activeTab === 'sales' && !isLoading">
+    <h5 jhiTranslate="stats.tabs.sales">Ventes par modèle × zone</h5>
+    <div *ngIf="salesHeatmapData.length === 0" class="alert alert-info" jhiTranslate="stats.noData">Pas de données.</div>
+    <div *ngIf="salesHeatmapData.length > 0" class="table-responsive">
+      <table class="table table-sm table-bordered text-center">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col" jhiTranslate="stats.model">Modèle</th>
+            <th scope="col" jhiTranslate="stats.zone">Zone</th>
+            <th scope="col" jhiTranslate="stats.count">Quantité</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of salesHeatmapData">
+            <td>{{ row.model }}</td>
+            <td>{{ row.zone }}</td>
+            <td>
+              <span
+                class="badge"
+                [style.background-color]="row.count > 100 ? '#1a7a3a' : row.count > 50 ? '#5cb85c' : row.count > 20 ? '#f0ad4e' : '#d9534f'"
+              >
+                {{ row.count }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab: Performance commerciaux -->
+  <div *ngIf="activeTab === 'performance' && !isLoading">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5 jhiTranslate="stats.tabs.performance">Performance commerciaux</h5>
+      <button *ngIf="isAdmin" class="btn btn-warning btn-sm" (click)="recompute('performance-scores')" [disabled]="isRecomputing">
+        <fa-icon icon="sync" [spin]="isRecomputing"></fa-icon>
+        <span jhiTranslate="stats.recompute">Recalculer</span>
+      </button>
+    </div>
+    <div *ngIf="performanceScores.length === 0" class="alert alert-info" jhiTranslate="stats.noData">Pas de données.</div>
+    <div *ngIf="performanceScores.length > 0">
+      <table class="table table-striped table-hover mb-3">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col" jhiTranslate="stats.commercial">Commercial</th>
+            <th scope="col" jhiTranslate="stats.score">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of performanceScores; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ s.commercialLogin ?? s.login }}</td>
+            <td>
+              <div class="progress" style="height: 20px">
+                <div
+                  class="progress-bar bg-info"
+                  [style.width]="(s.score ?? 0) + '%'"
+                  role="progressbar"
+                  [attr.aria-valuenow]="s.score"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  {{ s.score | number: '1.0-0' }}
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab: Grades clients -->
+  <div *ngIf="activeTab === 'grades' && !isLoading">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5 jhiTranslate="stats.tabs.grades">Grades clients</h5>
+      <button *ngIf="isAdmin" class="btn btn-warning btn-sm" (click)="recompute('client-scores')" [disabled]="isRecomputing">
+        <fa-icon icon="sync" [spin]="isRecomputing"></fa-icon>
+        <span jhiTranslate="stats.recompute">Recalculer</span>
+      </button>
+    </div>
+    <!-- Grade summary -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <div class="card border-success text-center">
+          <div class="card-body">
+            <h6 jhiTranslate="stats.gradeA">Grade A</h6>
+            <h2 class="text-success">{{ gradeChartData.datasets[0].data[0] }}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-warning text-center">
+          <div class="card-body">
+            <h6 jhiTranslate="stats.gradeB">Grade B</h6>
+            <h2 class="text-warning">{{ gradeChartData.datasets[0].data[1] }}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-danger text-center">
+          <div class="card-body">
+            <h6 jhiTranslate="stats.gradeC">Grade C</h6>
+            <h2 class="text-danger">{{ gradeChartData.datasets[0].data[2] }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="clientScores.length === 0" class="alert alert-info" jhiTranslate="stats.noData">Pas de données.</div>
+    <div *ngIf="clientScores.length > 0" class="table-responsive">
+      <table class="table table-striped">
+        <thead class="table-secondary">
+          <tr>
+            <th scope="col" jhiTranslate="stats.client">Client</th>
+            <th scope="col" jhiTranslate="stats.grade">Grade</th>
+            <th scope="col" jhiTranslate="stats.score">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of clientScores">
+            <td>{{ s.clientLogin ?? s.clientId }}</td>
+            <td>
+              <span
+                class="badge fs-6"
+                [ngClass]="{ 'bg-success': s.grade === 'A', 'bg-warning text-dark': s.grade === 'B', 'bg-danger': s.grade === 'C' }"
+              >
+                {{ s.grade }}
+              </span>
+            </td>
+            <td>{{ s.score | number: '1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

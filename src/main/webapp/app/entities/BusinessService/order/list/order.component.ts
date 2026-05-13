@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { combineLatest, filter, finalize, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IOrder } from '../order.model';
-
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, OrderService } from '../service/order.service';
@@ -19,7 +18,6 @@ export class OrderComponent implements OnInit {
   orders?: IOrder[];
   isLoading = false;
 
-  // Variable pour afficher ou cacher le wizard
   isWizardVisible = false;
 
   predicate = 'id';
@@ -42,16 +40,14 @@ export class OrderComponent implements OnInit {
     this.load();
   }
 
-  // --- NOUVELLES MÉTHODES POUR LE WIZARD ---
   openWizard(): void {
     this.isWizardVisible = true;
   }
 
   closeWizard(): void {
     this.isWizardVisible = false;
-    this.load(); // On recharge la liste des commandes au cas où une a été ajoutée
+    this.load();
   }
-  // -----------------------------------------
 
   delete(order: IOrder): void {
     const modalRef = this.modalService.open(OrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
@@ -73,6 +69,7 @@ export class OrderComponent implements OnInit {
       next: (res: EntityArrayResponseType) => {
         this.onResponseSuccess(res);
       },
+      error: err => console.error('Load failed', err),
     });
   }
 
@@ -122,7 +119,7 @@ export class OrderComponent implements OnInit {
       eagerload: true,
       sort: this.getSortQueryParam(predicate, ascending),
     };
-    return this.orderService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    return this.orderService.query(queryObject).pipe(finalize(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(page = this.page, predicate?: string, ascending?: boolean): void {
@@ -147,7 +144,7 @@ export class OrderComponent implements OnInit {
     }
   }
 
-  protected goToOrder(id: number) {
+  protected goToOrder(id: number): void {
     this.router.navigate(['/order', id, 'view']);
   }
 }

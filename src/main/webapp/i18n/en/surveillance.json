@@ -1,0 +1,16 @@
+{
+  "surveillance": {
+    "title": "Sales Surveillance",
+    "refresh": "Refresh",
+    "period": "Period (YYYY-MM)",
+    "zone": "Zone",
+    "commercial": "Sales Rep",
+    "totalSales": "Total Sales",
+    "validatedOrders": "Validated Orders",
+    "topCommercials": "Top 3 Sales Reps",
+    "topProducts": "Top 3 Products",
+    "salesByZone": "Sales by Zone",
+    "dailyEvolution": "Daily Evolution",
+    "noData": "No data available."
+  }
+}
