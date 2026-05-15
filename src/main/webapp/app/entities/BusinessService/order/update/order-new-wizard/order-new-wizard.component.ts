@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { HttpResponse } from '@angular/common/http';
 
 // Assurez-vous que ces chemins correspondent bien à vos modèles
 import { IClient } from 'app/entities/BusinessService/client/client.model';
@@ -16,7 +13,6 @@ import { IOrderLine } from 'app/entities/BusinessService/order-line/order-line.m
 import { OrderService } from 'app/entities/BusinessService/order/service/order.service';
 import { OrderStatus } from 'app/entities/enumerations/order-status.model';
 import dayjs from 'dayjs/esm';
-
 @Component({
   selector: 'jhi-order-new-wizard',
   standalone: true,
@@ -36,7 +32,6 @@ export class OrderNewWizardComponent implements OnInit {
   searchQueryClient = '';
   clients: IClient[] = [];
   selectedClient: IClient | null = null;
-  clientSearchSubject = new Subject<string>();
 
   // Step 2
   searchQueryProduct = '';
@@ -54,24 +49,15 @@ export class OrderNewWizardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Recherche de clients dynamique (Server-side)
-    this.clientSearchSubject
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap(query => {
-          if (!query) {
-            return of(new HttpResponse({ body: [] as IClient[] }));
-          }
-          return this.clientService.query({ 'name.contains': query, size: 20 });
-        })
-      )
-      .subscribe({
-        next: (res: HttpResponse<IClient[]>) => {
-          this.clients = res.body || [];
-        },
-        error: () => console.error('Erreur lors de la recherche des clients'),
-      });
+    // Récupère les clients depuis la base de données
+    this.clientService.query().subscribe({
+      next: res => {
+        this.clients = res.body || [];
+      },
+      error: () => {
+        console.error('Erreur lors du chargement des clients');
+      },
+    });
 
     // Pareil pour les produits
     this.productService.query().subscribe({
@@ -82,8 +68,10 @@ export class OrderNewWizardComponent implements OnInit {
   }
 
   // --- LOGIQUE CLIENT ---
-  onClientSearch(query: string): void {
-    this.clientSearchSubject.next(query);
+  get filteredClients(): IClient[] {
+    if (!this.searchQueryClient) return this.clients;
+    const q = this.searchQueryClient.toLowerCase();
+    return this.clients.filter(c => (c.name || '').toLowerCase().includes(q) || (c.id?.toString() || '').toLowerCase().includes(q));
   }
 
   selectClient(client: IClient): void {
@@ -166,6 +154,7 @@ export class OrderNewWizardComponent implements OnInit {
     this.orderReference = this.generateRef();
     this.isSubmitting = true;
 
+    // Simulation de la sauvegarde de la commande (remplace l'appel au backend)
     if (!offline) {
       const orderLines: IOrderLine[] = this.cartItems.map(item => {
         const qty = item.qty;
