@@ -1,6 +1,7 @@
 import dayjs from 'dayjs/esm';
 import { IClient } from 'app/entities/BusinessService/client/client.model';
 import { OrderStatus } from 'app/entities/enumerations/order-status.model';
+import { PaymentMethod } from 'app/entities/enumerations/payment-method.model';
 import { IOrderLine } from '../order-line/order-line.model';
 
 export interface IOrder {
@@ -15,6 +16,7 @@ export interface IOrder {
   paymentTermsDays?: number | null;
   dueDate?: dayjs.Dayjs | null;
   rejectionReason?: string | null;
+  paymentMethod?: PaymentMethod | null;
   submittedAt?: dayjs.Dayjs | null;
   validatedAt?: dayjs.Dayjs | null;
   isDeleted?: boolean | null;

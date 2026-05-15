@@ -12,6 +12,7 @@ import { NewOrder } from 'app/entities/BusinessService/order/order.model';
 import { IOrderLine } from 'app/entities/BusinessService/order-line/order-line.model';
 import { OrderService } from 'app/entities/BusinessService/order/service/order.service';
 import { OrderStatus } from 'app/entities/enumerations/order-status.model';
+import { PaymentMethod } from 'app/entities/enumerations/payment-method.model';
 import dayjs from 'dayjs/esm';
 @Component({
   selector: 'jhi-order-new-wizard',
@@ -40,6 +41,10 @@ export class OrderNewWizardComponent implements OnInit {
   // Variables d'état locales pour remplacer VenteState
   cart: { [productId: number]: number } = {};
   notes = '';
+
+  // Mode de paiement (défaut CASH, modifiable à l'étape 3)
+  paymentMethods = Object.values(PaymentMethod);
+  selectedPaymentMethod: PaymentMethod = PaymentMethod.CASH;
 
   constructor(
     private router: Router,
@@ -173,10 +178,11 @@ export class OrderNewWizardComponent implements OnInit {
       const newOrder = {
         tenantId: 1,
         orderNumber: this.orderReference,
-        status: OrderStatus.enAttente,
+        status: OrderStatus.DRAFT,
         subtotal: this.cartTotal,
         taxAmount: 0,
         totalAmount: this.cartTotal,
+        paymentMethod: this.selectedPaymentMethod,
         isDeleted: false,
         createdAt: dayjs(),
         client: { id: this.selectedClient!.id } as IClient,
@@ -189,8 +195,9 @@ export class OrderNewWizardComponent implements OnInit {
           this.submitted = true;
           console.log('Commande créée avec succès !');
         },
-        error: () => {
+        error: err => {
           this.isSubmitting = false;
+          console.error('Erreur lors de la création de la commande', err);
           alert('Erreur lors de la création de la commande');
         },
       });
@@ -225,6 +232,11 @@ export class OrderNewWizardComponent implements OnInit {
     this.searchQueryProduct = '';
 
     // Redirection vers la liste
+    this.router.navigate(['/order']);
+  }
+
+  // Navigation directe vers la liste des commandes (depuis l'écran de succès)
+  goToList(): void {
     this.router.navigate(['/order']);
   }
 }

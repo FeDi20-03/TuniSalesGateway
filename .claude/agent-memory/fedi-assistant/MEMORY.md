@@ -1,3 +1,0 @@
-- [Profil utilisateur Fedi](user_profile.md) — PFE fullstack Angular/Spring, préfère le français, pas de commits auto
-- [TuniSalesGateway étapes 4.1-4.9](project_tunisales_steps.md) — Liste des modules Angular créés dans les étapes 4.1–4.9
-- [Pas de commits automatiques](feedback_no_commits.md) — Ne jamais commit sans demande explicite
