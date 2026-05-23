@@ -126,6 +126,36 @@
               formControlName="paymentTermsDays"
             />
           </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.paymentMethod" for="field_paymentMethod"
+              >Payment Method</label
+            >
+            <select
+              class="form-control"
+              name="paymentMethod"
+              id="field_paymentMethod"
+              data-cy="paymentMethod"
+              formControlName="paymentMethod"
+            >
+              <option [ngValue]="null">{{ 'tuniSalesGatewayApp.PaymentMethod.null' | translate }}</option>
+              <option *ngFor="let pm of paymentMethodValues" [value]="pm">
+                {{ 'tuniSalesGatewayApp.PaymentMethod.' + pm | translate }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                editForm.get('paymentMethod')!.invalid && (editForm.get('paymentMethod')!.dirty || editForm.get('paymentMethod')!.touched)
+              "
+            >
+              <small
+                class="form-text text-danger"
+                *ngIf="editForm.get('paymentMethod')?.errors?.required"
+                jhiTranslate="entity.validation.required"
+                >Ce champ est obligatoire.</small
+              >
+            </div>
+          </div>
         </div>
       </div>
 
@@ -158,7 +188,14 @@
             </div>
           </div>-->
 
-          <div class="col-12 mb-3" *ngIf="editForm.get('status')?.value === 'rejete' || editForm.get('rejectionReason')?.value">
+          <div
+            class="col-12 mb-3"
+            *ngIf="
+              editForm.get('status')?.value === 'REJECTED' ||
+              editForm.get('status')?.value === 'rejete' ||
+              editForm.get('rejectionReason')?.value
+            "
+          >
             <label class="form-label" jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.rejectionReason" for="field_rejectionReason"
               >Rejection Reason</label
             >

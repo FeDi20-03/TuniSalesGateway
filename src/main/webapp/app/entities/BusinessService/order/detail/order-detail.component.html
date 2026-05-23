@@ -54,6 +54,14 @@
                 <dt>Payment Terms</dt>
                 <dd>{{ order.paymentTermsDays }} jours</dd>
 
+                <dt jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.paymentMethod">Payment Method</dt>
+                <dd *ngIf="order.paymentMethod">
+                  <span class="badge bg-info text-dark">
+                    {{ 'tuniSalesGatewayApp.PaymentMethod.' + order.paymentMethod | translate }}
+                  </span>
+                </dd>
+                <dd *ngIf="!order.paymentMethod" class="text-muted fst-italic">—</dd>
+
                 <dt>Deleted</dt>
                 <dd>
                   <span class="badge" [ngClass]="order.isDeleted ? 'bg-danger' : 'bg-success'">

@@ -1,0 +1,11 @@
+{
+  "tuniSalesGatewayApp": {
+    "PaymentMethod": {
+      "null": "",
+      "CASH": "نقدًا",
+      "CHECK": "شيك",
+      "CARD": "بطاقة بنكية",
+      "TRANSFER": "تحويل بنكي"
+    }
+  }
+}

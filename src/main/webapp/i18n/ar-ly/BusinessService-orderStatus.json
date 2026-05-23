@@ -2,11 +2,16 @@
   "tuniSalesGatewayApp": {
     "OrderStatus": {
       "null": "",
-      "enAttente": "enAttente",
-      "valide": "valide",
-      "enCours": "enCours",
-      "livre": "livre",
-      "rejete": "rejete"
+      "DRAFT": "مسودة",
+      "SUBMITTED": "مُرسلة",
+      "VALIDATED": "مُعتمدة",
+      "NEGOTIATING": "قيد التفاوض",
+      "REJECTED": "مرفوضة",
+      "enAttente": "قيد الانتظار",
+      "valide": "مُعتمدة",
+      "enCours": "قيد المعالجة",
+      "livre": "تم التسليم",
+      "rejete": "مرفوضة"
     }
   }
 }

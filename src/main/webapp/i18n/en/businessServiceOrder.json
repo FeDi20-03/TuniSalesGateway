@@ -25,6 +25,7 @@
       "paymentTermsDays": "Payment Terms Days",
       "dueDate": "Due Date",
       "rejectionReason": "Rejection Reason",
+      "paymentMethod": "Payment Method",
       "submittedAt": "Submitted At",
       "validatedAt": "Validated At",
       "isDeleted": "Is Deleted",

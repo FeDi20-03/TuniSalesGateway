@@ -26,12 +26,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders">
+        <tr *ngFor="let order of orders" (dblclick)="goToDetail(order)" style="cursor: pointer" title="Double-cliquez pour voir le détail">
           <td>{{ order.orderNumber }}</td>
           <td>{{ order.client?.name }}</td>
           <td>{{ order.totalAmount | number: '1.2-2' }} DT</td>
           <td>{{ order.submittedAt | formatMediumDatetime }}</td>
-          <td>
+          <td (dblclick)="$event.stopPropagation()">
             <div class="d-flex gap-2">
               <button class="btn btn-success btn-sm" (click)="accept(order)" [attr.aria-label]="'Accepter commande ' + order.orderNumber">
                 <fa-icon icon="check"></fa-icon>

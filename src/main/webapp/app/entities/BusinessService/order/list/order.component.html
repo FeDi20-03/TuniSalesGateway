@@ -72,6 +72,12 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="paymentMethod">
+              <div class="d-flex">
+                <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.paymentMethod">Payment Method</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <!--<th scope="col" jhiSortBy="subtotal">
               <div class="d-flex">
                 <span jhiTranslate="tuniSalesGatewayApp.businessServiceOrder.subtotal">Subtotal</span>
@@ -165,6 +171,11 @@
             <td>
               <span class="badge bg-light text-dark border">
                 {{ order.status }}
+              </span>
+            </td>
+            <td>
+              <span class="badge bg-light text-dark border" *ngIf="order.paymentMethod">
+                {{ 'tuniSalesGatewayApp.PaymentMethod.' + order.paymentMethod | translate }}
               </span>
             </td>
             <!--<td>{{ order.subtotal | currency }}</td>

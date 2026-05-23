@@ -45,6 +45,7 @@ type OrderFormGroupContent = {
   paymentTermsDays: FormControl<OrderFormRawValue['paymentTermsDays']>;
   dueDate: FormControl<OrderFormRawValue['dueDate']>;
   rejectionReason: FormControl<OrderFormRawValue['rejectionReason']>;
+  paymentMethod: FormControl<OrderFormRawValue['paymentMethod']>;
   submittedAt: FormControl<OrderFormRawValue['submittedAt']>;
   validatedAt: FormControl<OrderFormRawValue['validatedAt']>;
   isDeleted: FormControl<OrderFormRawValue['isDeleted']>;
@@ -97,6 +98,9 @@ export class OrderFormService {
       dueDate: new FormControl(orderRawValue.dueDate),
       rejectionReason: new FormControl(orderRawValue.rejectionReason, {
         validators: [Validators.maxLength(1000)],
+      }),
+      paymentMethod: new FormControl(orderRawValue.paymentMethod, {
+        validators: [Validators.required],
       }),
       submittedAt: new FormControl(orderRawValue.submittedAt),
       validatedAt: new FormControl(orderRawValue.validatedAt),

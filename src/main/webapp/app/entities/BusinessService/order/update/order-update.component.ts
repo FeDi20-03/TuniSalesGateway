@@ -10,15 +10,31 @@ import { OrderService } from '../service/order.service';
 import { IClient } from 'app/entities/BusinessService/client/client.model';
 import { ClientService } from 'app/entities/BusinessService/client/service/client.service';
 import { OrderStatus } from 'app/entities/enumerations/order-status.model';
+import { PaymentMethod } from 'app/entities/enumerations/payment-method.model';
 
 @Component({
   selector: 'jhi-order-update',
   templateUrl: './order-update.component.html',
 })
 export class OrderUpdateComponent implements OnInit {
+  private static readonly LEGACY_STATUS_MAP: Record<string, OrderStatus> = {
+    enAttente: OrderStatus.SUBMITTED,
+    valide: OrderStatus.VALIDATED,
+    enCours: OrderStatus.VALIDATED,
+    livre: OrderStatus.VALIDATED,
+    rejete: OrderStatus.REJECTED,
+  };
+
   isSaving = false;
   order: IOrder | null = null;
-  orderStatusValues = Object.keys(OrderStatus);
+  readonly orderStatusValues: OrderStatus[] = [
+    OrderStatus.DRAFT,
+    OrderStatus.SUBMITTED,
+    OrderStatus.VALIDATED,
+    OrderStatus.NEGOTIATING,
+    OrderStatus.REJECTED,
+  ];
+  readonly paymentMethodValues: PaymentMethod[] = Object.values(PaymentMethod);
 
   clientsSharedCollection: IClient[] = [];
 
@@ -79,7 +95,9 @@ export class OrderUpdateComponent implements OnInit {
 
   protected updateForm(order: IOrder): void {
     this.order = order;
-    this.orderFormService.resetForm(this.editForm, order);
+    const legacyMapped = order.status ? OrderUpdateComponent.LEGACY_STATUS_MAP[order.status] : undefined;
+    const normalized: IOrder = legacyMapped ? { ...order, status: legacyMapped } : order;
+    this.orderFormService.resetForm(this.editForm, normalized);
 
     this.clientsSharedCollection = this.clientService.addClientToCollectionIfMissing<IClient>(this.clientsSharedCollection, order.client);
   }

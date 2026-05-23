@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
+import { RxStomp } from '@stomp/rx-stomp';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
@@ -15,14 +16,10 @@ export interface NotificationDTO {
   targetUrl?: string;
 }
 
-// Escape TypeScript static module resolution so the build doesn't fail
-// when @stomp/rx-stomp is not yet installed.
-const dynamicImport = new Function('m', 'return import(m)') as (m: string) => Promise<any>;
-
 @Injectable({ providedIn: 'root' })
 export class NotificationsWebSocketService implements OnDestroy {
-  private stompClient: any = null;
-  private stompSubscription: any = null;
+  private stompClient: RxStomp | null = null;
+  private stompSubscription: Subscription | null = null;
   private authSubscription?: Subscription;
 
   private _notifications$ = new Subject<NotificationDTO>();
@@ -30,7 +27,7 @@ export class NotificationsWebSocketService implements OnDestroy {
 
   constructor(private accountService: AccountService, private authServerProvider: AuthServerProvider) {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe((account: Account | null) => {
-      if (account) {
+      if (account?.login) {
         this.connect(account.login);
       } else {
         this.disconnect();
@@ -39,41 +36,45 @@ export class NotificationsWebSocketService implements OnDestroy {
   }
 
   private connect(login: string): void {
+    this.disconnect();
+
     const token = this.authServerProvider.getToken();
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const host = window.location.host;
     const wsUrl = `${protocol}://${host}/services/platform/ws/websocket?access_token=${encodeURIComponent(token)}`;
 
-    dynamicImport('@stomp/rx-stomp')
-      .then(({ RxStomp }) => {
-        this.stompClient = new RxStomp();
-        this.stompClient.configure({
-          brokerURL: wsUrl,
-          connectHeaders: { login, passcode: token },
-          heartbeatIncoming: 0,
-          heartbeatOutgoing: 20000,
-          reconnectDelay: 5000,
-        });
-        this.stompClient.activate();
+    try {
+      const client = new RxStomp();
+      client.configure({
+        brokerURL: wsUrl,
+        connectHeaders: { login, passcode: token },
+        heartbeatIncoming: 0,
+        heartbeatOutgoing: 20000,
+        reconnectDelay: 5000,
+      });
+      client.activate();
 
-        this.stompSubscription = this.stompClient.watch(`/topic/notifications/${login}`).subscribe((message: { body: string }) => {
+      this.stompClient = client;
+      this.stompSubscription = client.watch(`/topic/notifications/${login}`).subscribe({
+        next: (message: { body: string }) => {
           try {
             const notif: NotificationDTO = JSON.parse(message.body);
             this._notifications$.next(notif);
           } catch {
-            // ignore malformed message
+            // message malformé — ignorer
           }
-        });
-      })
-      .catch(() => {
-        console.warn('[NotificationsWebSocketService] @stomp/rx-stomp not available — WS disabled.');
+        },
+        error: err => console.warn('[NotificationsWebSocketService] subscription error', err),
       });
+    } catch (err) {
+      console.warn('[NotificationsWebSocketService] WebSocket désactivé :', err);
+    }
   }
 
   private disconnect(): void {
     try {
-      this.stompSubscription?.unsubscribe?.();
-      this.stompClient?.deactivate?.();
+      this.stompSubscription?.unsubscribe();
+      void this.stompClient?.deactivate();
     } catch {
       // ignore
     }

@@ -87,8 +87,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   loadUnreadCount(): void {
-    this.http.get<{ count: number }>(`${this.notifUrl}/me/unread-count`).subscribe({
-      next: res => (this.unreadCount = res.count ?? 0),
+    this.http.get<number>(`${this.notifUrl}/me/unread-count`).subscribe({
+      next: res => (this.unreadCount = res ?? 0),
       error: () => (this.unreadCount = 0),
     });
     // Charger les 5 dernières

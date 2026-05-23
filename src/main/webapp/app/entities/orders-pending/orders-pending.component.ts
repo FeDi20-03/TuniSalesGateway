@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -28,9 +29,16 @@ export class OrdersPendingComponent implements OnInit {
     private http: HttpClient,
     private applicationConfigService: ApplicationConfigService,
     private modalService: NgbModal,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router: Router
   ) {
     this.resourceUrl = this.applicationConfigService.getEndpointFor('api/orders', 'businessservice');
+  }
+
+  goToDetail(order: IOrder): void {
+    if (order.id != null) {
+      this.router.navigate(['/order', order.id, 'view']);
+    }
   }
 
   ngOnInit(): void {
@@ -55,7 +63,11 @@ export class OrdersPendingComponent implements OnInit {
         this.alertService.addAlert({ type: 'success', translationKey: 'ordersPending.accepted' });
         this.load();
       },
-      error: () => this.alertService.addAlert({ type: 'danger', translationKey: 'ordersPending.error' }),
+      error: err => {
+        console.error('Action accepter échouée', err);
+        const detail = err?.error?.detail || err?.error?.title || err?.message || 'Erreur inconnue';
+        this.alertService.addAlert({ type: 'danger', message: `Échec : ${detail}` });
+      },
     });
   }
 
@@ -86,8 +98,10 @@ export class OrdersPendingComponent implements OnInit {
         this.modalRef?.close();
         this.load();
       },
-      error: () => {
-        this.alertService.addAlert({ type: 'danger', translationKey: 'ordersPending.error' });
+      error: err => {
+        console.error('Action confirm échouée', err);
+        const detail = err?.error?.detail || err?.error?.title || err?.message || 'Erreur inconnue';
+        this.alertService.addAlert({ type: 'danger', message: `Échec : ${detail}` });
       },
     });
   }
