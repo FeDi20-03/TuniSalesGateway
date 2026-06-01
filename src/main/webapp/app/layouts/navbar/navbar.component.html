@@ -1,12 +1,13 @@
 <nav data-cy="navbar" class="navbar navbar-expand-md bg-white border-bottom">
   <div class="container-fluid position-relative">
-    <a class="navbar-brand logo d-flex align-items-center text-dark text-decoration-none" routerLink="/" (click)="collapseNavbar()">
-      <span
-        class="logo-text d-inline-flex align-items-center justify-content-center bg-primary text-white"
-        style="width: 32px; height: 32px; font-weight: bold; border-radius: 5px; margin-right: 8px"
-        >T.S</span
-      >
-      <span class="navbar-title text-primary" style="font-weight: 700; font-size: 1.25rem">TuniSales</span>
+    <a
+      class="navbar-brand d-flex align-items-center text-decoration-none"
+      routerLink="/"
+      (click)="collapseNavbar()"
+      aria-label="Accueil TuniSales"
+    >
+      <jhi-logo variant="mark" [size]="32" class="me-2"></jhi-logo>
+      <span class="navbar-brand-title">TuniSales</span>
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -21,8 +22,9 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
 
-    <div *ngIf="router.url !== '/login'" class="d-none d-md-flex mx-auto position-absolute start-50 translate-middle-x" style="z-index: 10">
+    <div *ngIf="router.url !== '/login'" class="navbar-center d-none d-md-flex mx-auto position-absolute start-50 translate-middle-x">
       <button
+        type="button"
         class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
         routerLink="client"
         routerLinkActive="active"
@@ -32,6 +34,7 @@
         <span jhiTranslate="global.menu.entities.businessServiceClient">Client</span>
       </button>
       <button
+        type="button"
         class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
         routerLink="invoice"
         routerLinkActive="active"
@@ -41,6 +44,7 @@
         <span>Factures</span>
       </button>
       <button
+        type="button"
         class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
         routerLink="order"
         routerLinkActive="active"
@@ -49,7 +53,8 @@
       >
         <span>Commandes</span>
       </button>
-      <Button
+      <button
+        type="button"
         class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
         routerLink="stock-item"
         routerLinkActive="active"
@@ -57,7 +62,7 @@
         (click)="collapseNavbar()"
       >
         <span jhiTranslate="global.menu.entities.inventoryServiceStockItem">Stock Item</span>
-      </Button>
+      </button>
       <!--<button
         class="btn btn-outline-primary btn-sm mx-1 d-flex align-items-center"
         routerLink="client-contact"
@@ -81,31 +86,32 @@
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-            <span>
-              <fa-icon icon="home"></fa-icon>
-            </span>
+          <a class="nav-link" routerLink="/" (click)="collapseNavbar()" aria-label="Accueil">
+            <fa-icon icon="home" aria-hidden="true"></fa-icon>
           </a>
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         <!-- Cloche notifications (connecté uniquement) -->
         <li *ngIf="account" ngbDropdown class="nav-item dropdown pointer" display="dynamic">
-          <a class="nav-link position-relative" ngbDropdownToggle href="javascript:void(0);" id="notif-menu" aria-label="Notifications">
-            <fa-icon icon="bell"></fa-icon>
+          <a
+            class="nav-link position-relative"
+            ngbDropdownToggle
+            href="javascript:void(0);"
+            id="notif-menu"
+            [attr.aria-label]="
+              unreadCount > 0 ? 'Notifications, ' + unreadCount + ' non lue' + (unreadCount > 1 ? 's' : '') : 'Notifications'
+            "
+          >
+            <fa-icon icon="bell" aria-hidden="true"></fa-icon>
             <span
               *ngIf="unreadCount > 0"
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              style="font-size: 0.6rem"
+              class="notification-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              aria-hidden="true"
             >
               {{ unreadCount > 99 ? '99+' : unreadCount }}
             </span>
           </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            ngbDropdownMenu
-            aria-labelledby="notif-menu"
-            style="min-width: 320px; max-width: 400px"
-          >
+          <ul class="dropdown-menu dropdown-menu-end notifications-dropdown" ngbDropdownMenu aria-labelledby="notif-menu">
             <li class="dropdown-header d-flex justify-content-between align-items-center">
               <span jhiTranslate="notifications.title">Notifications</span>
               <small *ngIf="unreadCount > 0" class="text-muted">({{ unreadCount }} non lu(s))</small>
@@ -439,8 +445,14 @@
           display="dynamic"
           routerLinkActive="active"
         >
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="commercial-menu">
-            <span><fa-icon icon="chart-line"></fa-icon></span>
+          <a
+            class="nav-link dropdown-toggle"
+            ngbDropdownToggle
+            href="javascript:void(0);"
+            id="commercial-menu"
+            aria-label="Menu commercial"
+          >
+            <fa-icon icon="chart-line" aria-hidden="true"></fa-icon>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="commercial-menu">
             <li>
@@ -510,10 +522,15 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
-            <span>
-              <fa-icon icon="users-cog"></fa-icon>
-            </span>
+          <a
+            class="nav-link dropdown-toggle"
+            ngbDropdownToggle
+            href="javascript:void(0);"
+            id="admin-menu"
+            data-cy="adminMenu"
+            aria-label="Menu administration"
+          >
+            <fa-icon icon="users-cog" aria-hidden="true"></fa-icon>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
             <li>
@@ -567,11 +584,28 @@
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
+        <!-- Theme toggle (dark / light) -->
+        <li class="nav-item">
+          <button
+            type="button"
+            class="nav-link theme-toggle"
+            (click)="toggleTheme()"
+            [attr.aria-label]="(theme$ | async) === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'"
+            [attr.aria-pressed]="(theme$ | async) === 'dark'"
+            title="Basculer le thème"
+          >
+            <fa-icon [icon]="(theme$ | async) === 'dark' ? 'sun' : 'moon'" aria-hidden="true"></fa-icon>
+          </button>
+        </li>
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="languagesnavBarDropdown">
-            <span>
-              <fa-icon icon="flag"></fa-icon>
-            </span>
+          <a
+            class="nav-link dropdown-toggle"
+            ngbDropdownToggle
+            href="javascript:void(0);"
+            id="languagesnavBarDropdown"
+            aria-label="Changer de langue"
+          >
+            <fa-icon icon="flag" aria-hidden="true"></fa-icon>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="languagesnavBarDropdown">
             <li *ngFor="let language of languages">
@@ -592,13 +626,20 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu" data-cy="accountMenu">
+          <a
+            class="nav-link dropdown-toggle"
+            ngbDropdownToggle
+            href="javascript:void(0);"
+            id="account-menu"
+            data-cy="accountMenu"
+            [attr.aria-label]="account ? 'Menu de ' + account.login : 'Menu du compte'"
+          >
             <span *ngIf="!account?.imageUrl">
-              <fa-icon icon="user"></fa-icon>
-              <span *ngIf="account">{{ account.login }}</span>
+              <fa-icon icon="user" aria-hidden="true"></fa-icon>
+              <span *ngIf="account" class="ms-1">{{ account.login }}</span>
             </span>
             <span *ngIf="account?.imageUrl">
-              <img [src]="account!.imageUrl" class="profile-image rounded-circle" alt="Avatar" />
+              <img [src]="account!.imageUrl" class="profile-image rounded-circle" [alt]="'Avatar de ' + account!.login" />
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu" [ngSwitch]="account !== null">

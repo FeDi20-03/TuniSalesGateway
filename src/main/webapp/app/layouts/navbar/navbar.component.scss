@@ -1,48 +1,159 @@
-@import '~bootstrap/scss/functions';
-@import '~bootswatch/dist/flatly/variables';
-@import '~bootstrap/scss/variables';
-
-/* ==========================================================================
-Navbar
-========================================================================== */
-
-.navbar-version {
-  font-size: 0.65em;
-  color: $navbar-dark-color;
-}
-
-.profile-image {
-  height: 1.75em;
-  width: 1.75em;
-}
-
 .navbar {
-  padding: 0.2rem 1rem;
-  .dropdown-item.active,
-  .dropdown-item.active:focus,
-  .dropdown-item.active:hover {
-    background-color: $dark;
-  }
+  padding: var(--ts-space-2) var(--ts-space-4);
+  background-color: var(--ts-surface);
+  border-bottom: 1px solid var(--ts-border);
+  box-shadow: var(--ts-shadow-xs);
 
   a.nav-link {
-    font-weight: 400;
+    font-weight: var(--ts-fw-medium);
+    color: var(--ts-gray-700);
+    transition: color var(--ts-transition-fast) var(--ts-ease-out);
+
+    &:hover {
+      color: var(--ts-primary);
+    }
+  }
+
+  .nav-item.active > .nav-link,
+  .nav-link.active {
+    color: var(--ts-primary);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ts-space-2);
+    padding: var(--ts-space-2) var(--ts-space-4);
+    transition: background-color var(--ts-transition-fast) var(--ts-ease-out);
+
+    &.active,
+    &.active:focus,
+    &.active:hover {
+      background-color: var(--ts-primary-soft);
+      color: var(--ts-primary);
+    }
+
+    &:hover:not(.active) {
+      background-color: var(--ts-gray-50);
+    }
+  }
+
+  .dropdown-menu {
+    border-radius: var(--ts-radius-lg);
+    border: 1px solid var(--ts-border);
+    box-shadow: var(--ts-shadow-lg);
+    padding: var(--ts-space-2) 0;
   }
 
   .navbar-toggler {
+    border: none;
+    padding: var(--ts-space-2);
+    color: var(--ts-gray-700);
+    transition: color var(--ts-transition-fast) var(--ts-ease-out);
+
     &:hover {
-      color: $navbar-dark-hover-color;
+      color: var(--ts-primary);
     }
   }
 }
 
-/* ==========================================================================
-Logo styles
-========================================================================== */
+// Theme toggle button
+.theme-toggle {
+  background: transparent;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--ts-text-muted);
+  transition: background-color var(--ts-transition-fast) var(--ts-ease-out), color var(--ts-transition-fast) var(--ts-ease-out),
+    transform var(--ts-transition-fast) var(--ts-ease-out);
+
+  &:hover {
+    background-color: var(--ts-primary-soft);
+    color: var(--ts-primary);
+    transform: rotate(15deg);
+  }
+
+  &:active {
+    transform: rotate(0deg) scale(0.92);
+  }
+}
+
+// Brand
+.navbar-brand-logo {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--ts-primary), var(--ts-navy));
+  color: #fff;
+  font-weight: var(--ts-fw-bold);
+  border-radius: var(--ts-radius-md);
+  margin-right: var(--ts-space-2);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.navbar-brand-title {
+  font-weight: var(--ts-fw-bold);
+  font-size: var(--ts-fs-xl);
+  color: var(--ts-primary);
+  letter-spacing: -0.01em;
+}
+
+// Center menu — underline animation on active
+.navbar-center {
+  z-index: var(--ts-z-sticky);
+
+  .btn {
+    position: relative;
+    border-color: transparent;
+    background: transparent;
+    color: var(--ts-gray-700);
+    font-weight: var(--ts-fw-medium);
+
+    &:hover {
+      background: var(--ts-primary-soft);
+      color: var(--ts-primary);
+      border-color: transparent;
+    }
+
+    &.active {
+      background: var(--ts-primary-soft);
+      color: var(--ts-primary);
+      border-color: var(--ts-primary);
+    }
+  }
+}
+
+// Notification bell
+.notification-badge {
+  font-size: 0.625rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notifications-dropdown {
+  min-width: 320px;
+  max-width: 400px;
+}
+
+// Profile image
+.profile-image {
+  height: 1.75em;
+  width: 1.75em;
+  object-fit: cover;
+}
+
+// Removes legacy jhipster logo styling
 .logo-img {
-  height: 45px;
-  width: 45px;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
-  background-size: contain;
+  display: none;
 }

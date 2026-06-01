@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" width="64" height="64">
+  <title>TuniSales</title>
+  <!-- Traits de vitesse -->
+  <g fill="#dc2626">
+    <rect x="2" y="38" width="14" height="4" rx="2"/>
+    <rect x="6" y="52" width="22" height="4" rx="2"/>
+    <rect x="2" y="66" width="14" height="4" rx="2"/>
+  </g>
+  <!-- Smartphone -->
+  <rect x="32" y="8" width="74" height="98" rx="11" ry="11" fill="none" stroke="#1f2937" stroke-width="5"/>
+  <rect x="56" y="14" width="26" height="3.5" rx="1.75" fill="#1f2937"/>
+  <circle cx="69" cy="98" r="1.8" fill="#1f2937"/>
+  <!-- Colis hexagonal -->
+  <polygon points="69,32 94,46 94,74 69,88 44,74 44,46" fill="#dc2626"/>
+  <polyline points="44,46 69,60 94,46" fill="none" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.85"/>
+  <line x1="69" y1="60" x2="69" y2="88" stroke="#ffffff" stroke-width="2" opacity="0.85"/>
+</svg>

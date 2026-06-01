@@ -54,6 +54,9 @@ import {
   faBoxOpen,
   faFileInvoiceDollar,
   faShoppingCart,
+  faMoon,
+  faSun,
+  faBullseye,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -113,5 +116,8 @@ export const fontAwesomeIcons = [
   faBoxOpen,
   faFileInvoiceDollar,
   faShoppingCart,
+  faMoon,
+  faSun,
+  faBullseye,
   // jhipster-needle-add-icon-import
 ];

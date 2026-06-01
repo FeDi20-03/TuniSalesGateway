@@ -16,24 +16,24 @@
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
       </div>
-      <h2 class="title" style="color: #1b2a4a">Commande envoyée !</h2>
+      <h2 class="title">Commande envoyée !</h2>
       <p class="subtitle" *ngIf="isOffline">Mise en attente de synchronisation.</p>
       <p class="subtitle" *ngIf="!isOffline">Votre commande a été transmise avec succès.</p>
       <div class="ref-badge">{{ orderReference }}</div>
-      <div class="success-actions" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap">
-        <button class="btn-primary" (click)="resetWizard()">Nouvelle commande</button>
-        <button class="btn-outline" (click)="goToList()">Voir la liste</button>
+      <div class="success-actions">
+        <button type="button" class="btn-primary" (click)="resetWizard()">Nouvelle commande</button>
+        <button type="button" class="btn-outline" (click)="goToList()">Voir la liste</button>
       </div>
     </div>
   </ng-container>
 
   <ng-template #tunnelTemplate>
     <!-- TUNNEL -->
-    <div class="tunnel-layout" [ngClass]="animationClass">
+    <div class="tunnel-layout" [ngClass]="animationClass" role="region" aria-live="polite">
       <!-- STEP 1 : CLIENT -->
       <ng-container *ngIf="currentStep === 1">
         <div class="header">
-          <button class="back-btn" disabled>
+          <button type="button" aria-label="Étape précédente" class="back-btn" disabled aria-hidden="true">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -51,9 +51,7 @@
         </div>
 
         <!-- Remplacement du Stepper supprimé -->
-        <div class="step-indicator" style="text-align: center; padding: 10px; font-weight: bold; color: #666">
-          Étape 1 / 3 : Choix du client
-        </div>
+        <div class="step-indicator">Étape 1 / 3 : Choix du client</div>
 
         <div class="screen-body screen-body-step1">
           <div class="step-desc">
@@ -83,9 +81,14 @@
             <ng-container *ngIf="filteredClients.length > 0; else noClients">
               <div
                 class="client-card"
+                role="button"
+                tabindex="0"
                 *ngFor="let client of filteredClients"
                 [class.selected]="selectedClient?.id === client.id"
+                [attr.aria-pressed]="selectedClient?.id === client.id"
                 (click)="selectClient(client)"
+                (keyup.enter)="selectClient(client)"
+                (keyup.space)="selectClient(client)"
               >
                 <div class="client-name">{{ client.name }}</div>
                 <div class="client-info">{{ client.id }} &middot; {{ client.taxId || 'N/A' }}</div>
@@ -98,14 +101,14 @@
         </div>
 
         <div class="footer-bar">
-          <button class="btn-teal full-width" [disabled]="!selectedClient" (click)="nextStep()">Suivant &rarr;</button>
+          <button type="button" class="btn-teal full-width" [disabled]="!selectedClient" (click)="nextStep()">Suivant &rarr;</button>
         </div>
       </ng-container>
 
       <!-- STEP 2 : PRODUITS -->
       <ng-container *ngIf="currentStep === 2">
         <div class="header">
-          <button class="back-btn" (click)="prevStep()">
+          <button type="button" aria-label="Étape précédente" class="back-btn" (click)="prevStep()">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -123,9 +126,7 @@
         </div>
 
         <!-- Remplacement du Stepper supprimé -->
-        <div class="step-indicator" style="text-align: center; padding: 10px; font-weight: bold; color: #666">
-          Étape 2 / 3 : Choix des produits
-        </div>
+        <div class="step-indicator">Étape 2 / 3 : Choix des produits</div>
 
         <div class="screen-body screen-body-step2" [style.padding-bottom.px]="cartCount > 0 ? 80 : 20">
           <div class="search-box">
@@ -163,14 +164,24 @@
               </div>
               <div class="qty-control">
                 <button
+                  type="button"
                   class="qty-btn minus"
+                  [attr.aria-label]="'Diminuer la quantité de ' + prod.name"
                   [disabled]="getProductQty(prod.id!) === 0 || !prod.isActive"
                   (click)="changeQty(prod.id!, -1)"
                 >
                   &minus;
                 </button>
-                <span class="qty-text">{{ getProductQty(prod.id!) }}</span>
-                <button class="qty-btn plus" [disabled]="!prod.isActive" (click)="changeQty(prod.id!, 1)">+</button>
+                <span class="qty-text" [attr.aria-label]="'Quantité : ' + getProductQty(prod.id!)">{{ getProductQty(prod.id!) }}</span>
+                <button
+                  type="button"
+                  class="qty-btn plus"
+                  [attr.aria-label]="'Augmenter la quantité de ' + prod.name"
+                  [disabled]="!prod.isActive"
+                  (click)="changeQty(prod.id!, 1)"
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
@@ -182,14 +193,14 @@
             <div class="cart-items-count">{{ cartCount }} article(s)</div>
             <div class="cart-total-price">{{ cartTotal | number: '1.3-3' }} TND</div>
           </div>
-          <button class="btn-teal" (click)="nextStep()">Suivant &rarr;</button>
+          <button type="button" class="btn-teal" (click)="nextStep()">Suivant &rarr;</button>
         </div>
       </ng-container>
 
       <!-- STEP 3 : RECAPITULATIF -->
       <ng-container *ngIf="currentStep === 3">
         <div class="header">
-          <button class="back-btn" (click)="prevStep()">
+          <button type="button" aria-label="Étape précédente" class="back-btn" (click)="prevStep()">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -207,9 +218,7 @@
         </div>
 
         <!-- Remplacement du Stepper supprimé -->
-        <div class="step-indicator" style="text-align: center; padding: 10px; font-weight: bold; color: #666">
-          Étape 3 / 3 : Récapitulatif
-        </div>
+        <div class="step-indicator">Étape 3 / 3 : Récapitulatif</div>
 
         <div class="screen-body screen-body-step3">
           <div class="recap-section">
@@ -258,7 +267,7 @@
         </div>
 
         <div class="footer-bar double-btn">
-          <button class="btn-outline" [disabled]="isSubmitting" (click)="submitOrder(true)">
+          <button type="button" class="btn-outline" [disabled]="isSubmitting" (click)="submitOrder(true)">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -268,7 +277,8 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              style="margin-right: 8px; vertical-align: middle"
+              class="me-2 align-middle"
+              aria-hidden="true"
             >
               <line x1="1" y1="1" x2="23" y2="23"></line>
               <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
@@ -280,7 +290,13 @@
             </svg>
             Hors ligne
           </button>
-          <button class="btn-primary flex-1" [disabled]="isSubmitting" (click)="submitOrder(false)">
+          <button
+            type="button"
+            class="btn-primary flex-1"
+            [disabled]="isSubmitting"
+            [attr.aria-busy]="isSubmitting ? 'true' : null"
+            (click)="submitOrder(false)"
+          >
             <span *ngIf="isSubmitting">Traitement...</span>
             <span *ngIf="!isSubmitting">Envoyer pour validation</span>
           </button>

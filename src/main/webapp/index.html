@@ -7,11 +7,26 @@
     <meta name="description" content="Description for TuniSalesGateway" />
     <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#dc2626" />
     <base href="/" />
-    <link rel="icon" href="favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="content/images/favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
     <link rel="stylesheet" href="content/css/loading.css" />
+    <!-- Anti-FOUC: apply theme attribute before first paint so dark mode doesn't flash white. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('ts-theme');
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
   </head>
   <body>

@@ -1,19 +1,27 @@
 <div class="login-container">
-  <div class="login-card shadow rounded">
+  <div class="login-card">
     <div class="logo-container">
-      <h2 data-cy="loginTitle">LOGIN</h2>
-      <p class="text-muted" jhiTranslate="login.title">Autentification</p>
+      <jhi-logo variant="full" [size]="60" class="mb-3"></jhi-logo>
+      <h2 data-cy="loginTitle" class="login-title">CONNEXION</h2>
+      <p class="text-muted mb-0" jhiTranslate="login.title">Authentification</p>
     </div>
 
-    <div class="alert alert-danger" *ngIf="authenticationError" jhiTranslate="login.messages.error.authentication" data-cy="loginError">
+    <div
+      class="alert alert-danger"
+      *ngIf="authenticationError"
+      role="alert"
+      aria-live="polite"
+      jhiTranslate="login.messages.error.authentication"
+      data-cy="loginError"
+    >
       <strong>Erreur d'authentification !</strong> Veuillez vérifier vos identifiants de connexion.
     </div>
 
-    <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
+    <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
       <div class="mb-3">
-        <label class="form-label text-muted" for="username" jhiTranslate="global.form.username.label">Email</label>
+        <label class="form-label" for="username" jhiTranslate="global.form.username.label">Email</label>
         <div class="input-group">
-          <span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+          <span class="input-group-text" aria-hidden="true"><i class="fa fa-envelope"></i></span>
           <input
             type="email"
             class="form-control"
@@ -21,21 +29,29 @@
             id="username"
             placeholder="example@domain.com"
             formControlName="username"
+            autocomplete="email"
+            aria-describedby="username-error"
+            [attr.aria-invalid]="loginForm.get('username')!.invalid && loginForm.get('username')!.touched ? 'true' : null"
             #username
             data-cy="username"
             [ngClass]="{ 'is-invalid': loginForm.get('username')!.invalid && loginForm.get('username')!.touched }"
           />
         </div>
-        <div *ngIf="loginForm.get('username')!.invalid && loginForm.get('username')!.touched" class="text-danger mt-1 small">
-          <div *ngIf="loginForm.get('username')!.errors?.['required']">Email is required.</div>
-          <div *ngIf="loginForm.get('username')!.errors?.['email']">Indicate a valid email.</div>
+        <div
+          *ngIf="loginForm.get('username')!.invalid && loginForm.get('username')!.touched"
+          id="username-error"
+          class="text-danger mt-1 small"
+          aria-live="polite"
+        >
+          <div *ngIf="loginForm.get('username')!.errors?.['required']">L'email est requis.</div>
+          <div *ngIf="loginForm.get('username')!.errors?.['email']">Veuillez saisir un email valide.</div>
         </div>
       </div>
 
       <div class="mb-4">
-        <label class="form-label text-muted" for="password" jhiTranslate="login.form.password">Mot de passe</label>
+        <label class="form-label" for="password" jhiTranslate="login.form.password">Mot de passe</label>
         <div class="input-group">
-          <span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span>
+          <span class="input-group-text" aria-hidden="true"><i class="fa fa-lock"></i></span>
           <input
             type="password"
             class="form-control"
@@ -43,13 +59,21 @@
             id="password"
             placeholder="{{ 'login.form.password.placeholder' | translate }}"
             formControlName="password"
+            autocomplete="current-password"
+            aria-describedby="password-error"
+            [attr.aria-invalid]="loginForm.get('password')!.invalid && loginForm.get('password')!.touched ? 'true' : null"
             data-cy="password"
             [ngClass]="{ 'is-invalid': loginForm.get('password')!.invalid && loginForm.get('password')!.touched }"
           />
         </div>
-        <div *ngIf="loginForm.get('password')!.invalid && loginForm.get('password')!.touched" class="text-danger mt-1 small">
-          <div *ngIf="loginForm.get('password')!.errors?.['required']">Password is required.</div>
-          <div *ngIf="loginForm.get('password')!.errors?.['minlength']">Password must be at least 4 characters long.</div>
+        <div
+          *ngIf="loginForm.get('password')!.invalid && loginForm.get('password')!.touched"
+          id="password-error"
+          class="text-danger mt-1 small"
+          aria-live="polite"
+        >
+          <div *ngIf="loginForm.get('password')!.errors?.['required']">Le mot de passe est requis.</div>
+          <div *ngIf="loginForm.get('password')!.errors?.['minlength']">Le mot de passe doit contenir au moins 4 caractères.</div>
         </div>
       </div>
 
@@ -62,7 +86,14 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 mb-3" data-cy="submit" [disabled]="loginForm.invalid || isLoading">
+      <button
+        type="submit"
+        class="btn btn-primary w-100 mb-3"
+        data-cy="submit"
+        [disabled]="loginForm.invalid || isLoading"
+        [attr.aria-busy]="isLoading ? 'true' : null"
+        [attr.aria-label]="isLoading ? ('login.form.loading' | translate) : null"
+      >
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         <span jhiTranslate="login.form.button">Connexion</span>
       </button>

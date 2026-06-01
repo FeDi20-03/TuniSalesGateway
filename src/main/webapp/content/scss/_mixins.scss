@@ -1,0 +1,67 @@
+// =============================================================================
+// SCSS mixins — TuniSales
+// Used by global.scss. Component .scss files use CSS custom properties instead.
+// =============================================================================
+@import 'tokens';
+
+// Accessible focus ring (WCAG 2.1 AA — visible, 3:1 contrast against background).
+@mixin ts-focus-ring($color: $ts-primary) {
+  outline: 2px solid $color;
+  outline-offset: 2px;
+  box-shadow: $ts-shadow-focus;
+}
+
+// Visually hidden but accessible to screen readers.
+@mixin ts-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Ellipsis on a single line.
+@mixin ts-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Card hover elevation.
+@mixin ts-card-hover {
+  transition: transform $ts-transition-base $ts-ease-out, box-shadow $ts-transition-base $ts-ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $ts-shadow-lg;
+  }
+}
+
+// Avatar circle (initial or image).
+@mixin ts-avatar($size: 40px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: $ts-fw-semibold;
+  flex-shrink: 0;
+}
+
+// KPI icon circle (home page).
+@mixin ts-kpi-icon-circle($size: 50px, $bg: $ts-primary-soft, $color: $ts-primary) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background-color: $bg;
+  color: $color;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

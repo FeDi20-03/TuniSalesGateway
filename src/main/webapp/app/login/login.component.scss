@@ -3,67 +3,112 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: var(--ts-space-5);
+  background: var(--ts-gradient-hero);
 }
 
 .login-card {
   width: 100%;
-  max-width: 450px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  padding: 30px;
+  max-width: 440px;
+  background: var(--ts-surface);
+  border-radius: var(--ts-radius-xl);
+  box-shadow: var(--ts-shadow-lg);
+  padding: var(--ts-space-8);
+  border: 1px solid var(--ts-border);
 }
 
 .login-card .logo-container {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: var(--ts-space-6);
 }
 
-.login-card .logo-container h2 {
-  font-weight: bold;
-  color: #1e3c72;
+.login-card .logo-container h2,
+.login-card .logo-container .login-title {
+  font-weight: var(--ts-fw-bold);
+  color: var(--ts-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom: var(--ts-space-2);
+  font-size: var(--ts-fs-xl);
+  margin-top: var(--ts-space-2);
 }
 
-.login-card .form-control {
-  border-radius: 30px;
-  padding-left: 45px;
+.login-card .form-label {
+  font-weight: var(--ts-fw-medium);
+  color: var(--ts-gray-700);
+}
+
+.login-card .input-group {
+  border-radius: var(--ts-radius-pill);
+  transition: box-shadow var(--ts-transition-fast) var(--ts-ease-out);
 }
 
 .login-card .input-group-text {
-  border-radius: 30px 0 0 30px;
-  background: transparent;
+  border-radius: var(--ts-radius-pill) 0 0 var(--ts-radius-pill);
+  background: var(--ts-surface);
   border-right: none;
-  color: #1e3c72;
+  color: var(--ts-navy);
 }
 
-.login-card .input-group .form-control {
+.login-card .form-control {
+  border-radius: 0 var(--ts-radius-pill) var(--ts-radius-pill) 0;
   border-left: none;
+  padding-left: var(--ts-space-2);
 }
 
 .login-card .input-group .form-control:focus {
   box-shadow: none;
-  border-color: #ced4da;
+  border-color: var(--ts-gray-300);
 }
 
 .login-card .input-group:focus-within {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  border-radius: 30px;
+  box-shadow: var(--ts-shadow-focus);
+}
+
+.login-card .input-group:focus-within .input-group-text {
+  border-color: var(--ts-primary);
+}
+
+.login-card .input-group:focus-within .form-control {
+  border-color: var(--ts-primary);
+}
+
+// Invalid state — uses Bootstrap's .is-invalid spec without !important.
+.login-card .input-group:has(.is-invalid),
+.login-card .input-group:focus-within:has(.is-invalid) {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18);
+}
+
+.login-card .input-group .is-invalid {
+  border-color: var(--ts-danger);
+}
+
+.login-card .input-group .is-invalid ~ .input-group-text,
+.login-card .input-group .input-group-text:has(+ .is-invalid) {
+  border-color: var(--ts-danger);
+  color: var(--ts-danger);
 }
 
 .login-card .btn-primary {
-  border-radius: 30px;
-  padding: 10px 20px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  border-radius: var(--ts-radius-pill);
+  padding: var(--ts-space-3) var(--ts-space-5);
+  font-weight: var(--ts-fw-semibold);
+  background: var(--ts-gradient-brand);
   border: none;
   width: 100%;
+  box-shadow: var(--ts-shadow-brand);
+  transition: filter var(--ts-transition-fast) var(--ts-ease-out), transform var(--ts-transition-fast) var(--ts-ease-out),
+    box-shadow var(--ts-transition-fast) var(--ts-ease-out);
 }
 
-.login-card .btn-primary:hover {
-  background: linear-gradient(135deg, #2a5298, #1e3c72);
+.login-card .btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
-.login-card .is-invalid {
-  border-color: #dc3545 !important;
+.login-card .btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-card .alert {
+  border-radius: var(--ts-radius-lg);
 }

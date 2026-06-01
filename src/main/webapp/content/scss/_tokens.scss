@@ -1,0 +1,287 @@
+// =============================================================================
+// Design tokens — TuniSales (palette rouge/anthracite, brand-aligned)
+// SCSS variables (build-time) + CSS custom properties exposed via global.scss.
+// Conventions:
+//   - SCSS vars usable in Bootstrap overrides and mixins.
+//   - CSS custom properties usable from ANY component .scss without import.
+//   - Dark theme exposed via @mixin ts-expose-tokens-dark and triggered by
+//     [data-theme="dark"] on <html>.
+// =============================================================================
+
+// ---- Brand palette (logo TuniSales) ----------------------------------------
+$ts-primary: #dc2626; // red-600
+$ts-primary-hover: #b91c1c; // red-700
+$ts-primary-active: #991b1b; // red-800
+$ts-primary-soft: #fef2f2; // red-50
+
+$ts-secondary: #1f2937; // gray-800 (anthracite)
+$ts-secondary-hover: #111827; // gray-900
+$ts-accent: #f97316; // orange-500 (warm CTA)
+
+// Legacy aliases (kept for backward-compat — v1 used these)
+$ts-navy: #1f2937;
+$ts-teal: #10b981;
+
+// ---- Semantic colors -------------------------------------------------------
+$ts-success: #10b981; // emerald-500
+$ts-success-soft: #d1fae5;
+$ts-success-strong: #047857;
+
+$ts-danger: #dc2626; // aligned with primary
+$ts-danger-soft: #fee2e2;
+$ts-danger-strong: #991b1b;
+
+$ts-warning: #f59e0b; // amber-500
+$ts-warning-soft: #fef3c7;
+$ts-warning-strong: #b45309;
+
+$ts-info: #0ea5e9; // sky-500
+$ts-info-soft: #e0f2fe;
+$ts-info-strong: #0369a1;
+
+// ---- Neutral scale (warm) --------------------------------------------------
+$ts-gray-50: #fafaf9; // stone-50
+$ts-gray-100: #f5f5f4;
+$ts-gray-200: #e7e5e4;
+$ts-gray-300: #d6d3d1;
+$ts-gray-400: #a8a29e;
+$ts-gray-500: #78716c;
+$ts-gray-600: #57534e;
+$ts-gray-700: #44403c;
+$ts-gray-800: #292524;
+$ts-gray-900: #1c1917;
+
+$ts-bg: #fafaf9; // warm off-white
+$ts-surface: #ffffff;
+$ts-surface-elevated: #ffffff;
+$ts-text: #1f2937;
+$ts-text-muted: #57534e;
+$ts-border: #e7e5e4;
+
+// ---- Spacing scale (4px base) ----------------------------------------------
+$ts-space-1: 0.25rem;
+$ts-space-2: 0.5rem;
+$ts-space-3: 0.75rem;
+$ts-space-4: 1rem;
+$ts-space-5: 1.25rem;
+$ts-space-6: 1.5rem;
+$ts-space-8: 2rem;
+$ts-space-10: 2.5rem;
+$ts-space-12: 3rem;
+$ts-space-16: 4rem;
+
+// ---- Typography ------------------------------------------------------------
+$ts-fs-xs: 0.75rem;
+$ts-fs-sm: 0.875rem;
+$ts-fs-base: 1rem;
+$ts-fs-lg: 1.125rem;
+$ts-fs-xl: 1.25rem;
+$ts-fs-2xl: 1.5rem;
+$ts-fs-3xl: 1.875rem;
+$ts-fs-4xl: 2.25rem;
+
+$ts-fw-regular: 400;
+$ts-fw-medium: 500;
+$ts-fw-semibold: 600;
+$ts-fw-bold: 700;
+
+// ---- Radii -----------------------------------------------------------------
+$ts-radius-sm: 4px;
+$ts-radius-md: 6px;
+$ts-radius-lg: 10px;
+$ts-radius-xl: 14px;
+$ts-radius-2xl: 20px;
+$ts-radius-pill: 999px;
+
+// ---- Shadows (premium SaaS — diffused & layered) ---------------------------
+$ts-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+$ts-shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05);
+$ts-shadow-md: 0 8px 24px -8px rgba(15, 23, 42, 0.08);
+$ts-shadow-lg: 0 24px 48px -12px rgba(15, 23, 42, 0.12);
+$ts-shadow-focus: 0 0 0 3px rgba(220, 38, 38, 0.18);
+$ts-shadow-brand: 0 8px 24px -8px rgba(220, 38, 38, 0.25);
+
+// ---- Motion ----------------------------------------------------------------
+$ts-ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+$ts-ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ts-transition-fast: 120ms;
+$ts-transition-base: 200ms;
+$ts-transition-slow: 320ms;
+
+// ---- Z-index scale ---------------------------------------------------------
+$ts-z-base: 1;
+$ts-z-sticky: 100;
+$ts-z-floating: 200;
+$ts-z-overlay: 300;
+$ts-z-modal: 400;
+$ts-z-toast: 500;
+
+// =============================================================================
+// LIGHT theme exposure (default)
+// =============================================================================
+@mixin ts-expose-tokens {
+  // Brand
+  --ts-primary: #{$ts-primary};
+  --ts-primary-hover: #{$ts-primary-hover};
+  --ts-primary-active: #{$ts-primary-active};
+  --ts-primary-soft: #{$ts-primary-soft};
+  --ts-secondary: #{$ts-secondary};
+  --ts-secondary-hover: #{$ts-secondary-hover};
+  --ts-accent: #{$ts-accent};
+  --ts-navy: #{$ts-navy};
+  --ts-teal: #{$ts-teal};
+
+  // Semantic
+  --ts-success: #{$ts-success};
+  --ts-success-soft: #{$ts-success-soft};
+  --ts-success-strong: #{$ts-success-strong};
+  --ts-danger: #{$ts-danger};
+  --ts-danger-soft: #{$ts-danger-soft};
+  --ts-danger-strong: #{$ts-danger-strong};
+  --ts-warning: #{$ts-warning};
+  --ts-warning-soft: #{$ts-warning-soft};
+  --ts-warning-strong: #{$ts-warning-strong};
+  --ts-info: #{$ts-info};
+  --ts-info-soft: #{$ts-info-soft};
+  --ts-info-strong: #{$ts-info-strong};
+
+  // Neutrals
+  --ts-gray-50: #{$ts-gray-50};
+  --ts-gray-100: #{$ts-gray-100};
+  --ts-gray-200: #{$ts-gray-200};
+  --ts-gray-300: #{$ts-gray-300};
+  --ts-gray-400: #{$ts-gray-400};
+  --ts-gray-500: #{$ts-gray-500};
+  --ts-gray-600: #{$ts-gray-600};
+  --ts-gray-700: #{$ts-gray-700};
+  --ts-gray-800: #{$ts-gray-800};
+  --ts-gray-900: #{$ts-gray-900};
+
+  --ts-bg: #{$ts-bg};
+  --ts-surface: #{$ts-surface};
+  --ts-surface-elevated: #{$ts-surface-elevated};
+  --ts-text: #{$ts-text};
+  --ts-text-muted: #{$ts-text-muted};
+  --ts-border: #{$ts-border};
+
+  // Spacing
+  --ts-space-1: #{$ts-space-1};
+  --ts-space-2: #{$ts-space-2};
+  --ts-space-3: #{$ts-space-3};
+  --ts-space-4: #{$ts-space-4};
+  --ts-space-5: #{$ts-space-5};
+  --ts-space-6: #{$ts-space-6};
+  --ts-space-8: #{$ts-space-8};
+  --ts-space-10: #{$ts-space-10};
+  --ts-space-12: #{$ts-space-12};
+
+  // Typography
+  --ts-fs-xs: #{$ts-fs-xs};
+  --ts-fs-sm: #{$ts-fs-sm};
+  --ts-fs-base: #{$ts-fs-base};
+  --ts-fs-lg: #{$ts-fs-lg};
+  --ts-fs-xl: #{$ts-fs-xl};
+  --ts-fs-2xl: #{$ts-fs-2xl};
+  --ts-fs-3xl: #{$ts-fs-3xl};
+  --ts-fs-4xl: #{$ts-fs-4xl};
+
+  // Radii
+  --ts-radius-sm: #{$ts-radius-sm};
+  --ts-radius-md: #{$ts-radius-md};
+  --ts-radius-lg: #{$ts-radius-lg};
+  --ts-radius-xl: #{$ts-radius-xl};
+  --ts-radius-2xl: #{$ts-radius-2xl};
+  --ts-radius-pill: #{$ts-radius-pill};
+
+  // Shadows
+  --ts-shadow-xs: #{$ts-shadow-xs};
+  --ts-shadow-sm: #{$ts-shadow-sm};
+  --ts-shadow-md: #{$ts-shadow-md};
+  --ts-shadow-lg: #{$ts-shadow-lg};
+  --ts-shadow-focus: #{$ts-shadow-focus};
+  --ts-shadow-brand: #{$ts-shadow-brand};
+
+  // Gradients (brand premium)
+  --ts-gradient-brand: linear-gradient(135deg, #{$ts-primary}, #{$ts-primary-hover});
+  --ts-gradient-hero: radial-gradient(1200px 600px at 10% 0%, rgba(220, 38, 38, 0.06), transparent 60%),
+    radial-gradient(900px 500px at 90% 100%, rgba(31, 41, 55, 0.05), transparent 60%), #{$ts-bg};
+
+  // Motion
+  --ts-ease-out: #{$ts-ease-out};
+  --ts-transition-fast: #{$ts-transition-fast};
+  --ts-transition-base: #{$ts-transition-base};
+  --ts-transition-slow: #{$ts-transition-slow};
+
+  // Z-index
+  --ts-z-sticky: #{$ts-z-sticky};
+  --ts-z-floating: #{$ts-z-floating};
+  --ts-z-overlay: #{$ts-z-overlay};
+  --ts-z-modal: #{$ts-z-modal};
+  --ts-z-toast: #{$ts-z-toast};
+
+  // Color scheme hint for native form controls
+  color-scheme: light;
+}
+
+// =============================================================================
+// DARK theme exposure
+// Softer reds and slate-based neutrals for reduced eye strain.
+// =============================================================================
+@mixin ts-expose-tokens-dark {
+  // Brand (softer red on dark)
+  --ts-primary: #f87171; // red-400
+  --ts-primary-hover: #ef4444; // red-500
+  --ts-primary-active: #dc2626; // red-600
+  --ts-primary-soft: rgba(248, 113, 113, 0.14);
+  --ts-secondary: #f1f5f9; // slate-100 (text on dark)
+  --ts-secondary-hover: #e2e8f0;
+  --ts-accent: #fb923c; // orange-400
+
+  // Semantic (lighter on dark)
+  --ts-success: #34d399;
+  --ts-success-soft: rgba(52, 211, 153, 0.16);
+  --ts-success-strong: #6ee7b7;
+  --ts-danger: #f87171;
+  --ts-danger-soft: rgba(248, 113, 113, 0.16);
+  --ts-danger-strong: #fca5a5;
+  --ts-warning: #fbbf24;
+  --ts-warning-soft: rgba(251, 191, 36, 0.16);
+  --ts-warning-strong: #fcd34d;
+  --ts-info: #38bdf8;
+  --ts-info-soft: rgba(56, 189, 248, 0.16);
+  --ts-info-strong: #7dd3fc;
+
+  // Neutrals (slate-based, slight warmth via dark-bg)
+  --ts-gray-50: #0f172a; // inverted scale on dark
+  --ts-gray-100: #1e293b;
+  --ts-gray-200: #293548;
+  --ts-gray-300: #334155;
+  --ts-gray-400: #475569;
+  --ts-gray-500: #64748b;
+  --ts-gray-600: #94a3b8;
+  --ts-gray-700: #cbd5e1;
+  --ts-gray-800: #e2e8f0;
+  --ts-gray-900: #f1f5f9;
+
+  --ts-bg: #0f172a; // slate-900
+  --ts-surface: #1e293b; // slate-800
+  --ts-surface-elevated: #293548;
+  --ts-text: #f1f5f9;
+  --ts-text-muted: #94a3b8;
+  --ts-border: #334155;
+
+  // Shadows (darker, more pronounced on dark)
+  --ts-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --ts-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.35);
+  --ts-shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --ts-shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+  --ts-shadow-focus: 0 0 0 3px rgba(248, 113, 113, 0.35);
+  --ts-shadow-brand: 0 8px 24px -8px rgba(248, 113, 113, 0.35);
+
+  // Gradients
+  --ts-gradient-brand: linear-gradient(135deg, #f87171, #b91c1c);
+  --ts-gradient-hero: radial-gradient(1200px 600px at 10% 0%, rgba(248, 113, 113, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 90% 100%, rgba(56, 189, 248, 0.05), transparent 60%), #0f172a;
+
+  color-scheme: dark;
+}

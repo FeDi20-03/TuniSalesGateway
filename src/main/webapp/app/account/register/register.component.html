@@ -3,23 +3,35 @@
     <div class="col-md-8">
       <h1 jhiTranslate="register.title" data-cy="registerTitle">Création de compte utilisateur</h1>
 
-      <div class="alert alert-success" *ngIf="success" jhiTranslate="register.messages.success">
+      <div class="alert alert-success" *ngIf="success" role="status" aria-live="polite" jhiTranslate="register.messages.success">
         <strong>Compte enregistré !</strong> Merci de vérifier votre email de confirmation.
       </div>
 
-      <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
+      <div class="alert alert-danger" *ngIf="error" role="alert" aria-live="polite" jhiTranslate="register.messages.error.fail">
         <strong>Compte non créé !</strong> Merci d'essayer à nouveau plus tard.
       </div>
 
-      <div class="alert alert-danger" *ngIf="errorUserExists" jhiTranslate="register.messages.error.userexists">
+      <div
+        class="alert alert-danger"
+        *ngIf="errorUserExists"
+        role="alert"
+        aria-live="polite"
+        jhiTranslate="register.messages.error.userexists"
+      >
         <strong>Ce compte utilisateur existe déjà !</strong> Veuillez en choisir un autre.
       </div>
 
-      <div class="alert alert-danger" *ngIf="errorEmailExists" jhiTranslate="register.messages.error.emailexists">
+      <div
+        class="alert alert-danger"
+        *ngIf="errorEmailExists"
+        role="alert"
+        aria-live="polite"
+        jhiTranslate="register.messages.error.emailexists"
+      >
         <strong>Cet email est déjà utilisé !</strong> Veuillez en choisir un autre.
       </div>
 
-      <div class="alert alert-danger" *ngIf="doNotMatch" jhiTranslate="global.messages.error.dontmatch">
+      <div class="alert alert-danger" *ngIf="doNotMatch" role="alert" aria-live="polite" jhiTranslate="global.messages.error.dontmatch">
         Le nouveau mot de passe et sa confirmation ne sont pas égaux !
       </div>
     </div>
@@ -27,7 +39,7 @@
 
   <div class="d-flex justify-content-center">
     <div class="col-md-8">
-      <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+      <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success" novalidate>
         <div class="mb-3">
           <label class="form-label" for="login" jhiTranslate="global.form.username.label">Nom d'utilisateur</label>
           <input
@@ -37,11 +49,19 @@
             name="login"
             placeholder="{{ 'global.form.username.placeholder' | translate }}"
             formControlName="login"
+            autocomplete="username"
+            aria-describedby="login-error"
+            [attr.aria-invalid]="registerForm.get('login')!.invalid && registerForm.get('login')!.touched ? 'true' : null"
+            [ngClass]="{ 'is-invalid': registerForm.get('login')!.invalid && registerForm.get('login')!.touched }"
             data-cy="username"
             #login
           />
 
-          <div *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)">
+          <div
+            *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)"
+            id="login-error"
+            aria-live="polite"
+          >
             <small
               class="form-text text-danger"
               *ngIf="registerForm.get('login')?.errors?.required"
@@ -85,10 +105,18 @@
             name="email"
             placeholder="{{ 'global.form.email.placeholder' | translate }}"
             formControlName="email"
+            autocomplete="email"
+            aria-describedby="email-error"
+            [attr.aria-invalid]="registerForm.get('email')!.invalid && registerForm.get('email')!.touched ? 'true' : null"
+            [ngClass]="{ 'is-invalid': registerForm.get('email')!.invalid && registerForm.get('email')!.touched }"
             data-cy="email"
           />
 
-          <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
+          <div
+            *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)"
+            id="email-error"
+            aria-live="polite"
+          >
             <small
               class="form-text text-danger"
               *ngIf="registerForm.get('email')?.errors?.required"
@@ -132,11 +160,17 @@
             name="password"
             placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
             formControlName="password"
+            autocomplete="new-password"
+            aria-describedby="password-error password-strength"
+            [attr.aria-invalid]="registerForm.get('password')!.invalid && registerForm.get('password')!.touched ? 'true' : null"
+            [ngClass]="{ 'is-invalid': registerForm.get('password')!.invalid && registerForm.get('password')!.touched }"
             data-cy="firstPassword"
           />
 
           <div
             *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)"
+            id="password-error"
+            aria-live="polite"
           >
             <small
               class="form-text text-danger"
@@ -163,7 +197,10 @@
             </small>
           </div>
 
-          <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
+          <jhi-password-strength-bar
+            id="password-strength"
+            [passwordToCheck]="registerForm.get('password')!.value"
+          ></jhi-password-strength-bar>
         </div>
 
         <div class="mb-3">
@@ -177,6 +214,14 @@
             name="confirmPassword"
             placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
             formControlName="confirmPassword"
+            autocomplete="new-password"
+            aria-describedby="confirmPassword-error"
+            [attr.aria-invalid]="
+              registerForm.get('confirmPassword')!.invalid && registerForm.get('confirmPassword')!.touched ? 'true' : null
+            "
+            [ngClass]="{
+              'is-invalid': registerForm.get('confirmPassword')!.invalid && registerForm.get('confirmPassword')!.touched
+            }"
             data-cy="secondPassword"
           />
 
@@ -185,6 +230,8 @@
               registerForm.get('confirmPassword')!.invalid &&
               (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)
             "
+            id="confirmPassword-error"
+            aria-live="polite"
           >
             <small
               class="form-text text-danger"

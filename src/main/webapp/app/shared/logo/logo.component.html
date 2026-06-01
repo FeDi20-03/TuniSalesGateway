@@ -1,0 +1,74 @@
+<!-- Logo TuniSales : smartphone + colis hexagonal rouge + traits de vitesse + texte. -->
+<!-- Couleurs liées aux tokens (-> change automatiquement avec le dark mode). -->
+<ng-container [ngSwitch]="variant">
+  <!-- ============== FULL ============== -->
+  <svg
+    *ngSwitchCase="'full'"
+    class="ts-logo ts-logo--full"
+    [attr.height]="size"
+    viewBox="0 0 320 110"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="TuniSales"
+  >
+    <title>TuniSales</title>
+    <!-- Traits de vitesse (rouge) -->
+    <g class="ts-speed-lines">
+      <rect x="2" y="38" width="20" height="5" rx="2.5" />
+      <rect x="8" y="52" width="30" height="5" rx="2.5" />
+      <rect x="2" y="66" width="20" height="5" rx="2.5" />
+    </g>
+
+    <!-- Smartphone (anthracite) -->
+    <g class="ts-phone">
+      <rect x="40" y="8" width="74" height="98" rx="11" ry="11" fill="none" stroke="currentColor" stroke-width="5" />
+      <!-- Notch / haut-parleur -->
+      <rect x="64" y="14" width="26" height="3.5" rx="1.75" fill="currentColor" />
+      <!-- Point bouton bas -->
+      <circle cx="77" cy="98" r="1.8" fill="currentColor" />
+    </g>
+
+    <!-- Colis hexagonal (rouge) à l'intérieur du smartphone -->
+    <g class="ts-box">
+      <polygon points="77,32 102,46 102,74 77,88 52,74 52,46" />
+      <!-- Lignes intérieures du colis pour donner un effet 3D -->
+      <polyline points="52,46 77,60 102,46" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" opacity="0.85" />
+      <line x1="77" y1="60" x2="77" y2="88" stroke="#fff" stroke-width="2" opacity="0.85" />
+    </g>
+
+    <!-- Texte « Tuni Sales » -->
+    <g class="ts-wordmark" font-family="'Segoe UI', Roboto, Arial, sans-serif" font-weight="800" font-size="46" letter-spacing="-1">
+      <text x="128" y="52" class="ts-wordmark-tuni">Tuni</text>
+      <text x="128" y="98" class="ts-wordmark-sales">Sales</text>
+    </g>
+  </svg>
+
+  <!-- ============== MARK ============== -->
+  <svg
+    *ngSwitchCase="'mark'"
+    class="ts-logo ts-logo--mark"
+    [attr.height]="size"
+    [attr.width]="size"
+    viewBox="0 0 110 110"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="TuniSales"
+  >
+    <title>TuniSales</title>
+    <g class="ts-speed-lines">
+      <rect x="2" y="38" width="14" height="4" rx="2" />
+      <rect x="6" y="52" width="22" height="4" rx="2" />
+      <rect x="2" y="66" width="14" height="4" rx="2" />
+    </g>
+    <g class="ts-phone">
+      <rect x="32" y="8" width="74" height="98" rx="11" ry="11" fill="none" stroke="currentColor" stroke-width="5" />
+      <rect x="56" y="14" width="26" height="3.5" rx="1.75" fill="currentColor" />
+      <circle cx="69" cy="98" r="1.8" fill="currentColor" />
+    </g>
+    <g class="ts-box">
+      <polygon points="69,32 94,46 94,74 69,88 44,74 44,46" />
+      <polyline points="44,46 69,60 94,46" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" opacity="0.85" />
+      <line x1="69" y1="60" x2="69" y2="88" stroke="#fff" stroke-width="2" opacity="0.85" />
+    </g>
+  </svg>
+</ng-container>

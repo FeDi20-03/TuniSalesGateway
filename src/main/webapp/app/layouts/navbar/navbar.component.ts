@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionStorageService } from 'ngx-webstorage';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { VERSION } from 'app/app.constants';
 import { LANGUAGES } from 'app/config/language.constants';
@@ -15,6 +15,7 @@ import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { AlertService } from 'app/core/util/alert.service';
 import { NotificationsWebSocketService, NotificationDTO } from 'app/core/websocket/notifications-websocket.service';
+import { ThemeMode, ThemeService } from 'app/core/theme/theme.service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -36,6 +37,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private wsSubscription?: Subscription;
   private notifUrl: string;
 
+  theme$: Observable<ThemeMode>;
+
   constructor(
     private loginService: LoginService,
     private translateService: TranslateService,
@@ -46,8 +49,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private applicationConfigService: ApplicationConfigService,
     private alertService: AlertService,
     private wsService: NotificationsWebSocketService,
+    private themeService: ThemeService,
     protected router: Router
   ) {
+    this.theme$ = this.themeService.theme$;
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
     }
@@ -127,5 +132,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggle();
   }
 }

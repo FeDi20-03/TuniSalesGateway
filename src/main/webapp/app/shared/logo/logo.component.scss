@@ -1,0 +1,22 @@
+.ts-logo {
+  display: inline-block;
+  vertical-align: middle;
+  // currentColor pilote le contour du smartphone et le notch
+  color: var(--ts-secondary);
+}
+
+.ts-speed-lines rect {
+  fill: var(--ts-primary);
+}
+
+.ts-box polygon {
+  fill: var(--ts-primary);
+}
+
+.ts-wordmark-tuni {
+  fill: var(--ts-primary);
+}
+
+.ts-wordmark-sales {
+  fill: var(--ts-secondary);
+}

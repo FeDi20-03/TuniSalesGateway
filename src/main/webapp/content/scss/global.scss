@@ -2,57 +2,123 @@
 @import '~bootstrap/scss/functions';
 @import '~bootswatch/dist/flatly/variables';
 @import '~bootstrap/scss/variables';
+@import 'tokens';
+@import 'mixins';
 
-/* ==============================================================
-Bootstrap tweaks
-===============================================================*/
+// =============================================================================
+// Theme tokens
+//   - Light: default at :root
+//   - Dark: explicit [data-theme="dark"] OR OS preference if no explicit choice
+// The anti-FOUC inline script in index.html sets data-theme BEFORE first paint.
+// =============================================================================
+:root {
+  @include ts-expose-tokens;
+}
+
+:root[data-theme='dark'] {
+  @include ts-expose-tokens-dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include ts-expose-tokens-dark;
+  }
+}
+
+// =============================================================================
+// Base
+// =============================================================================
+body {
+  background-color: var(--ts-bg);
+  color: var(--ts-text);
+  font-weight: $ts-fw-regular;
+  transition: background-color var(--ts-transition-base) var(--ts-ease-out), color var(--ts-transition-base) var(--ts-ease-out);
+}
 
 body,
 h1,
 h2,
 h3,
 h4 {
-  font-weight: 300;
+  font-weight: $ts-fw-regular;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: $ts-fw-semibold;
+  color: var(--ts-text);
+  margin-bottom: var(--ts-space-4);
+}
+
+a {
+  color: var(--ts-primary);
+  text-underline-offset: 3px;
+  transition: color var(--ts-transition-fast) var(--ts-ease-out);
 }
 
 a:hover {
-  /* make sure browsers use the pointer cursor for anchors, even with no href */
+  color: var(--ts-primary-hover);
   cursor: pointer;
 }
 
-.dropdown-item:hover {
-  color: $dropdown-link-hover-color;
+// =============================================================================
+// Accessibility — global focus-visible (WCAG 2.1 AA)
+// =============================================================================
+*:focus {
+  outline: none;
 }
 
-/* ==========================================================================
-Browser Upgrade Prompt
-========================================================================== */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible,
+.dropdown-item:focus-visible {
+  @include ts-focus-ring;
+}
+
+// Utility helpers used across components
+.sr-only {
+  @include ts-sr-only;
+}
+
+.hover-shadow {
+  @include ts-card-hover;
+}
+
+.transition {
+  transition: all var(--ts-transition-base) var(--ts-ease-out);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// =============================================================================
+// Browser upgrade prompt
+// =============================================================================
 .browserupgrade {
   margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
+  background: var(--ts-gray-200);
+  color: var(--ts-text);
   padding: 0.2em 0;
 }
 
-/* ==========================================================================
-Generic styles
-========================================================================== */
-
-/* other generic styles */
-
+// =============================================================================
+// Generic helpers
+// =============================================================================
 .jh-card {
   padding: 1.5%;
   margin-top: 20px;
   border: none;
 }
 
-.error {
-  color: white;
-  background-color: red;
-}
-
 .pad {
-  padding: 10px;
+  padding: var(--ts-space-3);
 }
 
 .w-40 {
@@ -69,16 +135,16 @@ Generic styles
 }
 
 .form-control {
-  background-color: #fff;
+  background-color: var(--ts-surface);
 }
 
 .readonly {
-  background-color: #eee;
+  background-color: var(--ts-gray-100);
   opacity: 1;
 }
 
 .footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-top: 1px solid var(--ts-border);
 }
 
 .hand,
@@ -86,9 +152,9 @@ Generic styles
   cursor: pointer;
 }
 
-/* ==========================================================================
-Custom alerts for notification
-========================================================================== */
+// =============================================================================
+// Toast / notification alerts
+// =============================================================================
 .alerts {
   .alert {
     text-overflow: ellipsis;
@@ -101,7 +167,7 @@ Custom alerts for notification
       margin: 0;
     }
     .popover pre {
-      font-size: 10px;
+      font-size: var(--ts-fs-xs);
     }
   }
   .jhi-toast {
@@ -128,17 +194,13 @@ Custom alerts for notification
   }
 }
 
-/* ==========================================================================
-entity list page css
-========================================================================== */
-
+// =============================================================================
+// Entity list / detail pages
+// =============================================================================
 .table-entities thead th .d-flex > * {
   margin: auto 0;
 }
 
-/* ==========================================================================
-entity detail page css
-========================================================================== */
 .row-md.jh-entity-details {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -158,16 +220,16 @@ entity detail page css
       padding: 0.5em 0;
     }
     dd {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--ts-border);
       padding: 0.5em 0;
       margin-left: 0;
     }
   }
 }
 
-/* ==========================================================================
-ui bootstrap tweaks
-========================================================================== */
+// =============================================================================
+// UI Bootstrap tweaks
+// =============================================================================
 .nav,
 .pagination,
 .carousel,
@@ -175,192 +237,267 @@ ui bootstrap tweaks
   cursor: pointer;
 }
 
+.dropdown-item:hover {
+  color: var(--ts-primary);
+}
+
 .thread-dump-modal-lock {
   max-width: 450px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @include ts-truncate;
 }
 
 .dropdown-menu {
-  padding-left: 0px;
+  padding-left: 0;
+  background-color: var(--ts-surface-elevated);
+  border-color: var(--ts-border);
+  color: var(--ts-text);
 }
 
-/* ==========================================================================
-angular-cli removes postcss-rtl processed inline css, processed rules must be added here instead
-========================================================================== */
-/* page-ribbon.component.scss */
+.dropdown-item {
+  color: var(--ts-text);
+
+  &:hover,
+  &:focus {
+    background-color: var(--ts-primary-soft);
+    color: var(--ts-primary);
+  }
+}
+
+// Page ribbon rotation (postcss-rtl strips inline css)
 .ribbon {
   left: -3.5em;
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
 
-/* ==========================================================================
-SaaS UI Enhancements
-========================================================================== */
-body {
-  background-color: #f4f6f8;
-  color: #333;
-}
-
+// =============================================================================
+// SaaS UI Enhancements
+// =============================================================================
 .jh-card,
 .card {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  background: var(--ts-surface);
+  border-radius: var(--ts-radius-xl);
+  box-shadow: var(--ts-shadow-md);
+  border: 1px solid var(--ts-border);
+  padding: var(--ts-space-6);
+  margin-bottom: var(--ts-space-6);
+  color: var(--ts-text);
+  transition: transform var(--ts-transition-base) var(--ts-ease-out), box-shadow var(--ts-transition-base) var(--ts-ease-out),
+    background-color var(--ts-transition-base) var(--ts-ease-out);
 }
 
-/* Typography Hierarchy */
-h1,
-h2,
-h3 {
-  font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 1rem;
-}
-
-/* Modern Tables */
+// Modern Tables
 .table-responsive {
-  border-radius: 8px;
+  border-radius: var(--ts-radius-lg);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--ts-shadow-xs);
 }
 
 .table {
-  background: white;
+  background: var(--ts-surface);
   margin-bottom: 0;
+  color: var(--ts-text);
 }
 
 .table thead th {
-  background-color: #f8fafc;
-  color: #475569;
-  font-weight: 600;
+  background-color: var(--ts-gray-50);
+  color: var(--ts-gray-600);
+  font-weight: $ts-fw-semibold;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: var(--ts-fs-xs);
   letter-spacing: 0.05em;
-  border-bottom: 2px solid #e2e8f0;
-  padding: 1rem;
+  border-bottom: 2px solid var(--ts-border);
+  padding: var(--ts-space-4);
 }
 
 .table tbody td {
-  padding: 1rem;
+  padding: var(--ts-space-4);
   vertical-align: middle;
-  border-bottom: 1px solid #e2e8f0;
-  color: #4a5568;
+  border-bottom: 1px solid var(--ts-border);
+  color: var(--ts-text-muted);
 }
 
-.table-hover tbody tr:hover {
-  background-color: #f1f5f9;
-  transition: all 0.2s ease;
+.table-hover tbody tr {
+  transition: background-color var(--ts-transition-fast) var(--ts-ease-out);
+
+  &:hover {
+    background-color: var(--ts-gray-100);
+  }
 }
 
-/* Buttons */
+// Buttons
 .btn {
-  border-radius: 6px;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
+  border-radius: var(--ts-radius-md);
+  font-weight: $ts-fw-medium;
+  padding: var(--ts-space-2) var(--ts-space-4);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
+  gap: var(--ts-space-2);
+  transition: background-color var(--ts-transition-fast) var(--ts-ease-out), border-color var(--ts-transition-fast) var(--ts-ease-out),
+    box-shadow var(--ts-transition-fast) var(--ts-ease-out), transform var(--ts-transition-fast) var(--ts-ease-out);
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 .btn-sm {
-  padding: 0.25rem 0.6rem;
-  font-size: 0.875rem;
+  padding: var(--ts-space-1) 0.6rem;
+  font-size: var(--ts-fs-sm);
 }
 
 .btn-primary {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
-  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
+  background-color: var(--ts-primary);
+  border-color: var(--ts-primary);
+  color: #fff;
+  box-shadow: var(--ts-shadow-brand);
 
-.btn-primary:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.4);
+  &:hover,
+  &:focus {
+    background-color: var(--ts-primary-hover);
+    border-color: var(--ts-primary-hover);
+    color: #fff;
+    box-shadow: var(--ts-shadow-lg);
+  }
+
+  &:active {
+    background-color: var(--ts-primary-active);
+    border-color: var(--ts-primary-active);
+  }
 }
 
 .btn-info {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: var(--ts-info-soft);
+  color: var(--ts-info-strong);
   border: none;
-}
 
-.btn-info:hover {
-  background-color: #bae6fd;
-  color: #0284c7;
+  &:hover,
+  &:focus {
+    background-color: var(--ts-info-soft);
+    color: var(--ts-info);
+    filter: brightness(0.95);
+  }
 }
 
 .btn-warning {
-  background-color: #fef3c7;
-  color: #b45309;
+  background-color: var(--ts-warning-soft);
+  color: var(--ts-warning-strong);
   border: none;
-}
 
-.btn-warning:hover {
-  background-color: #fde68a;
-  color: #d97706;
+  &:hover,
+  &:focus {
+    background-color: var(--ts-warning-soft);
+    color: var(--ts-warning);
+    filter: brightness(0.95);
+  }
 }
 
 .btn-danger {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: var(--ts-danger-soft);
+  color: var(--ts-danger-strong);
   border: none;
+
+  &:hover,
+  &:focus {
+    background-color: var(--ts-danger-soft);
+    color: var(--ts-danger);
+    filter: brightness(0.95);
+  }
 }
 
-.btn-danger:hover {
-  background-color: #fecaca;
-  color: #dc2626;
-}
-
-/* Forms */
+// Forms
 .form-control,
 .form-select {
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  padding: 0.6rem 1rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: var(--ts-surface);
+  color: var(--ts-text);
+  border-radius: var(--ts-radius-lg);
+  border: 1px solid var(--ts-gray-300);
+  padding: 0.6rem var(--ts-space-4);
+  box-shadow: var(--ts-shadow-xs);
+  transition: border-color var(--ts-transition-fast) var(--ts-ease-out), box-shadow var(--ts-transition-fast) var(--ts-ease-out),
+    background-color var(--ts-transition-base) var(--ts-ease-out);
 }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background-color: var(--ts-surface);
+  color: var(--ts-text);
+  border-color: var(--ts-primary);
+  box-shadow: var(--ts-shadow-focus);
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--ts-danger);
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+  }
 }
 
 label.form-label {
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.5rem;
+  font-weight: $ts-fw-medium;
+  color: var(--ts-gray-700);
+  margin-bottom: var(--ts-space-2);
 }
 
-/* Badges */
+// Badges
 .badge {
   padding: 0.4em 0.8em;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.75rem;
+  border-radius: var(--ts-radius-md);
+  font-weight: $ts-fw-semibold;
+  font-size: var(--ts-fs-xs);
 }
 
 .badge-active,
 .bg-success {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
+  background-color: var(--ts-success-soft) !important;
+  color: var(--ts-success-strong) !important;
 }
 
 .badge-inactive,
 .bg-danger {
-  background-color: #fee2e2 !important;
-  color: #b91c1c !important;
+  background-color: var(--ts-danger-soft) !important;
+  color: var(--ts-danger-strong) !important;
+}
+
+// Alerts (theme-aware)
+.alert {
+  border-radius: var(--ts-radius-lg);
+  border: none;
+}
+.alert-success {
+  background-color: var(--ts-success-soft);
+  color: var(--ts-success-strong);
+}
+.alert-danger {
+  background-color: var(--ts-danger-soft);
+  color: var(--ts-danger-strong);
+}
+.alert-warning {
+  background-color: var(--ts-warning-soft);
+  color: var(--ts-warning-strong);
+}
+.alert-info {
+  background-color: var(--ts-info-soft);
+  color: var(--ts-info-strong);
+}
+
+// Reduce motion preference
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */

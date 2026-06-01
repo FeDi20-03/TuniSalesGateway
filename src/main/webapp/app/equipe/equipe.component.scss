@@ -1,0 +1,108 @@
+.equipe-header h2 {
+  letter-spacing: -0.01em;
+}
+
+// Rank badge (Top 3 + default)
+.rank-badge {
+  font-size: var(--ts-fs-base);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: var(--ts-fw-bold);
+  color: #111;
+  line-height: 1;
+  flex-shrink: 0;
+
+  &--gold {
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+    color: #111 !important;
+  }
+
+  &--silver {
+    background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+    box-shadow: 0 2px 6px rgba(148, 163, 184, 0.3);
+    color: #111 !important;
+  }
+
+  &--bronze {
+    background: linear-gradient(135deg, #fb923c, #c2410c);
+    box-shadow: 0 2px 6px rgba(194, 65, 12, 0.25);
+    color: #111 !important;
+  }
+
+  &--default {
+    background-color: var(--ts-gray-100);
+    color: #111 !important;
+  }
+}
+
+// Avatar initial
+.commercial-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: var(--ts-primary-soft);
+  color: var(--ts-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--ts-fw-bold);
+  font-size: var(--ts-fs-lg);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+// Progress bar
+.progress--medium {
+  height: 8px;
+  border-radius: var(--ts-radius-pill);
+  background-color: var(--ts-gray-100);
+
+  .progress-bar {
+    border-radius: var(--ts-radius-pill);
+    transition: width var(--ts-transition-slow) var(--ts-ease-out);
+  }
+}
+
+// Status badges
+.status-pill {
+  border-radius: var(--ts-radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-weight: var(--ts-fw-semibold);
+  font-size: var(--ts-fs-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+
+  &.status--success {
+    background-color: var(--ts-success-soft);
+    color: var(--ts-success-strong);
+  }
+
+  &.status--primary {
+    background-color: var(--ts-primary-soft);
+    color: var(--ts-primary);
+  }
+
+  &.status--warning {
+    background-color: var(--ts-warning-soft);
+    color: var(--ts-warning-strong);
+  }
+
+  &.status--danger {
+    background-color: var(--ts-danger-soft);
+    color: var(--ts-danger-strong);
+  }
+}
+
+// Empty state
+.equipe-empty {
+  text-align: center;
+  padding: var(--ts-space-10) var(--ts-space-4);
+  color: var(--ts-gray-500);
+}

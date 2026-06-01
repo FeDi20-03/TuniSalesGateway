@@ -1,19 +1,24 @@
-<div class="row">
+<div class="row home-hero">
   <div class="col-12">
     <div class="card border-0 shadow-sm rounded-lg">
-      <div class="card-body p-5">
+      <div class="card-body p-4 p-md-5">
         <div class="row align-items-center">
           <div class="col-md-8">
             <h1 class="display-5 fw-bold text-primary mb-3">
-              <span jhiTranslate="home.title">Bienvenue a TunisSales !</span><br />
+              <span jhiTranslate="home.title">Bienvenue à TuniSales !</span><br />
               <span class="text-dark fs-4">TuniSales Dashboard</span>
             </h1>
 
             <p class="lead text-muted mb-4" jhiTranslate="home.subtitle">Ceci est votre page d'accueil</p>
 
             <div [ngSwitch]="account !== null">
-              <div class="alert alert-success border-0 shadow-sm d-flex align-items-center" *ngSwitchCase="true">
-                <fa-icon icon="check" class="me-3 fs-4"></fa-icon>
+              <div
+                class="alert alert-success border-0 shadow-sm d-flex align-items-center"
+                *ngSwitchCase="true"
+                role="status"
+                aria-live="polite"
+              >
+                <fa-icon icon="check" class="me-3 fs-4" aria-hidden="true"></fa-icon>
                 <span
                   id="home-logged-message"
                   *ngIf="account"
@@ -23,7 +28,7 @@
                 >
               </div>
 
-              <div class="alert alert-warning border-0" *ngSwitchCase="false">
+              <div class="alert alert-warning border-0" *ngSwitchCase="false" role="alert">
                 <span jhiTranslate="global.messages.info.authenticated.prefix">Si vous voulez vous </span>
                 <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">connecter</a
                 ><span jhiTranslate="global.messages.info.authenticated.suffix"
@@ -34,100 +39,102 @@
               </div>
             </div>
 
-            <!-- Quick Action Cards (Dashboard Feel) -->
+            <!-- KPI cards -->
             <div class="row mt-5" *ngIf="account">
-              <!-- KPI: Ventes Semaine -->
               <div class="col-md-4 mb-3">
-                <div class="card h-100 border-0 shadow-sm bg-white cursor-pointer hover-shadow transition">
+                <div
+                  class="kpi-card card h-100"
+                  role="region"
+                  [attr.aria-label]="'Ventes de la semaine : ' + (ventesSemaine | currency: 'TND':'symbol')"
+                >
                   <div class="card-body py-4 d-flex align-items-center">
-                    <div
-                      class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm"
-                      style="width: 50px; height: 50px"
-                    ></div>
+                    <div class="kpi-icon kpi-icon--primary me-3" aria-hidden="true">
+                      <fa-icon icon="chart-line"></fa-icon>
+                    </div>
                     <div>
-                      <h6 class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.75rem">Ventes Semaine</h6>
-                      <h4 class="fw-bold mb-0 text-dark">{{ ventesSemaine | currency: 'TND':'symbol' }}</h4>
+                      <h6 class="kpi-label mb-1">Ventes Semaine</h6>
+                      <h4 class="kpi-value">{{ ventesSemaine | currency: 'TND':'symbol' }}</h4>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- KPI: Taux Objectifs -->
               <div class="col-md-4 mb-3">
-                <div class="card h-100 border-0 shadow-sm bg-white cursor-pointer hover-shadow transition">
+                <div
+                  class="kpi-card card h-100"
+                  role="region"
+                  [attr.aria-label]="'Taux d\'objectifs atteint : ' + tauxObjectifs + ' pourcent'"
+                >
                   <div class="card-body py-4 d-flex align-items-center">
-                    <div
-                      class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm"
-                      style="width: 50px; height: 50px"
-                    ></div>
+                    <div class="kpi-icon kpi-icon--success me-3" aria-hidden="true">
+                      <fa-icon icon="bullseye"></fa-icon>
+                    </div>
                     <div>
-                      <h6 class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.75rem">Taux Objectifs</h6>
-                      <h4 class="fw-bold mb-0 text-dark">{{ tauxObjectifs }}%</h4>
+                      <h6 class="kpi-label mb-1">Taux Objectifs</h6>
+                      <h4 class="kpi-value">{{ tauxObjectifs }}%</h4>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- KPI: Commandes en attente -->
               <div class="col-md-4 mb-3">
-                <div class="card h-100 border-0 shadow-sm bg-white cursor-pointer hover-shadow transition" routerLink="/order">
+                <button
+                  type="button"
+                  class="kpi-card card h-100 w-100 text-start border-0 p-0"
+                  routerLink="/orders-pending"
+                  [attr.aria-label]="'Commandes en attente : ' + commandesAttente"
+                >
                   <div class="card-body py-4 d-flex align-items-center">
-                    <div
-                      class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm"
-                      style="width: 50px; height: 50px"
-                    >
-                      <fa-icon icon="clock" size="lg"></fa-icon>
+                    <div class="kpi-icon kpi-icon--warning me-3" aria-hidden="true">
+                      <fa-icon icon="clock"></fa-icon>
                     </div>
                     <div>
-                      <h6 class="text-muted mb-1 text-uppercase fw-bold" style="font-size: 0.75rem">Commandes en attente</h6>
-                      <h4 class="fw-bold mb-0 text-dark">{{ commandesAttente }}</h4>
+                      <h6 class="kpi-label mb-1">Commandes en attente</h6>
+                      <h4 class="kpi-value">{{ commandesAttente }}</h4>
                     </div>
                   </div>
-                </div>
+                </button>
               </div>
             </div>
 
+            <!-- Performance team -->
             <div class="row mt-4" *ngIf="account">
               <div class="col-12">
                 <div class="card border-0 shadow-sm">
                   <div class="card-header bg-white border-bottom-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold mb-0">Performance Équipe</h5>
-                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" routerLink="/equipe">Voir tous</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" routerLink="/equipe">Voir tous</button>
                   </div>
                   <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" *ngIf="performancesEquipe.length; else emptyEquipe">
                       <table class="table table-hover align-middle mb-0">
                         <thead class="text-muted bg-light">
                           <tr>
-                            <th class="border-0 rounded-start">Commercial</th>
-                            <th class="border-0">Ventes</th>
-                            <th class="border-0 rounded-end">Objectif Atteint</th>
+                            <th scope="col" class="border-0 rounded-start">Commercial</th>
+                            <th scope="col" class="border-0">Ventes</th>
+                            <th scope="col" class="border-0 rounded-end">Objectif Atteint</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr *ngFor="let rep of performancesEquipe">
                             <td>
                               <div class="d-flex align-items-center">
-                                <div
-                                  class="bg-light rounded-circle d-flex justify-content-center align-items-center me-3 text-primary fw-bold"
-                                  style="width: 40px; height: 40px"
-                                >
-                                  {{ rep.nom.charAt(0) }}
-                                </div>
+                                <div class="avatar-initial me-3" aria-hidden="true">{{ rep.nom.charAt(0) }}</div>
                                 <span class="fw-bold text-dark">{{ rep.nom }}</span>
                               </div>
                             </td>
                             <td class="fw-semibold text-dark">{{ rep.ventes | currency: 'TND':'symbol' }}</td>
                             <td>
                               <div class="d-flex align-items-center">
-                                <div class="progress flex-grow-1 me-2" style="height: 6px">
+                                <div class="progress progress--thin flex-grow-1 me-2">
                                   <div
                                     class="progress-bar bg-success"
                                     role="progressbar"
                                     [style.width.%]="rep.objectif"
-                                    aria-valuenow="25"
+                                    [attr.aria-valuenow]="rep.objectif"
                                     aria-valuemin="0"
                                     aria-valuemax="100"
+                                    [attr.aria-label]="'Objectif atteint : ' + rep.objectif + ' pourcent'"
                                   ></div>
                                 </div>
                                 <span class="text-muted small">{{ rep.objectif }}%</span>
@@ -137,20 +144,22 @@
                         </tbody>
                       </table>
                     </div>
+                    <ng-template #emptyEquipe>
+                      <div class="empty-state">
+                        <div class="empty-state__icon" aria-hidden="true">
+                          <fa-icon icon="users"></fa-icon>
+                        </div>
+                        <p class="mb-0">Aucune performance d'équipe à afficher pour le moment.</p>
+                      </div>
+                    </ng-template>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Original Quick Action Links -> Replaced with KPIs above, so removing bottom redundant row -->
           </div>
-          <div class="col-md-4 d-none d-md-block text-center d-flex align-items-center justify-content-center">
-            <div
-              class="d-inline-flex align-items-center justify-content-center bg-primary text-white shadow-lg"
-              style="width: 250px; height: 250px; font-weight: bold; border-radius: 30px; font-size: 6rem"
-            >
-              T.S
-            </div>
+
+          <div class="col-md-4 d-none d-md-flex align-items-center justify-content-center">
+            <jhi-logo variant="full" [size]="180"></jhi-logo>
           </div>
         </div>
       </div>

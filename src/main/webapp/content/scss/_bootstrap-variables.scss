@@ -1,6 +1,35 @@
 /*
  * Bootstrap overrides https://getbootstrap.com/docs/5.1/customize/sass/
- * All values defined in bootstrap source
- * https://github.com/twbs/bootstrap/blob/v5.1.3/scss/_variables.scss can be overwritten here
- * Make sure not to add !default to values here
+ * Variables here must be defined WITHOUT !default so they win over Bootstrap defaults.
+ * Loaded by vendor.scss BEFORE Bootstrap source.
  */
+
+@import 'tokens';
+
+// ---- Color overrides --------------------------------------------------------
+$primary: $ts-primary;
+$secondary: $ts-secondary;
+$success: $ts-success;
+$danger: $ts-danger;
+$warning: $ts-warning;
+$info: $ts-info;
+
+$body-bg: $ts-bg;
+$body-color: $ts-text;
+
+$link-color: $ts-primary;
+$link-hover-color: $ts-primary-hover;
+
+// ---- Typography -------------------------------------------------------------
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: $ts-fs-base;
+$headings-font-weight: $ts-fw-semibold;
+$headings-color: $ts-text;
+
+// ---- Radii & shadows --------------------------------------------------------
+$border-radius: $ts-radius-md;
+$border-radius-sm: $ts-radius-sm;
+$border-radius-lg: $ts-radius-lg;
+$box-shadow-sm: $ts-shadow-sm;
+$box-shadow: $ts-shadow-md;
+$box-shadow-lg: $ts-shadow-lg;
