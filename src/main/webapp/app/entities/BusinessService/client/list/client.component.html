@@ -31,13 +31,10 @@
           <input
             type="text"
             class="form-control border-start-0 ps-0"
-            placeholder="Rechercher par code client..."
-            [(ngModel)]="searchCodeClient"
-            (keyup.enter)="searchClientByCode()"
+            placeholder="Rechercher par nom..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearch($event)"
           />
-          <button class="btn btn-outline-secondary" type="button" (click)="searchClientByCode()">
-            <fa-icon icon="search"></fa-icon> Rechercher
-          </button>
         </div>
       </div>
     </div>

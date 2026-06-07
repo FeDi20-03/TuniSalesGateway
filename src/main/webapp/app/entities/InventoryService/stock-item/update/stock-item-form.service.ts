@@ -63,9 +63,7 @@ export class StockItemFormService {
       tenantId: new FormControl(stockItemRawValue.tenantId, {
         validators: [Validators.required],
       }),
-      productId: new FormControl(stockItemRawValue.productId, {
-        validators: [Validators.required],
-      }),
+      productId: new FormControl(stockItemRawValue.productId),
       productName: new FormControl(stockItemRawValue.productName, {
         validators: [Validators.maxLength(255)],
       }),

@@ -28,7 +28,13 @@
       <div class="col-md-4">
         <div class="input-group">
           <span class="input-group-text bg-white border-end-0 text-muted"><fa-icon icon="search"></fa-icon></span>
-          <input type="text" class="form-control border-start-0 ps-0" placeholder="Rechercher des commandes..." />
+          <input
+            type="text"
+            class="form-control border-start-0 ps-0"
+            placeholder="Rechercher par numéro de commande..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearch($event)"
+          />
         </div>
       </div>
     </div>

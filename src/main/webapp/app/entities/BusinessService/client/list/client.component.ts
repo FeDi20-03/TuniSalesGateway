@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, Observable, Subject, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IClient } from '../client.model';
@@ -27,7 +27,8 @@ export class ClientComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
-  searchCodeClient = '';
+  searchTerm = '';
+  protected searchTerms = new Subject<string>();
 
   constructor(
     protected clientService: ClientService,
@@ -39,25 +40,16 @@ export class ClientComponent implements OnInit {
   trackId = (_index: number, item: IClient): number => this.clientService.getClientIdentifier(item);
 
   ngOnInit(): void {
+    this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()).subscribe(() => {
+      this.page = 1;
+      this.load();
+    });
     this.load();
   }
 
-  searchClientByCode(): void {
-    if (!this.searchCodeClient || this.searchCodeClient.trim() === '') {
-      this.load();
-      return;
-    }
-
-    this.isLoading = true;
-    this.clientService.searchByCodeClient(this.searchCodeClient.trim()).subscribe({
-      next: (res: EntityArrayResponseType) => {
-        this.onResponseSuccess(res);
-      },
-      error: () => {
-        this.isLoading = false;
-        console.error('Erreur lors de la recherche du client par code');
-      },
-    });
+  onSearch(term: string): void {
+    this.searchTerm = term;
+    this.searchTerms.next(term);
   }
 
   viewClientByCode(codeClient?: string | null): void {
@@ -142,11 +134,14 @@ export class ClientComponent implements OnInit {
   protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
-    const queryObject = {
+    const queryObject: any = {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.searchTerm.trim()) {
+      queryObject['name.contains'] = this.searchTerm.trim();
+    }
     return this.clientService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 

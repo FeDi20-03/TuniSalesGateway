@@ -81,8 +81,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.recentNotifications.unshift(notif);
       if (this.recentNotifications.length > 5) this.recentNotifications.pop();
       this.unreadCount++;
-      if (notif.message) {
-        this.alertService.addAlert({ type: 'info', message: notif.message, timeout: 5000 });
+      const message = notif.body ?? notif.title ?? notif.message;
+      if (message) {
+        this.alertService.addAlert({ type: 'info', message, timeout: 5000 });
       }
     });
   }
@@ -105,9 +106,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Route ciblée par défaut selon le type de notification (quand le backend
+  // ne fournit pas d'URL explicite).
+  private static readonly TYPE_ROUTES: Record<string, string> = {
+    ORDER_PENDING: '/orders-pending',
+    ORDER_NEGOTIATED: '/order',
+    ORDER_REJECTED: '/order',
+    ORDER_VALIDATED: '/order',
+  };
+
   navigateToNotification(notif: NotificationDTO): void {
-    if (notif.targetUrl) {
-      this.router.navigateByUrl(notif.targetUrl);
+    const targetUrl = notif.targetUrl ?? (notif.type ? NavbarComponent.TYPE_ROUTES[notif.type] : undefined);
+    if (targetUrl) {
+      this.router.navigateByUrl(targetUrl);
     }
   }
 

@@ -9,6 +9,13 @@ import { Account } from 'app/core/auth/account.model';
 export interface NotificationDTO {
   id?: number;
   type?: string;
+  // Champs réellement émis par le backend (NotificationDTO côté PlatformService)
+  title?: string;
+  body?: string;
+  payloadJson?: string;
+  recipientLogin?: string;
+  isRead?: boolean;
+  // Champs legacy / dérivés côté client
   message?: string;
   targetLogin?: string;
   read?: boolean;
@@ -19,7 +26,7 @@ export interface NotificationDTO {
 @Injectable({ providedIn: 'root' })
 export class NotificationsWebSocketService implements OnDestroy {
   private stompClient: RxStomp | null = null;
-  private stompSubscription: Subscription | null = null;
+  private stompSubscriptions: Subscription[] = [];
   private authSubscription?: Subscription;
 
   private _notifications$ = new Subject<NotificationDTO>();
@@ -28,14 +35,14 @@ export class NotificationsWebSocketService implements OnDestroy {
   constructor(private accountService: AccountService, private authServerProvider: AuthServerProvider) {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe((account: Account | null) => {
       if (account?.login) {
-        this.connect(account.login);
+        this.connect(account.login, account.authorities ?? []);
       } else {
         this.disconnect();
       }
     });
   }
 
-  private connect(login: string): void {
+  private connect(login: string, authorities: string[]): void {
     this.disconnect();
 
     const token = this.authServerProvider.getToken();
@@ -55,17 +62,23 @@ export class NotificationsWebSocketService implements OnDestroy {
       client.activate();
 
       this.stompClient = client;
-      this.stompSubscription = client.watch(`/topic/notifications/${login}`).subscribe({
-        next: (message: { body: string }) => {
-          try {
-            const notif: NotificationDTO = JSON.parse(message.body);
-            this._notifications$.next(notif);
-          } catch {
-            // message malformé — ignorer
-          }
-        },
-        error: err => console.warn('[NotificationsWebSocketService] subscription error', err),
-      });
+
+      // Topic personnel + un topic par rôle (ex. /topic/notifications/role/ROLE_ADMIN_COMMERCIAL),
+      // afin de recevoir les notifications diffusées à un groupe de rôle.
+      const topics = [`/topic/notifications/${login}`, ...authorities.map(role => `/topic/notifications/role/${role}`)];
+      this.stompSubscriptions = topics.map(topic =>
+        client.watch(topic).subscribe({
+          next: (message: { body: string }) => {
+            try {
+              const notif: NotificationDTO = JSON.parse(message.body);
+              this._notifications$.next(notif);
+            } catch {
+              // message malformé — ignorer
+            }
+          },
+          error: err => console.warn('[NotificationsWebSocketService] subscription error', err),
+        })
+      );
     } catch (err) {
       console.warn('[NotificationsWebSocketService] WebSocket désactivé :', err);
     }
@@ -73,12 +86,12 @@ export class NotificationsWebSocketService implements OnDestroy {
 
   private disconnect(): void {
     try {
-      this.stompSubscription?.unsubscribe();
+      this.stompSubscriptions.forEach(sub => sub.unsubscribe());
       void this.stompClient?.deactivate();
     } catch {
       // ignore
     }
-    this.stompSubscription = null;
+    this.stompSubscriptions = [];
     this.stompClient = null;
   }
 

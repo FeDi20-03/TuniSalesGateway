@@ -24,6 +24,22 @@
 
   <jhi-alert></jhi-alert>
 
+  <!-- Search / Filter area -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="input-group">
+        <span class="input-group-text bg-white border-end-0 text-muted"><fa-icon icon="search"></fa-icon></span>
+        <input
+          type="text"
+          class="form-control border-start-0 ps-0"
+          placeholder="Rechercher par IMEI..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearch($event)"
+        />
+      </div>
+    </div>
+  </div>
+
   <div class="alert alert-warning" id="no-result" *ngIf="stockItems?.length === 0">
     <span jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.home.notFound">Aucun Stock Item trouvé</span>
   </div>

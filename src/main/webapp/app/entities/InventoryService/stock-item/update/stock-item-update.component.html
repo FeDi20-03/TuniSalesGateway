@@ -69,16 +69,30 @@
         <h5 class="border-bottom pb-2 mb-3 text-secondary">Détails du Produit</h5>
         <div class="row">
           <div class="col-md-4 mb-3">
+            <label class="form-label" jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.tenantId" for="field_tenantId"
+              >ID Tenant</label
+            >
+            <input type="number" class="form-control" name="tenantId" id="field_tenantId" formControlName="tenantId" />
+            <div *ngIf="editForm.get('tenantId')!.invalid && (editForm.get('tenantId')!.dirty || editForm.get('tenantId')!.touched)">
+              <small
+                class="form-text text-danger"
+                *ngIf="editForm.get('tenantId')?.errors?.required"
+                jhiTranslate="entity.validation.required"
+                >Ce champ est obligatoire.</small
+              >
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
             <label class="form-label" jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.productId" for="field_productId"
               >ID Produit</label
             >
             <input type="number" class="form-control" name="productId" id="field_productId" formControlName="productId" />
           </div>
-          <div class="col-md-8 mb-3">
+          <div class="col-md-4 mb-3">
             <label class="form-label" jhiTranslate="tuniSalesGatewayApp.inventoryServiceStockItem.productName" for="field_productName"
               >Nom du modèle</label
             >
-            <input type="text" class="form-control" name="productName" id="field_productName" formControlName="productName" readonly />
+            <input type="text" class="form-control" name="productName" id="field_productName" formControlName="productName" />
           </div>
         </div>
       </div>

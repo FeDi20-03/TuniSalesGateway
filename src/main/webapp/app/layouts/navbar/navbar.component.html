@@ -124,7 +124,7 @@
               <a class="dropdown-item text-wrap" href="javascript:void(0);" (click)="navigateToNotification(n); collapseNavbar()">
                 <div class="small">
                   <span class="badge bg-info me-1" *ngIf="n.type">{{ n.type }}</span>
-                  {{ n.message }}
+                  {{ n.body || n.title || n.message }}
                 </div>
                 <small class="text-muted">{{ n.createdAt | date: 'HH:mm' }}</small>
               </a>

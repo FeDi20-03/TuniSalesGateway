@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router } from '@angular/router';
-import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, Observable, Subject, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IStockItem } from '../stock-item.model';
@@ -25,6 +25,8 @@ export class StockItemComponent implements OnInit {
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
   page = 1;
+  searchTerm = '';
+  protected searchTerms = new Subject<string>();
 
   constructor(
     protected stockItemService: StockItemService,
@@ -36,7 +38,16 @@ export class StockItemComponent implements OnInit {
   trackId = (_index: number, item: IStockItem): number => this.stockItemService.getStockItemIdentifier(item);
 
   ngOnInit(): void {
+    this.searchTerms.pipe(debounceTime(300), distinctUntilChanged()).subscribe(() => {
+      this.page = 1;
+      this.load();
+    });
     this.load();
+  }
+
+  onSearch(term: string): void {
+    this.searchTerm = term;
+    this.searchTerms.next(term);
   }
 
   delete(stockItem: IStockItem): void {
@@ -103,12 +114,15 @@ export class StockItemComponent implements OnInit {
   protected queryBackend(page?: number, predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
     this.isLoading = true;
     const pageToLoad: number = page ?? 1;
-    const queryObject = {
+    const queryObject: any = {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
       eagerload: true,
       sort: this.getSortQueryParam(predicate, ascending),
     };
+    if (this.searchTerm.trim()) {
+      queryObject['imei.contains'] = this.searchTerm.trim();
+    }
     return this.stockItemService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
